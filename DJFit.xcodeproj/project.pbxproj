@@ -1,0 +1,444 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 46;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		900D224D1A1A91CB00A9E5EB /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 900D224C1A1A91CB00A9E5EB /* main.m */; };
+		900D22501A1A91CB00A9E5EB /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 900D224F1A1A91CB00A9E5EB /* AppDelegate.m */; };
+		900D22531A1A91CC00A9E5EB /* DJFit.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 900D22511A1A91CC00A9E5EB /* DJFit.xcdatamodeld */; };
+		900D22561A1A91CC00A9E5EB /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 900D22551A1A91CC00A9E5EB /* ViewController.m */; };
+		900D22591A1A91CC00A9E5EB /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 900D22571A1A91CC00A9E5EB /* Main.storyboard */; };
+		900D225B1A1A91CC00A9E5EB /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 900D225A1A1A91CC00A9E5EB /* Images.xcassets */; };
+		900D225E1A1A91CC00A9E5EB /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = 900D225C1A1A91CC00A9E5EB /* LaunchScreen.xib */; };
+		900D226A1A1A91CC00A9E5EB /* DJFitTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 900D22691A1A91CC00A9E5EB /* DJFitTests.m */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		900D22641A1A91CC00A9E5EB /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 900D223F1A1A91CB00A9E5EB /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 900D22461A1A91CB00A9E5EB;
+			remoteInfo = DJFit;
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXFileReference section */
+		900D22471A1A91CB00A9E5EB /* DJFit.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = DJFit.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		900D224B1A1A91CB00A9E5EB /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		900D224C1A1A91CB00A9E5EB /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
+		900D224E1A1A91CB00A9E5EB /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
+		900D224F1A1A91CB00A9E5EB /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
+		900D22521A1A91CC00A9E5EB /* DJFit.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = DJFit.xcdatamodel; sourceTree = "<group>"; };
+		900D22541A1A91CC00A9E5EB /* ViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ViewController.h; sourceTree = "<group>"; };
+		900D22551A1A91CC00A9E5EB /* ViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ViewController.m; sourceTree = "<group>"; };
+		900D22581A1A91CC00A9E5EB /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
+		900D225A1A1A91CC00A9E5EB /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
+		900D225D1A1A91CC00A9E5EB /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/LaunchScreen.xib; sourceTree = "<group>"; };
+		900D22631A1A91CC00A9E5EB /* DJFitTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = DJFitTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		900D22681A1A91CC00A9E5EB /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		900D22691A1A91CC00A9E5EB /* DJFitTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = DJFitTests.m; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		900D22441A1A91CB00A9E5EB /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		900D22601A1A91CC00A9E5EB /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		900D223E1A1A91CB00A9E5EB = {
+			isa = PBXGroup;
+			children = (
+				900D22491A1A91CB00A9E5EB /* DJFit */,
+				900D22661A1A91CC00A9E5EB /* DJFitTests */,
+				900D22481A1A91CB00A9E5EB /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		900D22481A1A91CB00A9E5EB /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				900D22471A1A91CB00A9E5EB /* DJFit.app */,
+				900D22631A1A91CC00A9E5EB /* DJFitTests.xctest */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		900D22491A1A91CB00A9E5EB /* DJFit */ = {
+			isa = PBXGroup;
+			children = (
+				900D224E1A1A91CB00A9E5EB /* AppDelegate.h */,
+				900D224F1A1A91CB00A9E5EB /* AppDelegate.m */,
+				900D22541A1A91CC00A9E5EB /* ViewController.h */,
+				900D22551A1A91CC00A9E5EB /* ViewController.m */,
+				900D22571A1A91CC00A9E5EB /* Main.storyboard */,
+				900D225A1A1A91CC00A9E5EB /* Images.xcassets */,
+				900D225C1A1A91CC00A9E5EB /* LaunchScreen.xib */,
+				900D22511A1A91CC00A9E5EB /* DJFit.xcdatamodeld */,
+				900D224A1A1A91CB00A9E5EB /* Supporting Files */,
+			);
+			path = DJFit;
+			sourceTree = "<group>";
+		};
+		900D224A1A1A91CB00A9E5EB /* Supporting Files */ = {
+			isa = PBXGroup;
+			children = (
+				900D224B1A1A91CB00A9E5EB /* Info.plist */,
+				900D224C1A1A91CB00A9E5EB /* main.m */,
+			);
+			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		900D22661A1A91CC00A9E5EB /* DJFitTests */ = {
+			isa = PBXGroup;
+			children = (
+				900D22691A1A91CC00A9E5EB /* DJFitTests.m */,
+				900D22671A1A91CC00A9E5EB /* Supporting Files */,
+			);
+			path = DJFitTests;
+			sourceTree = "<group>";
+		};
+		900D22671A1A91CC00A9E5EB /* Supporting Files */ = {
+			isa = PBXGroup;
+			children = (
+				900D22681A1A91CC00A9E5EB /* Info.plist */,
+			);
+			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		900D22461A1A91CB00A9E5EB /* DJFit */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 900D226D1A1A91CC00A9E5EB /* Build configuration list for PBXNativeTarget "DJFit" */;
+			buildPhases = (
+				900D22431A1A91CB00A9E5EB /* Sources */,
+				900D22441A1A91CB00A9E5EB /* Frameworks */,
+				900D22451A1A91CB00A9E5EB /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = DJFit;
+			productName = DJFit;
+			productReference = 900D22471A1A91CB00A9E5EB /* DJFit.app */;
+			productType = "com.apple.product-type.application";
+		};
+		900D22621A1A91CC00A9E5EB /* DJFitTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 900D22701A1A91CC00A9E5EB /* Build configuration list for PBXNativeTarget "DJFitTests" */;
+			buildPhases = (
+				900D225F1A1A91CC00A9E5EB /* Sources */,
+				900D22601A1A91CC00A9E5EB /* Frameworks */,
+				900D22611A1A91CC00A9E5EB /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				900D22651A1A91CC00A9E5EB /* PBXTargetDependency */,
+			);
+			name = DJFitTests;
+			productName = DJFitTests;
+			productReference = 900D22631A1A91CC00A9E5EB /* DJFitTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		900D223F1A1A91CB00A9E5EB /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				LastUpgradeCheck = 0610;
+				ORGANIZATIONNAME = "Taylor Ledingham";
+				TargetAttributes = {
+					900D22461A1A91CB00A9E5EB = {
+						CreatedOnToolsVersion = 6.1;
+					};
+					900D22621A1A91CC00A9E5EB = {
+						CreatedOnToolsVersion = 6.1;
+						TestTargetID = 900D22461A1A91CB00A9E5EB;
+					};
+				};
+			};
+			buildConfigurationList = 900D22421A1A91CB00A9E5EB /* Build configuration list for PBXProject "DJFit" */;
+			compatibilityVersion = "Xcode 3.2";
+			developmentRegion = English;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+				Base,
+			);
+			mainGroup = 900D223E1A1A91CB00A9E5EB;
+			productRefGroup = 900D22481A1A91CB00A9E5EB /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				900D22461A1A91CB00A9E5EB /* DJFit */,
+				900D22621A1A91CC00A9E5EB /* DJFitTests */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		900D22451A1A91CB00A9E5EB /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				900D22591A1A91CC00A9E5EB /* Main.storyboard in Resources */,
+				900D225E1A1A91CC00A9E5EB /* LaunchScreen.xib in Resources */,
+				900D225B1A1A91CC00A9E5EB /* Images.xcassets in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		900D22611A1A91CC00A9E5EB /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		900D22431A1A91CB00A9E5EB /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				900D22501A1A91CB00A9E5EB /* AppDelegate.m in Sources */,
+				900D22531A1A91CC00A9E5EB /* DJFit.xcdatamodeld in Sources */,
+				900D22561A1A91CC00A9E5EB /* ViewController.m in Sources */,
+				900D224D1A1A91CB00A9E5EB /* main.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		900D225F1A1A91CC00A9E5EB /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				900D226A1A1A91CC00A9E5EB /* DJFitTests.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		900D22651A1A91CC00A9E5EB /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 900D22461A1A91CB00A9E5EB /* DJFit */;
+			targetProxy = 900D22641A1A91CC00A9E5EB /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin PBXVariantGroup section */
+		900D22571A1A91CC00A9E5EB /* Main.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				900D22581A1A91CC00A9E5EB /* Base */,
+			);
+			name = Main.storyboard;
+			sourceTree = "<group>";
+		};
+		900D225C1A1A91CC00A9E5EB /* LaunchScreen.xib */ = {
+			isa = PBXVariantGroup;
+			children = (
+				900D225D1A1A91CC00A9E5EB /* Base */,
+			);
+			name = LaunchScreen.xib;
+			sourceTree = "<group>";
+		};
+/* End PBXVariantGroup section */
+
+/* Begin XCBuildConfiguration section */
+		900D226B1A1A91CC00A9E5EB /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				COPY_PHASE_STRIP = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.1;
+				MTL_ENABLE_DEBUG_INFO = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = iphoneos;
+			};
+			name = Debug;
+		};
+		900D226C1A1A91CC00A9E5EB /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				COPY_PHASE_STRIP = YES;
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.1;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				SDKROOT = iphoneos;
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		900D226E1A1A91CC00A9E5EB /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				INFOPLIST_FILE = DJFit/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Debug;
+		};
+		900D226F1A1A91CC00A9E5EB /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				INFOPLIST_FILE = DJFit/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Release;
+		};
+		900D22711A1A91CC00A9E5EB /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(SDKROOT)/Developer/Library/Frameworks",
+					"$(inherited)",
+				);
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				INFOPLIST_FILE = DJFitTests/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/DJFit.app/DJFit";
+			};
+			name = Debug;
+		};
+		900D22721A1A91CC00A9E5EB /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(SDKROOT)/Developer/Library/Frameworks",
+					"$(inherited)",
+				);
+				INFOPLIST_FILE = DJFitTests/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/DJFit.app/DJFit";
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		900D22421A1A91CB00A9E5EB /* Build configuration list for PBXProject "DJFit" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				900D226B1A1A91CC00A9E5EB /* Debug */,
+				900D226C1A1A91CC00A9E5EB /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		900D226D1A1A91CC00A9E5EB /* Build configuration list for PBXNativeTarget "DJFit" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				900D226E1A1A91CC00A9E5EB /* Debug */,
+				900D226F1A1A91CC00A9E5EB /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+		};
+		900D22701A1A91CC00A9E5EB /* Build configuration list for PBXNativeTarget "DJFitTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				900D22711A1A91CC00A9E5EB /* Debug */,
+				900D22721A1A91CC00A9E5EB /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+		};
+/* End XCConfigurationList section */
+
+/* Begin XCVersionGroup section */
+		900D22511A1A91CC00A9E5EB /* DJFit.xcdatamodeld */ = {
+			isa = XCVersionGroup;
+			children = (
+				900D22521A1A91CC00A9E5EB /* DJFit.xcdatamodel */,
+			);
+			currentVersion = 900D22521A1A91CC00A9E5EB /* DJFit.xcdatamodel */;
+			path = DJFit.xcdatamodeld;
+			sourceTree = "<group>";
+			versionGroupType = wrapper.xcdatamodel;
+		};
+/* End XCVersionGroup section */
+	};
+	rootObject = 900D223F1A1A91CB00A9E5EB /* Project object */;
+}
