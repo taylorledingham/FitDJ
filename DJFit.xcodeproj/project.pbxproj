@@ -15,6 +15,10 @@
 		900D225B1A1A91CC00A9E5EB /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 900D225A1A1A91CC00A9E5EB /* Images.xcassets */; };
 		900D225E1A1A91CC00A9E5EB /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = 900D225C1A1A91CC00A9E5EB /* LaunchScreen.xib */; };
 		900D226A1A1A91CC00A9E5EB /* DJFitTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 900D22691A1A91CC00A9E5EB /* DJFitTests.m */; };
+		900D22741A1A922E00A9E5EB /* HealthKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 900D22731A1A922E00A9E5EB /* HealthKit.framework */; };
+		900D22781A1A996900A9E5EB /* ProfileDetailsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 900D22771A1A996900A9E5EB /* ProfileDetailsViewController.m */; };
+		900D227B1A1A9D9500A9E5EB /* ProfileDetailTableTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 900D227A1A1A9D9500A9E5EB /* ProfileDetailTableTableViewController.m */; };
+		900D227E1A1AAC0800A9E5EB /* HKHealthStore+AAPLExtensions.m in Sources */ = {isa = PBXBuildFile; fileRef = 900D227D1A1AAC0800A9E5EB /* HKHealthStore+AAPLExtensions.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -42,6 +46,14 @@
 		900D22631A1A91CC00A9E5EB /* DJFitTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = DJFitTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		900D22681A1A91CC00A9E5EB /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		900D22691A1A91CC00A9E5EB /* DJFitTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = DJFitTests.m; sourceTree = "<group>"; };
+		900D22731A1A922E00A9E5EB /* HealthKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = HealthKit.framework; path = System/Library/Frameworks/HealthKit.framework; sourceTree = SDKROOT; };
+		900D22751A1A922E00A9E5EB /* DJFit.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = DJFit.entitlements; sourceTree = "<group>"; };
+		900D22761A1A996900A9E5EB /* ProfileDetailsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ProfileDetailsViewController.h; sourceTree = "<group>"; };
+		900D22771A1A996900A9E5EB /* ProfileDetailsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ProfileDetailsViewController.m; sourceTree = "<group>"; };
+		900D22791A1A9D9500A9E5EB /* ProfileDetailTableTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ProfileDetailTableTableViewController.h; sourceTree = "<group>"; };
+		900D227A1A1A9D9500A9E5EB /* ProfileDetailTableTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ProfileDetailTableTableViewController.m; sourceTree = "<group>"; };
+		900D227C1A1AAC0800A9E5EB /* HKHealthStore+AAPLExtensions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "HKHealthStore+AAPLExtensions.h"; sourceTree = "<group>"; };
+		900D227D1A1AAC0800A9E5EB /* HKHealthStore+AAPLExtensions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "HKHealthStore+AAPLExtensions.m"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -49,6 +61,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				900D22741A1A922E00A9E5EB /* HealthKit.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -65,6 +78,7 @@
 		900D223E1A1A91CB00A9E5EB = {
 			isa = PBXGroup;
 			children = (
+				900D22731A1A922E00A9E5EB /* HealthKit.framework */,
 				900D22491A1A91CB00A9E5EB /* DJFit */,
 				900D22661A1A91CC00A9E5EB /* DJFitTests */,
 				900D22481A1A91CB00A9E5EB /* Products */,
@@ -83,11 +97,18 @@
 		900D22491A1A91CB00A9E5EB /* DJFit */ = {
 			isa = PBXGroup;
 			children = (
+				900D22751A1A922E00A9E5EB /* DJFit.entitlements */,
 				900D224E1A1A91CB00A9E5EB /* AppDelegate.h */,
 				900D224F1A1A91CB00A9E5EB /* AppDelegate.m */,
 				900D22541A1A91CC00A9E5EB /* ViewController.h */,
 				900D22551A1A91CC00A9E5EB /* ViewController.m */,
+				900D227C1A1AAC0800A9E5EB /* HKHealthStore+AAPLExtensions.h */,
+				900D227D1A1AAC0800A9E5EB /* HKHealthStore+AAPLExtensions.m */,
 				900D22571A1A91CC00A9E5EB /* Main.storyboard */,
+				900D22791A1A9D9500A9E5EB /* ProfileDetailTableTableViewController.h */,
+				900D227A1A1A9D9500A9E5EB /* ProfileDetailTableTableViewController.m */,
+				900D22761A1A996900A9E5EB /* ProfileDetailsViewController.h */,
+				900D22771A1A996900A9E5EB /* ProfileDetailsViewController.m */,
 				900D225A1A1A91CC00A9E5EB /* Images.xcassets */,
 				900D225C1A1A91CC00A9E5EB /* LaunchScreen.xib */,
 				900D22511A1A91CC00A9E5EB /* DJFit.xcdatamodeld */,
@@ -171,6 +192,12 @@
 				TargetAttributes = {
 					900D22461A1A91CB00A9E5EB = {
 						CreatedOnToolsVersion = 6.1;
+						DevelopmentTeam = S8X486LY33;
+						SystemCapabilities = {
+							com.apple.HealthKit = {
+								enabled = 1;
+							};
+						};
 					};
 					900D22621A1A91CC00A9E5EB = {
 						CreatedOnToolsVersion = 6.1;
@@ -225,7 +252,10 @@
 				900D22501A1A91CB00A9E5EB /* AppDelegate.m in Sources */,
 				900D22531A1A91CC00A9E5EB /* DJFit.xcdatamodeld in Sources */,
 				900D22561A1A91CC00A9E5EB /* ViewController.m in Sources */,
+				900D227B1A1A9D9500A9E5EB /* ProfileDetailTableTableViewController.m in Sources */,
+				900D227E1A1AAC0800A9E5EB /* HKHealthStore+AAPLExtensions.m in Sources */,
 				900D224D1A1A91CB00A9E5EB /* main.m in Sources */,
+				900D22781A1A996900A9E5EB /* ProfileDetailsViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -347,9 +377,13 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_ENTITLEMENTS = DJFit/DJFit.entitlements;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				INFOPLIST_FILE = DJFit/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE = "";
 			};
 			name = Debug;
 		};
@@ -357,9 +391,13 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_ENTITLEMENTS = DJFit/DJFit.entitlements;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				INFOPLIST_FILE = DJFit/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE = "";
 			};
 			name = Release;
 		};
@@ -416,6 +454,7 @@
 				900D226F1A1A91CC00A9E5EB /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		900D22701A1A91CC00A9E5EB /* Build configuration list for PBXNativeTarget "DJFitTests" */ = {
 			isa = XCConfigurationList;
@@ -424,6 +463,7 @@
 				900D22721A1A91CC00A9E5EB /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 
