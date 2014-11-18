@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>IDESourceControlProjectFavoriteDictionaryKey</key>
+	<false/>
+	<key>IDESourceControlProjectIdentifier</key>
+	<string>FDFA6B85-1F0D-4F3F-854E-083FE45155C4</string>
+	<key>IDESourceControlProjectName</key>
+	<string>DJFit</string>
+	<key>IDESourceControlProjectOriginsDictionary</key>
+	<dict>
+		<key>834E2C1708F561FD61B33F7B3FC2BD28BE102C56</key>
+		<string>github.com:taylorledingham/FitDJ.git</string>
+	</dict>
+	<key>IDESourceControlProjectPath</key>
+	<string>DJFit.xcworkspace</string>
+	<key>IDESourceControlProjectRelativeInstallPathDictionary</key>
+	<dict>
+		<key>834E2C1708F561FD61B33F7B3FC2BD28BE102C56</key>
+		<string>..</string>
+	</dict>
+	<key>IDESourceControlProjectURL</key>
+	<string>github.com:taylorledingham/FitDJ.git</string>
+	<key>IDESourceControlProjectVersion</key>
+	<integer>111</integer>
+	<key>IDESourceControlProjectWCCIdentifier</key>
+	<string>834E2C1708F561FD61B33F7B3FC2BD28BE102C56</string>
+	<key>IDESourceControlProjectWCConfigurations</key>
+	<array>
+		<dict>
+			<key>IDESourceControlRepositoryExtensionIdentifierKey</key>
+			<string>public.vcs.git</string>
+			<key>IDESourceControlWCCIdentifierKey</key>
+			<string>834E2C1708F561FD61B33F7B3FC2BD28BE102C56</string>
+			<key>IDESourceControlWCCName</key>
+			<string>DJFit</string>
+		</dict>
+	</array>
+</dict>
+</plist>
