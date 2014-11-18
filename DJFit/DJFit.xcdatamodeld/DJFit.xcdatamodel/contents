@@ -1,4 +1,35 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<model name="Test1.xcdatamodel" userDefinedModelVersionIdentifier="" type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="1" systemVersion="11A491" minimumToolsVersion="Automatic" macOSVersion="Automatic" iOSVersion="Automatic">
-    <elements/>
+<model userDefinedModelVersionIdentifier="" type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="6252" systemVersion="14B25" minimumToolsVersion="Automatic" macOSVersion="Automatic" iOSVersion="Automatic">
+    <entity name="Playlist" representedClassName="Playlist" syncable="YES">
+        <attribute name="playlistName" optional="YES" attributeType="String" syncable="YES"/>
+        <relationship name="playlistSongs" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Song" inverseName="playlist" inverseEntity="Song" syncable="YES"/>
+        <relationship name="workout" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Workout" inverseName="playlist" inverseEntity="Workout" syncable="YES"/>
+    </entity>
+    <entity name="Song" representedClassName="Song" syncable="YES">
+        <attribute name="bpm" optional="YES" attributeType="Float" defaultValueString="0.0" syncable="YES"/>
+        <attribute name="persistentID" optional="YES" attributeType="Integer 64" defaultValueString="0" syncable="YES"/>
+        <attribute name="songURL" optional="YES" attributeType="String" syncable="YES"/>
+        <relationship name="playlist" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Playlist" inverseName="playlistSongs" inverseEntity="Playlist" syncable="YES"/>
+    </entity>
+    <entity name="TimeInterval" representedClassName="TimeInterval" syncable="YES">
+        <attribute name="end" optional="YES" attributeType="Double" defaultValueString="0.0" syncable="YES"/>
+        <attribute name="incline" optional="YES" attributeType="Double" defaultValueString="0.0" syncable="YES"/>
+        <attribute name="speed" optional="YES" attributeType="Double" defaultValueString="0.0" syncable="YES"/>
+        <attribute name="start" optional="YES" attributeType="Double" defaultValueString="0.0" syncable="YES"/>
+        <relationship name="workout" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Workout" inverseName="timeIntervals" inverseEntity="Workout" syncable="YES"/>
+    </entity>
+    <entity name="Workout" representedClassName="Workout" syncable="YES">
+        <attribute name="numberOfRounds" optional="YES" attributeType="Float" defaultValueString="0.0" syncable="YES"/>
+        <attribute name="workoutDuration" optional="YES" attributeType="Double" defaultValueString="0.0" syncable="YES"/>
+        <attribute name="workoutName" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="workoutType" optional="YES" attributeType="String" syncable="YES"/>
+        <relationship name="playlist" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Playlist" inverseName="workout" inverseEntity="Playlist" syncable="YES"/>
+        <relationship name="timeIntervals" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="TimeInterval" inverseName="workout" inverseEntity="TimeInterval" syncable="YES"/>
+    </entity>
+    <elements>
+        <element name="Playlist" positionX="-423" positionY="137" width="128" height="90"/>
+        <element name="Song" positionX="-351" positionY="-103" width="128" height="105"/>
+        <element name="TimeInterval" positionX="-99" positionY="162" width="128" height="120"/>
+        <element name="Workout" positionX="-63" positionY="-63" width="128" height="135"/>
+    </elements>
 </model>

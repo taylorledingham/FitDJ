@@ -17,6 +17,7 @@
     
     ProfileDetailTableTableViewController *profileTableVC;
     
+    
 }
 
 
@@ -24,6 +25,7 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view.
+    self.navigationController.navigationBar.hidden = YES;
 }
 
 - (void)didReceiveMemoryWarning {
@@ -56,7 +58,8 @@
     double weight = [profileTableVC.weightTextField.text doubleValue];
     [self saveHeightIntoHealthStore:height];
     [self saveWeightIntoHealthStore:weight];
-    [self dismissViewControllerAnimated:YES completion:nil];
+    self.navigationController.navigationBar.hidden = NO;
+    [self.navigationController popViewControllerAnimated:YES];
     
     
 }

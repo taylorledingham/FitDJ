@@ -1,5 +1,5 @@
 //
-//  ViewController.h
+//  WorkoutsCollectionViewController.h
 //  DJFit
 //
 //  Created by Taylor Ledingham on 2014-11-17.
@@ -8,8 +8,8 @@
 
 #import <UIKit/UIKit.h>
 
-@interface ViewController : UIViewController
 
+
+@interface WorkoutsCollectionViewController : UICollectionViewController
 
 @end
-
