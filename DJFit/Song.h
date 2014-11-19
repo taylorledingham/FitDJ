@@ -16,6 +16,7 @@
 @property (nonatomic, retain) NSNumber * bpm;
 @property (nonatomic, retain) NSNumber * persistentID;
 @property (nonatomic, retain) NSString * songURL;
+@property (nonatomic, retain) NSString * songTitle;
 @property (nonatomic, retain) NSSet *playlist;
 @end
 

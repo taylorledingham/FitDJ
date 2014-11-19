@@ -19,6 +19,9 @@
 @property (nonatomic, retain) NSString * workoutType;
 @property (nonatomic, retain) Playlist *playlist;
 @property (nonatomic, retain) NSSet *timeIntervals;
+@property (nonatomic, retain) NSDate *dateCreated;
+
+
 @end
 
 @interface Workout (CoreDataGeneratedAccessors)

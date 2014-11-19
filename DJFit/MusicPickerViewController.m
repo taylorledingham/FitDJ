@@ -11,6 +11,7 @@
 #import "bassfx.h"
 #import "Song.h"
 #import "Playlist.h"
+#import <LLARingSpinnerView/LLARingSpinnerView.h>
 
 #define EXPORT_NAME @"exported.wav"
 
@@ -30,6 +31,9 @@
     MPMediaPickerController *picker;
     Playlist *playlist;
     NSMutableSet *songs;
+    NSFileManager *fileManager;
+    LLARingSpinnerView *spinnerView;
+    BOOL musicDone;
     
 }
 
@@ -42,7 +46,20 @@
     playlist = [NSEntityDescription insertNewObjectForEntityForName:@"Playlist" inManagedObjectContext:coreDataStack.managedObjectContext];
    playlist.playlistName = @"playlist";
     [coreDataStack saveContext];
+    fileManager = [NSFileManager defaultManager];
+    spinnerView = [[LLARingSpinnerView alloc] initWithFrame:CGRectMake(self.view.center.x, self.view.center.y, 40, 40)];
+    // Optionally set the current progress
+    spinnerView.lineWidth = 1.5f;
+    // Optionally change the tint color
+    spinnerView.tintColor = [UIColor purpleColor];
+    spinnerView.hidden = YES;
+    [self.view addSubview:spinnerView];
+
     
+}
+
+-(void)viewWillAppear:(BOOL)animated {
+    musicDone = NO;
 }
 
 - (void) showMediaPicker
@@ -62,11 +79,35 @@
 - (void) mediaPicker: (MPMediaPickerController *) mediaPicker
    didPickMediaItems: (MPMediaItemCollection *) collection
 {
-    [self dismissViewControllerAnimated:YES completion:nil];
+   // [self dismissViewControllerAnimated:YES completion:nil];
     self.songsArray = [collection items] ;
     self.items = collection;
+    [self loadPlaylistWithSongs];
     
     
+}
+
+- (void)loadPlaylistWithSongs {
+    
+    TLCoreDataStack *coreDataStack = [TLCoreDataStack defaultStack];
+    [spinnerView startAnimating];
+    spinnerView.hidden = NO;
+    
+    for(int i=0; i<self.songsArray.count; i++){
+        
+        MPMediaItem *item = self.songsArray[i];
+        [self convertMediaItem:item];
+        
+    }
+    
+    NSSet *songSet = songs;
+    playlist.playlistSongs = songSet;
+    [coreDataStack saveContext];
+    [spinnerView stopAnimating];
+   // [self dismissViewControllerAnimated:YES completion:nil];
+    musicDone = YES;
+    [picker dismissViewControllerAnimated:NO completion:nil];
+    [self performSegueWithIdentifier:@"showWorkoutPlayer" sender:nil];
 }
 
 
@@ -79,7 +120,7 @@
     
     TLCoreDataStack *coreDataStack = [TLCoreDataStack defaultStack];
     NSFetchRequest *songRequest = [[NSFetchRequest alloc]initWithEntityName:@"Song"];
-    NSPredicate *songIDPredicate = [NSPredicate predicateWithFormat:@"persistentID == %@", mediaID];
+    NSPredicate *songIDPredicate = [NSPredicate predicateWithFormat:@"persistentID == %@ AND bpm!=0" , mediaID];
     songRequest.predicate = songIDPredicate;
     NSError *error;
     NSArray *result = [coreDataStack.managedObjectContext executeFetchRequest:songRequest error:&error];
@@ -99,10 +140,12 @@
     TLCoreDataStack *coreDataStack = [TLCoreDataStack defaultStack];
     Song *newSong = [NSEntityDescription insertNewObjectForEntityForName:@"Song" inManagedObjectContext:coreDataStack.managedObjectContext];
         newSong.persistentID = [song valueForProperty:MPMediaItemPropertyPersistentID];
-        newSong.songURL = [song valueForKey:MPMediaItemPropertyAssetURL];
+        newSong.songURL = [NSString stringWithFormat:@"%@",[song valueForKey:MPMediaItemPropertyAssetURL]];
+        newSong.songTitle = song.title;
         [songs addObject:newSong];
     
-    NSString *pathStr = [NSString stringWithFormat:@"%@.wav", [song valueForProperty:MPMediaItemPropertyPersistentID]];
+        NSString *pathStr = [[NSString alloc]init];
+    pathStr = [NSString stringWithFormat:@"%@.wav", [song valueForProperty:MPMediaItemPropertyPersistentID]];
     
     NSURL *assetURL = [song valueForProperty:MPMediaItemPropertyAssetURL];
     AVURLAsset *songAsset = [AVURLAsset URLAssetWithURL:assetURL options:nil];
@@ -127,7 +170,7 @@
     
     NSArray *dirs = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
     NSString *documentsDirectoryPath = [dirs objectAtIndex:0];
-    NSString *exportPath = [documentsDirectoryPath stringByAppendingPathComponent:[NSString stringWithFormat:@"music/%@", pathStr]];
+    NSString *exportPath = [documentsDirectoryPath stringByAppendingPathComponent:[NSString stringWithFormat:@"%@", pathStr]];
     if ([[NSFileManager defaultManager] fileExistsAtPath:exportPath]) {
         [[NSFileManager defaultManager] removeItemAtPath:exportPath error:nil];
     }
@@ -201,11 +244,9 @@
                  NSLog (@"done. file size is %llu",
                         [outputFileAttributes fileSize]);
                  NSNumber *doneFileSize = [NSNumber numberWithLong:[outputFileAttributes fileSize]];
-                 dispatch_async(dispatch_get_main_queue(), ^{
-                     [self calculateBPMWithPathString:exportPath andSong:newSong];
-                 });
+                 NSArray *pathAndSong = @[exportPath, newSong];
                   [self performSelectorOnMainThread:@selector(done:)
-                                       withObject:exportPath
+                                       withObject:pathAndSong
                                    waitUntilDone:YES];
                  
                  break;
@@ -217,25 +258,28 @@
     
 }
 
--(void)done:(NSString *)file {
-    //[self calculateBPMWithPathString:file];
+-(void)done:(NSArray *)pathAndSong {
+    [self calculateBPMWithPathString:pathAndSong[0] andSong:pathAndSong[1]];
     
     
 }
 
--(float)calculateBPMWithPathString:(NSString *)pathStr andSong:(Song *)song {
+-(void)calculateBPMWithPathString:(NSString *)pathStr andSong:(Song *)song {
     
     
+    TLCoreDataStack *coreDataStack = [TLCoreDataStack defaultStack];
     DWORD chan1;
     int device = -1; // Default device
     int freq = 44100; // Sample rate
     
     BASS_Init(device, freq, 0, 0, NULL);
     
-    if(!(chan1=BASS_StreamCreateFile(FALSE, [pathStr UTF8String], 0, 0, BASS_SAMPLE_LOOP))) {
+    if(!(BASS_StreamCreateFile(FALSE,[pathStr UTF8String],0,0,BASS_SAMPLE_FLOAT|BASS_STREAM_PRESCAN|BASS_STREAM_DECODE))) {
         NSLog(@"BPM CHAN FAILED %d", BASS_ErrorGetCode());
         
     }
+    
+    else {
     
     
     HSTREAM mainStream = BASS_StreamCreateFile(FALSE,[pathStr UTF8String],0,0,BASS_SAMPLE_FLOAT|BASS_STREAM_PRESCAN|BASS_STREAM_DECODE);
@@ -261,34 +305,28 @@
     if(BpmValue<=0)
         BpmValue = 128.00;
     
+    song.bpm = [NSNumber numberWithFloat:BpmValue];
+    [coreDataStack saveContext];
+    NSError *error;
+    [fileManager removeItemAtPath:pathStr error:&error];
+    if(error){
+        NSLog(@"couldnt delete: %@", pathStr);
+    }
     
     NSLog(@"%@: %f", pathStr, BpmValue);
     
-    return BpmValue;
-    
+    }
 }
 
-- (NSFetchedResultsController *)fetchedResultsController {
-    if (_fetchedResultsController != nil) {
-        return _fetchedResultsController;
+
+- (BOOL)shouldPerformSegueWithIdentifier:(NSString *)identifier sender:(id)sender {
+    
+    if (musicDone == NO) {
+        return false;
     }
     
-    TLCoreDataStack *coreDataStack = [TLCoreDataStack defaultStack];
-    NSFetchRequest *fetchRequest = [self entryListFetchRequest];
+    return true;
     
-    _fetchedResultsController = [[NSFetchedResultsController alloc] initWithFetchRequest:fetchRequest managedObjectContext:coreDataStack.managedObjectContext sectionNameKeyPath:nil cacheName:nil];
-    _fetchedResultsController.delegate = self;
-    
-    return _fetchedResultsController;
-}
-
-
--(NSFetchRequest *)entryListFetchRequest {
-    NSFetchRequest *fetchRequest = [NSFetchRequest fetchRequestWithEntityName:@"Song"];
-    
-    fetchRequest.sortDescriptors = @[[NSSortDescriptor sortDescriptorWithKey:@"persistentID" ascending:NO]];
-    
-    return fetchRequest;
 }
 
 

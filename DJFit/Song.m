@@ -15,6 +15,7 @@
 @dynamic bpm;
 @dynamic persistentID;
 @dynamic songURL;
+@dynamic songTitle;
 @dynamic playlist;
 
 @end

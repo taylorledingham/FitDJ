@@ -7,6 +7,7 @@
 //
 
 #import "PlayWorkoutViewController.h"
+#import "MusicPickerViewController.h"
 
 @interface PlayWorkoutViewController ()
 
@@ -16,6 +17,7 @@
     NSTimeInterval workoutDuration;
     NSDateFormatter *dateFormatter;
     UIGestureRecognizer *tapGesture;
+    BOOL musicPicked;
 }
 
 - (void)viewDidLoad {
@@ -30,7 +32,18 @@
     dateFormatter = [[NSDateFormatter alloc] init];
     [dateFormatter setDateFormat:@"HH:mm:ss"];
     self.durationLabel.text = [NSString stringWithFormat: @"Time: %@", [dateFormatter stringFromDate:online]];
+    //MusicPickerViewController *musicPickerVC = [[MusicPickerViewController alloc]init];
+    //[self presentViewController:musicPickerVC animated:NO completion:nil];
+
     
+    
+    
+    
+}
+
+-(void)viewWillAppear:(BOOL)animated {
+    
+   
     
 }
 
@@ -64,6 +77,25 @@
 - (IBAction)startWorkoutPressed:(id)sender {
     
     self.view.alpha = 1.0;
+    CABasicAnimation *animationWidth = [CABasicAnimation animation];
+    animationWidth.keyPath = @"size.width";
+    animationWidth.fromValue = @(self.startWorkoutButton.frame.size.width);
+    animationWidth.toValue = @0;
+    CABasicAnimation *animationHeight = [CABasicAnimation animation];
+    animationHeight.keyPath = @"size.height";
+    animationHeight.fromValue = @(self.startWorkoutButton.frame.size.height);
+    animationHeight.toValue = @0;
+    
+    CAAnimationGroup *group = [[CAAnimationGroup alloc] init];
+    group.animations = @[ animationWidth, animationHeight ];
+    group.duration = 1.2;
+    group.beginTime = 0.5;
+    
+    [self.startWorkoutButton.layer addAnimation:group forKey:@"shrink"];
+
+    
+    
+    
     self.startWorkoutButton.hidden = YES;
 }
 

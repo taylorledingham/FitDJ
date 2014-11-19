@@ -9,5 +9,7 @@
 #import <UIKit/UIKit.h>
 
 @interface WorkoutTypeCollectionViewCell : UICollectionViewCell
+@property (weak, nonatomic) IBOutlet UILabel *workoutName;
+@property (weak, nonatomic) IBOutlet UILabel *workoutDuration;
 
 @end

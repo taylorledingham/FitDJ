@@ -7,8 +7,6 @@
 //
 
 #import <UIKit/UIKit.h>
-#import <APLSlideMenu/APLSlideMenuSegue.h>
-#import <APLSlideMenu/APLSlideMenuViewController.h>
 
 @interface WorkoutViewController : UIViewController
 

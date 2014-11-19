@@ -41,8 +41,8 @@
     if([segue.identifier isEqualToString:@"startWorkout"]){
         
         PlayWorkoutViewController *playVC = (PlayWorkoutViewController *)segue.destinationViewController;
-        playVC.view.layer.opacity = 0.5;
-        playVC.startWorkoutButton.layer.opacity = 1.0;
+        playVC.view.alpha = 0.5;
+        playVC.startWorkoutButton.alpha = 1.0;
         playVC.workout = workout;
         [playVC.navigationController setNavigationBarHidden:YES animated:YES];
         
@@ -78,6 +78,7 @@
     workout.workoutDuration = duration;
     workout.workoutType = @"time";
     workout.numberOfRounds = 0;
+    workout.dateCreated = [NSDate date];
     [coreDataStack saveContext];
 
 }

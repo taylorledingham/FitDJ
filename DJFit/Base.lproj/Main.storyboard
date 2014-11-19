@@ -217,7 +217,7 @@
                             <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="bezel" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="8DL-uY-gfF">
                                 <rect key="frame" x="0.0" y="-30" width="97" height="30"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                                <textInputTraits key="textInputTraits"/>
+                                <textInputTraits key="textInputTraits" keyboardType="numbersAndPunctuation"/>
                                 <variation key="heightClass=regular-widthClass=compact" fixedFrame="YES">
                                     <rect key="frame" x="218" y="162" width="97" height="30"/>
                                 </variation>
@@ -250,7 +250,7 @@
                                 </variation>
                                 <connections>
                                     <action selector="donePressed:" destination="fF7-Qw-yOR" eventType="touchUpInside" id="ABs-d2-EFk"/>
-                                    <segue destination="4IS-Q5-jLg" kind="presentation" identifier="startWorkout" modalTransitionStyle="crossDissolve" id="oFG-Rh-lI1"/>
+                                    <segue destination="xkc-tL-Z2B" kind="presentation" identifier="showMusicPicker" animates="NO" id="5fe-Dp-sde"/>
                                 </connections>
                             </button>
                             <slider opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" value="1" minValue="1" maxValue="12" translatesAutoresizingMaskIntoConstraints="NO" id="6Sd-cd-gim">
@@ -303,6 +303,27 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="pZu-yE-IkW" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="2473.5" y="76.5"/>
+        </scene>
+        <!--Music Picker View Controller-->
+        <scene sceneID="CS7-GL-GEC">
+            <objects>
+                <viewController id="xkc-tL-Z2B" customClass="MusicPickerViewController" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="9gH-zc-mtW"/>
+                        <viewControllerLayoutGuide type="bottom" id="ICM-Y3-pnt"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="dAw-qg-8Rg">
+                        <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                    </view>
+                    <connections>
+                        <segue destination="4IS-Q5-jLg" kind="presentation" identifier="showWorkoutPlayer" modalTransitionStyle="crossDissolve" id="F7n-r7-Dp2"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="eAD-zQ-0Ol" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="3175.5" y="215.25"/>
         </scene>
         <!--Play Workout View Controller-->
         <scene sceneID="CqG-cl-p6g">
@@ -451,7 +472,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="OKy-eF-QBg" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="3235.5" y="72.75"/>
+            <point key="canvasLocation" x="3997.5" y="178.5"/>
         </scene>
         <!--Profile Details View Controller-->
         <scene sceneID="nhE-Pw-CUh">
@@ -604,22 +625,59 @@
                         <rect key="frame" x="0.0" y="0.0" width="240" height="128"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" red="0.8790715939" green="0.1833667736" blue="0.84945004160000004" alpha="1" colorSpace="calibratedRGB"/>
-                        <collectionViewFlowLayout key="collectionViewLayout" minimumLineSpacing="10" minimumInteritemSpacing="10" id="ws3-vT-Vf2">
-                            <size key="itemSize" width="143" height="140"/>
+                        <collectionViewFlowLayout key="collectionViewLayout" minimumLineSpacing="8" minimumInteritemSpacing="6" id="ws3-vT-Vf2">
+                            <size key="itemSize" width="125" height="122"/>
                             <size key="headerReferenceSize" width="0.0" height="0.0"/>
                             <size key="footerReferenceSize" width="0.0" height="0.0"/>
                             <inset key="sectionInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
                         </collectionViewFlowLayout>
                         <cells>
-                            <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" id="osV-BT-U9Y">
+                            <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" reuseIdentifier="Cell" id="osV-BT-U9Y" customClass="WorkoutTypeCollectionViewCell">
                                 <rect key="frame" x="0.0" y="0.0" width="50" height="50"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center">
-                                    <rect key="frame" x="0.0" y="0.0" width="143" height="140"/>
+                                    <rect key="frame" x="0.0" y="0.0" width="125" height="122"/>
                                     <autoresizingMask key="autoresizingMask"/>
+                                    <subviews>
+                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="duration" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Qpf-Lo-4z3">
+                                            <rect key="frame" x="0.0" y="-21" width="42" height="21"/>
+                                            <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                            <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                            <nil key="highlightedColor"/>
+                                            <variation key="heightClass=regular-widthClass=compact" fixedFrame="YES">
+                                                <rect key="frame" x="0.0" y="74" width="129" height="21"/>
+                                            </variation>
+                                        </label>
+                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="name" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="lwj-Du-NRM">
+                                            <rect key="frame" x="0.0" y="-21" width="42" height="21"/>
+                                            <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                            <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                            <nil key="highlightedColor"/>
+                                            <variation key="heightClass=regular-widthClass=compact" fixedFrame="YES">
+                                                <rect key="frame" x="8" y="26" width="108" height="24"/>
+                                            </variation>
+                                        </label>
+                                    </subviews>
                                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                 </view>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <variation key="default">
+                                    <mask key="subviews">
+                                        <exclude reference="Qpf-Lo-4z3"/>
+                                        <exclude reference="lwj-Du-NRM"/>
+                                    </mask>
+                                </variation>
+                                <variation key="heightClass=regular-widthClass=compact">
+                                    <mask key="subviews">
+                                        <include reference="Qpf-Lo-4z3"/>
+                                        <include reference="lwj-Du-NRM"/>
+                                    </mask>
+                                </variation>
+                                <connections>
+                                    <outlet property="workoutDuration" destination="Qpf-Lo-4z3" id="Ih7-nh-nMT"/>
+                                    <outlet property="workoutName" destination="lwj-Du-NRM" id="PT8-h5-hjl"/>
+                                    <segue destination="4IS-Q5-jLg" kind="presentation" identifier="playWorkout" id="dxI-1t-mKD"/>
+                                </connections>
                             </collectionViewCell>
                         </cells>
                         <connections>
@@ -986,5 +1044,6 @@
     </scenes>
     <inferredMetricsTieBreakers>
         <segue reference="maF-8t-cBl"/>
+        <segue reference="dxI-1t-mKD"/>
     </inferredMetricsTieBreakers>
 </document>
