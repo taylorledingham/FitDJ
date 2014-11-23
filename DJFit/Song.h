@@ -17,7 +17,7 @@
 @property (nonatomic, retain) NSNumber * persistentID;
 @property (nonatomic, retain) NSString * songURL;
 @property (nonatomic, retain) NSString * songTitle;
-@property (nonatomic, retain) NSSet *playlist;
+@property (nonatomic, retain) Playlist *playlist;
 @end
 
 @interface Song (CoreDataGeneratedAccessors)
@@ -26,5 +26,6 @@
 - (void)removePlaylistObject:(Playlist *)value;
 - (void)addPlaylist:(NSSet *)values;
 - (void)removePlaylist:(NSSet *)values;
++(double)lookUpBPMForSpeed:(double)speed andWorkoutType:(NSString *)type;
 
 @end

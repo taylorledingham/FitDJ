@@ -17,8 +17,11 @@
 #import <CoreMedia/CoreMedia.h>
 #import <CoreData/CoreData.h>
 #import "TLCoreDataStack.h"
+#import "Workout.h"
 
 
 @interface MusicPickerViewController : UIViewController <MPMediaPickerControllerDelegate>
+
+@property (nonatomic) Workout *workout;
 
 @end

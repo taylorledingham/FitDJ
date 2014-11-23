@@ -12,8 +12,9 @@
 #import "Song.h"
 #import "Playlist.h"
 #import <LLARingSpinnerView/LLARingSpinnerView.h>
+#import "PlayWorkoutViewController.h"
+#import "Workout.h"
 
-#define EXPORT_NAME @"exported.wav"
 
 @interface MusicPickerViewController () <NSFetchedResultsControllerDelegate>
 
@@ -34,17 +35,22 @@
     NSFileManager *fileManager;
     LLARingSpinnerView *spinnerView;
     BOOL musicDone;
+    NSUInteger index;
     
 }
 
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view.
+    
+    songs = [[NSMutableSet alloc]init];
     [self showMediaPicker];
     [self.fetchedResultsController performFetch:nil];
+    
     TLCoreDataStack *coreDataStack = [TLCoreDataStack defaultStack];
     playlist = [NSEntityDescription insertNewObjectForEntityForName:@"Playlist" inManagedObjectContext:coreDataStack.managedObjectContext];
    playlist.playlistName = @"playlist";
+    self.workout.playlist = playlist;
     [coreDataStack saveContext];
     fileManager = [NSFileManager defaultManager];
     spinnerView = [[LLARingSpinnerView alloc] initWithFrame:CGRectMake(self.view.center.x, self.view.center.y, 40, 40)];
@@ -54,6 +60,7 @@
     spinnerView.tintColor = [UIColor purpleColor];
     spinnerView.hidden = YES;
     [self.view addSubview:spinnerView];
+    
 
     
 }
@@ -92,22 +99,25 @@
     TLCoreDataStack *coreDataStack = [TLCoreDataStack defaultStack];
     [spinnerView startAnimating];
     spinnerView.hidden = NO;
+    index = self.songsArray.count;
     
     for(int i=0; i<self.songsArray.count; i++){
         
         MPMediaItem *item = self.songsArray[i];
         [self convertMediaItem:item];
+
         
     }
     
     NSSet *songSet = songs;
     playlist.playlistSongs = songSet;
     [coreDataStack saveContext];
-    [spinnerView stopAnimating];
    // [self dismissViewControllerAnimated:YES completion:nil];
     musicDone = YES;
     [picker dismissViewControllerAnimated:NO completion:nil];
-    [self performSegueWithIdentifier:@"showWorkoutPlayer" sender:nil];
+    
+    //[self presentViewController:playVC animated:YES completion:nil];
+    //[self performSegueWithIdentifier:@"showWorkoutPlayer" sender:nil];
 }
 
 
@@ -143,11 +153,21 @@
         newSong.songURL = [NSString stringWithFormat:@"%@",[song valueForKey:MPMediaItemPropertyAssetURL]];
         newSong.songTitle = song.title;
         [songs addObject:newSong];
+        NSURL *assetURL = [song valueForProperty:MPMediaItemPropertyAssetURL];
+        AVPlayerItem *avItem = [[AVPlayerItem alloc] initWithURL:assetURL];
+        BOOL isDRM = avItem.asset.hasProtectedContent;
+        if(isDRM == YES  || assetURL == nil){
+            [self calculateBPMWithPathString:@"" andSong:newSong];
+            
+        }
+        else {
+        
+
     
         NSString *pathStr = [[NSString alloc]init];
     pathStr = [NSString stringWithFormat:@"%@.wav", [song valueForProperty:MPMediaItemPropertyPersistentID]];
     
-    NSURL *assetURL = [song valueForProperty:MPMediaItemPropertyAssetURL];
+   
     AVURLAsset *songAsset = [AVURLAsset URLAssetWithURL:assetURL options:nil];
     
     NSError *assetError = nil;
@@ -231,7 +251,7 @@
                  // oops, no
                  // sizeLabel.text = [NSString stringWithFormat: @"%ld bytes converted", convertedByteCount];
                  
-                 NSNumber *convertedByteCountNumber = [NSNumber numberWithLong:convertedByteCount];
+                // NSNumber *convertedByteCountNumber = [NSNumber numberWithLong:convertedByteCount];
 
              } else {
                  // done!
@@ -243,7 +263,7 @@
                                                        error:nil];
                  NSLog (@"done. file size is %llu",
                         [outputFileAttributes fileSize]);
-                 NSNumber *doneFileSize = [NSNumber numberWithLong:[outputFileAttributes fileSize]];
+                // NSNumber *doneFileSize = [NSNumber numberWithLong:[outputFileAttributes fileSize]];
                  NSArray *pathAndSong = @[exportPath, newSong];
                   [self performSelectorOnMainThread:@selector(done:)
                                        withObject:pathAndSong
@@ -255,11 +275,26 @@
          
      }];
     }
+    }
     
 }
 
 -(void)done:(NSArray *)pathAndSong {
     [self calculateBPMWithPathString:pathAndSong[0] andSong:pathAndSong[1]];
+    index = index - 1;
+    if(index <= 0){
+        UIStoryboard *sb = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
+        
+        PlayWorkoutViewController *playVC = [sb instantiateViewControllerWithIdentifier:@"playWorkout"];
+         //= [[Workout alloc]init];
+        [playVC view];
+        playVC.workout = self.workout;
+        
+        [spinnerView stopAnimating];
+
+        [self presentViewController:playVC animated:YES completion:nil];
+    }
+
     
     
 }
@@ -268,7 +303,6 @@
     
     
     TLCoreDataStack *coreDataStack = [TLCoreDataStack defaultStack];
-    DWORD chan1;
     int device = -1; // Default device
     int freq = 44100; // Sample rate
     
@@ -316,6 +350,9 @@
     NSLog(@"%@: %f", pathStr, BpmValue);
     
     }
+    
+    
+    
 }
 
 
@@ -330,14 +367,21 @@
 }
 
 
-/*
+
 #pragma mark - Navigation
 
 // In a storyboard-based application, you will often want to do a little preparation before navigation
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
     // Get the new view controller using [segue destinationViewController].
     // Pass the selected object to the new view controller.
+    
+    if([segue.identifier isEqualToString:@"showWorkoutPlayer"]){
+        PlayWorkoutViewController *playVC = (PlayWorkoutViewController *)segue.destinationViewController;
+        playVC.workout = self.workout;
+        
+    }
+    
 }
-*/
+
 
 @end

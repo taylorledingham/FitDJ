@@ -16,7 +16,7 @@
 
 @property (nonatomic, retain) NSString * playlistName;
 @property (nonatomic, retain) NSSet *playlistSongs;
-@property (nonatomic, retain) NSSet *workout;
+@property (nonatomic, retain) Workout *workout;
 @end
 
 @interface Playlist (CoreDataGeneratedAccessors)

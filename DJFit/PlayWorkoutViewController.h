@@ -9,10 +9,14 @@
 #import <UIKit/UIKit.h>
 #import "Workout.h"
 #import "TLCoreDataStack.h"
+#import <AVFoundation/AVFoundation.h>
+#import "MusicPickerViewController.h"
 
 @interface PlayWorkoutViewController : UIViewController
 
 @property (strong, nonatomic) Workout *workout;
+
+- (IBAction)exitWorkout:(id)sender;
 
 @property (weak, nonatomic) IBOutlet UIButton *startWorkoutButton;
 @property (weak, nonatomic) IBOutlet UILabel *songTitleLabel;
@@ -21,6 +25,7 @@
 @property (weak, nonatomic) IBOutlet UILabel *inclineLabel;
 @property (weak, nonatomic) IBOutlet UILabel *caloriesLabel;
 @property (weak, nonatomic) IBOutlet UILabel *durationLabel;
+@property (weak, nonatomic) IBOutlet UILabel *startStopLabel;
 
 
 - (IBAction)startWorkoutPressed:(id)sender;

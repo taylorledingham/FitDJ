@@ -11,6 +11,7 @@
 #import "Workout.h"
 #import "WorkoutTypeCollectionViewCell.h"
 #import "PlayWorkoutViewController.h"
+#import "AddWorkoutCollectionViewCell.h"
 
 @interface WorkoutsCollectionViewController () <NSFetchedResultsControllerDelegate>
 
@@ -22,6 +23,8 @@
 @implementation WorkoutsCollectionViewController {
     NSMutableArray *_objectChanges;
     NSMutableArray *_sectionChanges;
+    UILongPressGestureRecognizer *longPress;
+    UIButton *deleteButton;
 }
 
 static NSString * const reuseIdentifier = @"Cell";
@@ -33,8 +36,11 @@ static NSString * const reuseIdentifier = @"Cell";
     // self.clearsSelectionOnViewWillAppear = NO;
     
     // Register cell classes
-
     
+    deleteButton.imageView.image = [UIImage imageNamed:@"deleteX"];
+    
+
+    longPress = [[UILongPressGestureRecognizer alloc]initWithTarget:self action:@selector(longPressed:)];
     [self.fetchedResultsController performFetch:nil];
 
     
@@ -56,10 +62,11 @@ static NSString * const reuseIdentifier = @"Cell";
     if([segue.identifier isEqualToString:@"playWorkout"]) {
         PlayWorkoutViewController *playWorkoutVC = (PlayWorkoutViewController *)segue.destinationViewController;
         NSArray *selectedPath = [self.collectionView indexPathsForSelectedItems];
-        NSIndexPath *path = [selectedPath firstObject];
+        NSIndexPath *pathWithoutDecrement = [selectedPath firstObject];
+        NSIndexPath *path = [NSIndexPath indexPathForRow:pathWithoutDecrement.row-1 inSection:pathWithoutDecrement.section] ;
         Workout *workout = [self.fetchedResultsController objectAtIndexPath:path];
-
         playWorkoutVC.workout = workout;
+        
     }
 }
 
@@ -73,18 +80,42 @@ static NSString * const reuseIdentifier = @"Cell";
 
 - (NSInteger)collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section {
     id <NSFetchedResultsSectionInfo> sectionInfo = [self.fetchedResultsController sections][section];
-    return [sectionInfo numberOfObjects];
+    return [sectionInfo numberOfObjects] + 1;
 }
 
 - (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath {
-    WorkoutTypeCollectionViewCell *cell = (WorkoutTypeCollectionViewCell *)[collectionView dequeueReusableCellWithReuseIdentifier:reuseIdentifier forIndexPath:indexPath];
     
-    Workout *workout = [self.fetchedResultsController objectAtIndexPath:indexPath];
+    if(indexPath.row == 0){
+        
+        AddWorkoutCollectionViewCell *cell = (AddWorkoutCollectionViewCell *)[collectionView dequeueReusableCellWithReuseIdentifier:@"AddCell" forIndexPath:indexPath];
+        
+        return cell;
+    }
+    else {
+    WorkoutTypeCollectionViewCell *cell = (WorkoutTypeCollectionViewCell *)[collectionView dequeueReusableCellWithReuseIdentifier:reuseIdentifier forIndexPath:indexPath];
+        Workout *workout;
+//        if(indexPath.row == 1){
+//            workout = [self.fetchedResultsController objectAtIndexPath:indexPath];
+//        }
+//        else {
+            NSInteger row = indexPath.row -1;
+            NSIndexPath *newPath = [NSIndexPath indexPathForRow:row inSection:indexPath.section];
+            
+            workout = [self.fetchedResultsController objectAtIndexPath:newPath];
+
+       // }
     cell.workoutName.text = workout.workoutName;
     cell.workoutDuration.text = [NSString stringWithFormat:@"%@", workout.workoutDuration];
+    [cell addGestureRecognizer:longPress];
     
     
     return cell;
+    }
+}
+
+-(void)longPressed:(UILongPressGestureRecognizer*)gesture {
+    
+    
 }
 
 #pragma mark <UICollectionViewDelegate>

@@ -17,6 +17,7 @@
 @property (nonatomic, retain) NSNumber * workoutDuration;
 @property (nonatomic, retain) NSString * workoutName;
 @property (nonatomic, retain) NSString * workoutType;
+@property (nonatomic, retain) NSString * machineType;
 @property (nonatomic, retain) Playlist *playlist;
 @property (nonatomic, retain) NSSet *timeIntervals;
 @property (nonatomic, retain) NSDate *dateCreated;

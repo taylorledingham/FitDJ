@@ -9,17 +9,20 @@
 #import <UIKit/UIKit.h>
 #import "TLCoreDataStack.h"
 #import "Workout.h"
+#import <ASValueTrackingSlider/ASValueTrackingSlider.h>
+#import <ASValueTrackingSlider/ASValuePopUpView.h>
 
+@interface AddWorkoutDataViewController : UITableViewController <UITextFieldDelegate>
 
-@interface AddWorkoutDataViewController : UIViewController <UITextFieldDelegate>
-@property (weak, nonatomic) IBOutlet UITextField *workoutDurationTextField;
-@property (weak, nonatomic) IBOutlet UISlider *speedSlider;
+@property (weak, nonatomic) IBOutlet ASValueTrackingSlider *numberOfRoundsSlider;
 @property (weak, nonatomic) IBOutlet UILabel *inclineLabel;
 @property (weak, nonatomic) IBOutlet UILabel *speedLabel;
-@property (weak, nonatomic) IBOutlet UISlider *inclineSlider;
 @property (weak, nonatomic) IBOutlet UITextField *workoutNameTextField;
+@property (strong, nonatomic) IBOutletCollection(UITextField) NSArray *speedTextField;
+@property (strong, nonatomic) IBOutletCollection(ASValueTrackingSlider) NSArray *inclineSliders;
+@property (strong, nonatomic) IBOutletCollection(UILabel) NSArray *cellTimeLabel;
 
+- (IBAction)speedTextViewDidBeginEditing:(id)sender;
+- (IBAction)roundNumberSliderDoneEditing:(id)sender;
 - (IBAction)donePressed:(id)sender;
-- (IBAction)speedSliderChanged:(id)sender;
-- (IBAction)inclineSliderChanged:(id)sender;
 @end

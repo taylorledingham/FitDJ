@@ -17,7 +17,9 @@
 @dynamic workoutDuration;
 @dynamic workoutName;
 @dynamic workoutType;
+@dynamic machineType;
 @dynamic playlist;
 @dynamic timeIntervals;
+@dynamic dateCreated;
 
 @end

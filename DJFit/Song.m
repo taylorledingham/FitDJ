@@ -18,4 +18,34 @@
 @dynamic songTitle;
 @dynamic playlist;
 
+
++(double)lookUpBPMForSpeed:(double)speed andWorkoutType:(NSString *)type {
+    
+    if([type isEqualToString: @"treadmill"]){
+        NSArray *newArray = [[NSArray alloc]initWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"TreadmillBPMTable" ofType:@"plist"]];
+        int i=0;
+        for (id object in newArray) {
+            
+            if([object[@"speed"] doubleValue] == speed){
+                return [object[@"bpm"] doubleValue];
+            }
+            
+            else if([object[@"speed"] doubleValue] > speed) {
+                
+                id last = newArray[i-1];
+                 return [last[@"bpm"] doubleValue];
+            }
+                
+           i++;
+        }
+        
+    
+    }
+    return 1.0;
+}
+    
+    
+
 @end
+    
+    
