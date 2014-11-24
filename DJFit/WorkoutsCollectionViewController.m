@@ -41,6 +41,7 @@ static NSString * const reuseIdentifier = @"Cell";
     
 
     longPress = [[UILongPressGestureRecognizer alloc]initWithTarget:self action:@selector(longPressed:)];
+     [self.collectionView addGestureRecognizer:longPress];
     [self.fetchedResultsController performFetch:nil];
 
     
@@ -61,18 +62,19 @@ static NSString * const reuseIdentifier = @"Cell";
     // Pass the selected object to the new view controller.
     if([segue.identifier isEqualToString:@"playWorkout"]) {
         PlayWorkoutViewController *playWorkoutVC = (PlayWorkoutViewController *)segue.destinationViewController;
+        WorkoutTypeCollectionViewCell *cell = (WorkoutTypeCollectionViewCell *)sender;
         NSArray *selectedPath = [self.collectionView indexPathsForSelectedItems];
         NSIndexPath *pathWithoutDecrement = [selectedPath firstObject];
         NSIndexPath *path = [NSIndexPath indexPathForRow:pathWithoutDecrement.row-1 inSection:pathWithoutDecrement.section] ;
         Workout *workout = [self.fetchedResultsController objectAtIndexPath:path];
-        playWorkoutVC.workout = workout;
+        playWorkoutVC.workout = cell.workout;
         
     }
 }
 
 -(BOOL)shouldPerformSegueWithIdentifier:(NSString *)identifier sender:(id)sender {
     if([identifier isEqualToString:@"playWorkout"]) {
-       // return NO;
+        return NO;
     }
     
     return YES;
@@ -123,8 +125,9 @@ static NSString * const reuseIdentifier = @"Cell";
         cell.workoutName.text = workout.workoutName;
         cell.workoutTypeImageView.image = workoutImage;
         cell.workoutDuration.text = [NSString stringWithFormat:@"%@", workout.workoutDuration];
+        cell.workout = workout;
         //cell.userInteractionEnabled = YES;
-        [cell addGestureRecognizer:longPress];
+       // [cell addGestureRecognizer:longPress];
     
     
     return cell;
@@ -135,25 +138,29 @@ static NSString * const reuseIdentifier = @"Cell";
     
     if(gesture.state == UIGestureRecognizerStateBegan){
         longPressTimeInterval = CFAbsoluteTimeGetCurrent();
+        NSLog(@"first tap: %f", longPressTimeInterval);
     }
     
     if(gesture.state == UIGestureRecognizerStateEnded){
+        CGPoint p = [gesture locationInView:self.collectionView];
+        NSIndexPath *indexPath = [self.collectionView indexPathForItemAtPoint:p];
+        WorkoutTypeCollectionViewCell * workoutCell = (WorkoutTypeCollectionViewCell *)[self.collectionView cellForItemAtIndexPath:indexPath];
         CFTimeInterval currentTime = CFAbsoluteTimeGetCurrent();
-        if(currentTime - longPressTimeInterval < 0.5){
-            [self performSegueWithIdentifier:@"playWorkout" sender:nil];
+        NSLog(@"current: %f", currentTime);
+        if(currentTime - longPressTimeInterval < 0.5 && indexPath!=nil ){
+            
+            [self performSegueWithIdentifier:@"playWorkout" sender:workoutCell];
         }
         
         else {
     
-    
-    WorkoutTypeCollectionViewCell * cell = (WorkoutTypeCollectionViewCell *) gesture.view;
-    
-    NSIndexPath *tappedIndexPath = [self.collectionView indexPathForCell:cell];
-     WorkoutTypeCollectionViewCell * workoutCell = (WorkoutTypeCollectionViewCell *)[self.collectionView cellForItemAtIndexPath:tappedIndexPath];
+    if(indexPath != nil){
+        //isnt space between cells
+        
     
     
     UIAlertController* alert = [UIAlertController alertControllerWithTitle:@"Delete Workout?"
-                                                                   message:[NSString stringWithFormat: @"Are you sure you want to delete %@?.", cell.workoutName.text]
+                                                                   message:[NSString stringWithFormat: @"Are you sure you want to delete %@?.", workoutCell.workoutName.text]
                                                             preferredStyle:UIAlertControllerStyleAlert];
     
     UIAlertAction * keepAction = [UIAlertAction actionWithTitle:@"NO" style:UIAlertActionStyleDefault
@@ -176,6 +183,7 @@ static NSString * const reuseIdentifier = @"Cell";
     [self presentViewController:alert animated:YES completion:nil];
 
         }
+    }
     }
     
 }

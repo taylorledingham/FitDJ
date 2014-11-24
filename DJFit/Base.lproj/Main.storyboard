@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="6250" systemVersion="14B25" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="AuW-Zl-x0u">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="6221" systemVersion="14B25" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="AuW-Zl-x0u">
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6244"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6213"/>
         <capability name="Alignment constraints with different attributes" minToolsVersion="5.1"/>
         <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
     </dependencies>
@@ -1310,14 +1310,14 @@
                                         <exclude reference="TRQ-9X-iMO"/>
                                         <exclude reference="Zcn-bW-wGs"/>
                                         <exclude reference="hBc-7W-wXy"/>
-                                        <exclude reference="7ud-IM-5Sl"/>
-                                        <exclude reference="88Q-7S-16s"/>
-                                        <exclude reference="de9-Yi-fxC"/>
-                                        <exclude reference="vvn-wa-1UT"/>
                                         <exclude reference="0i8-OP-y5U"/>
                                         <exclude reference="CST-c3-SHC"/>
                                         <exclude reference="GjM-pD-oHA"/>
                                         <exclude reference="gdt-ew-YnE"/>
+                                        <exclude reference="7ud-IM-5Sl"/>
+                                        <exclude reference="88Q-7S-16s"/>
+                                        <exclude reference="de9-Yi-fxC"/>
+                                        <exclude reference="vvn-wa-1UT"/>
                                     </mask>
                                 </variation>
                                 <variation key="heightClass=regular-widthClass=compact">
@@ -1329,14 +1329,14 @@
                                         <exclude reference="TRQ-9X-iMO"/>
                                         <include reference="Zcn-bW-wGs"/>
                                         <include reference="hBc-7W-wXy"/>
-                                        <include reference="7ud-IM-5Sl"/>
-                                        <include reference="88Q-7S-16s"/>
-                                        <include reference="de9-Yi-fxC"/>
-                                        <include reference="vvn-wa-1UT"/>
                                         <include reference="0i8-OP-y5U"/>
                                         <include reference="CST-c3-SHC"/>
                                         <include reference="GjM-pD-oHA"/>
                                         <include reference="gdt-ew-YnE"/>
+                                        <include reference="7ud-IM-5Sl"/>
+                                        <include reference="88Q-7S-16s"/>
+                                        <include reference="de9-Yi-fxC"/>
+                                        <include reference="vvn-wa-1UT"/>
                                     </mask>
                                 </variation>
                             </view>
@@ -1429,14 +1429,14 @@
                                     </mask>
                                     <mask key="constraints">
                                         <exclude reference="L44-Dl-lo2"/>
-                                        <exclude reference="WHL-Aa-oMi"/>
-                                        <exclude reference="c88-CE-DgS"/>
-                                        <exclude reference="nFl-Pr-Ak7"/>
-                                        <exclude reference="y90-oR-PeQ"/>
                                         <exclude reference="00i-nt-o6V"/>
                                         <exclude reference="AmZ-3p-cIZ"/>
                                         <exclude reference="MJd-IM-Ee8"/>
                                         <exclude reference="bHK-qu-vxa"/>
+                                        <exclude reference="WHL-Aa-oMi"/>
+                                        <exclude reference="c88-CE-DgS"/>
+                                        <exclude reference="nFl-Pr-Ak7"/>
+                                        <exclude reference="y90-oR-PeQ"/>
                                     </mask>
                                 </variation>
                                 <variation key="heightClass=regular-widthClass=compact">
@@ -1446,14 +1446,14 @@
                                     </mask>
                                     <mask key="constraints">
                                         <include reference="L44-Dl-lo2"/>
-                                        <include reference="WHL-Aa-oMi"/>
-                                        <include reference="c88-CE-DgS"/>
-                                        <include reference="nFl-Pr-Ak7"/>
-                                        <include reference="y90-oR-PeQ"/>
                                         <include reference="00i-nt-o6V"/>
                                         <include reference="AmZ-3p-cIZ"/>
                                         <include reference="MJd-IM-Ee8"/>
                                         <include reference="bHK-qu-vxa"/>
+                                        <include reference="WHL-Aa-oMi"/>
+                                        <include reference="c88-CE-DgS"/>
+                                        <include reference="nFl-Pr-Ak7"/>
+                                        <include reference="y90-oR-PeQ"/>
                                     </mask>
                                 </variation>
                             </view>

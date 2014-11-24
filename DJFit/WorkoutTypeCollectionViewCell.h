@@ -7,10 +7,12 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "Workout.h"
 
 @interface WorkoutTypeCollectionViewCell : UICollectionViewCell
 @property (weak, nonatomic) IBOutlet UILabel *workoutName;
 @property (weak, nonatomic) IBOutlet UILabel *workoutDuration;
 @property (weak, nonatomic) IBOutlet UIImageView *workoutTypeImageView;
+@property (weak, nonatomic) Workout *workout;
 
 @end
