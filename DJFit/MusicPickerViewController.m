@@ -46,6 +46,7 @@
     songs = [[NSMutableSet alloc]init];
     [self showMediaPicker];
     [self.fetchedResultsController performFetch:nil];
+    self.view.backgroundColor = [UIColor colorWithRed:0.808f green:0.808f blue:0.808f alpha:1.00f];
     
     TLCoreDataStack *coreDataStack = [TLCoreDataStack defaultStack];
     playlist = [NSEntityDescription insertNewObjectForEntityForName:@"Playlist" inManagedObjectContext:coreDataStack.managedObjectContext];
@@ -137,7 +138,7 @@
     if(result.count == 0){
         return NO;
     }
-    
+    index = index - 1;
     return YES;
 }
 
@@ -157,6 +158,7 @@
         AVPlayerItem *avItem = [[AVPlayerItem alloc] initWithURL:assetURL];
         BOOL isDRM = avItem.asset.hasProtectedContent;
         if(isDRM == YES  || assetURL == nil){
+            index = index - 1;
             [self calculateBPMWithPathString:@"" andSong:newSong];
             
         }

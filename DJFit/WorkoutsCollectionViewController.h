@@ -9,6 +9,6 @@
 #import <UIKit/UIKit.h>
 #import <CoreData/CoreData.h>
 
-@interface WorkoutsCollectionViewController : UICollectionViewController
+@interface WorkoutsCollectionViewController : UICollectionViewController <UICollectionViewDelegateFlowLayout>
 
 @end

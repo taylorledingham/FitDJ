@@ -11,13 +11,18 @@
 #import "TLCoreDataStack.h"
 #import <AVFoundation/AVFoundation.h>
 #import "MusicPickerViewController.h"
+#import "JBChartView/JBChartView.h"
+#import "JBChartView/JBBarChartView.h"
+#import "SimpleBarChart.h"
 
-@interface PlayWorkoutViewController : UIViewController
+
+@interface PlayWorkoutViewController : UIViewController <SimpleBarChartDataSource, SimpleBarChartDelegate>
 
 @property (strong, nonatomic) Workout *workout;
 
 - (IBAction)exitWorkout:(id)sender;
 
+@property (weak, nonatomic) IBOutlet UILabel *currentTimeIntervalLabel;
 @property (weak, nonatomic) IBOutlet UIButton *startWorkoutButton;
 @property (weak, nonatomic) IBOutlet UILabel *songTitleLabel;
 @property (weak, nonatomic) IBOutlet UIButton *playPauseButton;
@@ -26,6 +31,10 @@
 @property (weak, nonatomic) IBOutlet UILabel *caloriesLabel;
 @property (weak, nonatomic) IBOutlet UILabel *durationLabel;
 @property (weak, nonatomic) IBOutlet UILabel *startStopLabel;
+
+@property (weak, nonatomic) IBOutlet UIView *barChartView;
+
+
 
 
 - (IBAction)startWorkoutPressed:(id)sender;

@@ -29,6 +29,10 @@
 		<dict>
 			<key>children</key>
 			<array>
+				<string>90E89AC91A22E0300096FCDB</string>
+				<string>90E89ACA1A22E0300096FCDB</string>
+				<string>908796571A1D345B00786C11</string>
+				<string>908796581A1D345B00786C11</string>
 				<string>908796551A1CF9CB00786C11</string>
 				<string>9041606E1A1BB5660037B130</string>
 				<string>9041606C1A1BB55D0037B130</string>
@@ -231,8 +235,10 @@ fi
 			<string>2147483647</string>
 			<key>files</key>
 			<array>
+				<string>90E89AC51A22A1CE0096FCDB</string>
 				<string>90D399211A1E7B5200960359</string>
 				<string>9041605D1A1B0D4C0037B130</string>
+				<string>90671DBA1A218B2100CBBE26</string>
 				<string>90E0CC241A1BE59800F73FA8</string>
 				<string>900D22501A1A91CB00A9E5EB</string>
 				<string>900D22531A1A91CC00A9E5EB</string>
@@ -246,9 +252,9 @@ fi
 				<string>900D224D1A1A91CB00A9E5EB</string>
 				<string>9041605A1A1B0D4C0037B130</string>
 				<string>908D36B01A1E703B0003F18E</string>
-				<string>908D36B31A1E70540003F18E</string>
 				<string>90CBF4AD1A1AC0860029EFE2</string>
 				<string>900D22781A1A996900A9E5EB</string>
+				<string>90E89ACB1A22E0300096FCDB</string>
 				<string>9087D5D01A1AD02A00C3C5BD</string>
 				<string>904160511A1B0A420037B130</string>
 				<string>90E0CC211A1BDC8700F73FA8</string>
@@ -371,13 +377,15 @@ fi
 				<string>9087D5CC1A1ACFE300C3C5BD</string>
 				<string>9087D5CE1A1AD02A00C3C5BD</string>
 				<string>9087D5CF1A1AD02A00C3C5BD</string>
+				<string>90E89AC31A22A1CE0096FCDB</string>
+				<string>90E89AC41A22A1CE0096FCDB</string>
 				<string>90D3991F1A1E7B5200960359</string>
 				<string>90D399201A1E7B5200960359</string>
 				<string>900D22571A1A91CC00A9E5EB</string>
+				<string>90671DB81A218B2100CBBE26</string>
+				<string>90671DB91A218B2100CBBE26</string>
 				<string>908D36AE1A1E703B0003F18E</string>
 				<string>908D36AF1A1E703B0003F18E</string>
-				<string>908D36B11A1E70540003F18E</string>
-				<string>908D36B21A1E70540003F18E</string>
 				<string>90E0CC1C1A1BD34800F73FA8</string>
 				<string>90E0CC1D1A1BD34800F73FA8</string>
 				<string>90E0CC221A1BE59800F73FA8</string>
@@ -386,8 +394,6 @@ fi
 				<string>9087D5D81A1AED7100C3C5BD</string>
 				<string>90CBF4AB1A1AC0860029EFE2</string>
 				<string>90CBF4AC1A1AC0860029EFE2</string>
-				<string>908796571A1D345B00786C11</string>
-				<string>908796581A1D345B00786C11</string>
 				<string>900D225A1A1A91CC00A9E5EB</string>
 				<string>900D225C1A1A91CC00A9E5EB</string>
 				<string>900D22511A1A91CC00A9E5EB</string>
@@ -1607,6 +1613,39 @@ fi
 			<key>sourceTree</key>
 			<string>&lt;group&gt;</string>
 		</dict>
+		<key>90671DB81A218B2100CBBE26</key>
+		<dict>
+			<key>fileEncoding</key>
+			<string>4</string>
+			<key>isa</key>
+			<string>PBXFileReference</string>
+			<key>lastKnownFileType</key>
+			<string>sourcecode.c.h</string>
+			<key>path</key>
+			<string>AddTimeWorkoutTableViewController.h</string>
+			<key>sourceTree</key>
+			<string>&lt;group&gt;</string>
+		</dict>
+		<key>90671DB91A218B2100CBBE26</key>
+		<dict>
+			<key>fileEncoding</key>
+			<string>4</string>
+			<key>isa</key>
+			<string>PBXFileReference</string>
+			<key>lastKnownFileType</key>
+			<string>sourcecode.c.objc</string>
+			<key>path</key>
+			<string>AddTimeWorkoutTableViewController.m</string>
+			<key>sourceTree</key>
+			<string>&lt;group&gt;</string>
+		</dict>
+		<key>90671DBA1A218B2100CBBE26</key>
+		<dict>
+			<key>fileRef</key>
+			<string>90671DB91A218B2100CBBE26</string>
+			<key>isa</key>
+			<string>PBXBuildFile</string>
+		</dict>
 		<key>908796551A1CF9CB00786C11</key>
 		<dict>
 			<key>isa</key>
@@ -1635,8 +1674,10 @@ fi
 			<string>PBXFileReference</string>
 			<key>lastKnownFileType</key>
 			<string>sourcecode.c.h</string>
-			<key>path</key>
+			<key>name</key>
 			<string>AVQueuePlayerPrevious.h</string>
+			<key>path</key>
+			<string>DJFit/AVQueuePlayerPrevious.h</string>
 			<key>sourceTree</key>
 			<string>&lt;group&gt;</string>
 		</dict>
@@ -1648,8 +1689,10 @@ fi
 			<string>PBXFileReference</string>
 			<key>lastKnownFileType</key>
 			<string>sourcecode.c.objc</string>
-			<key>path</key>
+			<key>name</key>
 			<string>AVQueuePlayerPrevious.m</string>
+			<key>path</key>
+			<string>DJFit/AVQueuePlayerPrevious.m</string>
 			<key>sourceTree</key>
 			<string>&lt;group&gt;</string>
 		</dict>
@@ -1829,39 +1872,6 @@ fi
 		<dict>
 			<key>fileRef</key>
 			<string>908D36AF1A1E703B0003F18E</string>
-			<key>isa</key>
-			<string>PBXBuildFile</string>
-		</dict>
-		<key>908D36B11A1E70540003F18E</key>
-		<dict>
-			<key>fileEncoding</key>
-			<string>4</string>
-			<key>isa</key>
-			<string>PBXFileReference</string>
-			<key>lastKnownFileType</key>
-			<string>sourcecode.c.h</string>
-			<key>path</key>
-			<string>PlaylistDetailsTableViewController.h</string>
-			<key>sourceTree</key>
-			<string>&lt;group&gt;</string>
-		</dict>
-		<key>908D36B21A1E70540003F18E</key>
-		<dict>
-			<key>fileEncoding</key>
-			<string>4</string>
-			<key>isa</key>
-			<string>PBXFileReference</string>
-			<key>lastKnownFileType</key>
-			<string>sourcecode.c.objc</string>
-			<key>path</key>
-			<string>PlaylistDetailsTableViewController.m</string>
-			<key>sourceTree</key>
-			<string>&lt;group&gt;</string>
-		</dict>
-		<key>908D36B31A1E70540003F18E</key>
-		<dict>
-			<key>fileRef</key>
-			<string>908D36B21A1E70540003F18E</string>
 			<key>isa</key>
 			<string>PBXBuildFile</string>
 		</dict>
@@ -2053,6 +2063,76 @@ fi
 		<dict>
 			<key>fileRef</key>
 			<string>90E0CC231A1BE59800F73FA8</string>
+			<key>isa</key>
+			<string>PBXBuildFile</string>
+		</dict>
+		<key>90E89AC31A22A1CE0096FCDB</key>
+		<dict>
+			<key>fileEncoding</key>
+			<string>4</string>
+			<key>isa</key>
+			<string>PBXFileReference</string>
+			<key>lastKnownFileType</key>
+			<string>sourcecode.c.h</string>
+			<key>path</key>
+			<string>WorkoutCollectionViewFlowLayout.h</string>
+			<key>sourceTree</key>
+			<string>&lt;group&gt;</string>
+		</dict>
+		<key>90E89AC41A22A1CE0096FCDB</key>
+		<dict>
+			<key>fileEncoding</key>
+			<string>4</string>
+			<key>isa</key>
+			<string>PBXFileReference</string>
+			<key>lastKnownFileType</key>
+			<string>sourcecode.c.objc</string>
+			<key>path</key>
+			<string>WorkoutCollectionViewFlowLayout.m</string>
+			<key>sourceTree</key>
+			<string>&lt;group&gt;</string>
+		</dict>
+		<key>90E89AC51A22A1CE0096FCDB</key>
+		<dict>
+			<key>fileRef</key>
+			<string>90E89AC41A22A1CE0096FCDB</string>
+			<key>isa</key>
+			<string>PBXBuildFile</string>
+		</dict>
+		<key>90E89AC91A22E0300096FCDB</key>
+		<dict>
+			<key>fileEncoding</key>
+			<string>4</string>
+			<key>isa</key>
+			<string>PBXFileReference</string>
+			<key>lastKnownFileType</key>
+			<string>sourcecode.c.h</string>
+			<key>name</key>
+			<string>SimpleBarChart.h</string>
+			<key>path</key>
+			<string>Pods/SimpleBarChart.h</string>
+			<key>sourceTree</key>
+			<string>&lt;group&gt;</string>
+		</dict>
+		<key>90E89ACA1A22E0300096FCDB</key>
+		<dict>
+			<key>fileEncoding</key>
+			<string>4</string>
+			<key>isa</key>
+			<string>PBXFileReference</string>
+			<key>lastKnownFileType</key>
+			<string>sourcecode.c.objc</string>
+			<key>name</key>
+			<string>SimpleBarChart.m</string>
+			<key>path</key>
+			<string>Pods/SimpleBarChart.m</string>
+			<key>sourceTree</key>
+			<string>&lt;group&gt;</string>
+		</dict>
+		<key>90E89ACB1A22E0300096FCDB</key>
+		<dict>
+			<key>fileRef</key>
+			<string>90E89ACA1A22E0300096FCDB</string>
 			<key>isa</key>
 			<string>PBXBuildFile</string>
 		</dict>

@@ -23,6 +23,5 @@
 @property (strong, nonatomic) IBOutletCollection(UILabel) NSArray *cellTimeLabel;
 
 - (IBAction)speedTextViewDidBeginEditing:(id)sender;
-- (IBAction)roundNumberSliderDoneEditing:(id)sender;
 - (IBAction)donePressed:(id)sender;
 @end

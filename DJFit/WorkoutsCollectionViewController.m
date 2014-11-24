@@ -25,6 +25,7 @@
     NSMutableArray *_sectionChanges;
     UILongPressGestureRecognizer *longPress;
     UIButton *deleteButton;
+    CFTimeInterval longPressTimeInterval;
 }
 
 static NSString * const reuseIdentifier = @"Cell";
@@ -35,8 +36,7 @@ static NSString * const reuseIdentifier = @"Cell";
     // Uncomment the following line to preserve selection between presentations
     // self.clearsSelectionOnViewWillAppear = NO;
     
-    // Register cell classes
-    
+    // Register cell classe
     deleteButton.imageView.image = [UIImage imageNamed:@"deleteX"];
     
 
@@ -70,6 +70,14 @@ static NSString * const reuseIdentifier = @"Cell";
     }
 }
 
+-(BOOL)shouldPerformSegueWithIdentifier:(NSString *)identifier sender:(id)sender {
+    if([identifier isEqualToString:@"playWorkout"]) {
+       // return NO;
+    }
+    
+    return YES;
+}
+
 
 #pragma mark <UICollectionViewDataSource>
 
@@ -94,19 +102,29 @@ static NSString * const reuseIdentifier = @"Cell";
     else {
     WorkoutTypeCollectionViewCell *cell = (WorkoutTypeCollectionViewCell *)[collectionView dequeueReusableCellWithReuseIdentifier:reuseIdentifier forIndexPath:indexPath];
         Workout *workout;
-//        if(indexPath.row == 1){
-//            workout = [self.fetchedResultsController objectAtIndexPath:indexPath];
-//        }
-//        else {
-            NSInteger row = indexPath.row -1;
-            NSIndexPath *newPath = [NSIndexPath indexPathForRow:row inSection:indexPath.section];
-            
-            workout = [self.fetchedResultsController objectAtIndexPath:newPath];
+        NSInteger row = indexPath.row -1;
+        NSIndexPath *newPath = [NSIndexPath indexPathForRow:row inSection:indexPath.section];
+        
+        workout = [self.fetchedResultsController objectAtIndexPath:newPath];
+        UIImage *workoutImage;
+        if([workout.workoutType isEqualToString:@"interval"]){
+            workoutImage = [UIImage imageNamed:@"intervalIcon"];
+        }
+        else if([workout.workoutType isEqualToString:@"timed"]){
+            workoutImage = [UIImage imageNamed:@"timeIcon"];
+        }
+        else if([workout.workoutType isEqualToString:@"distance"]){
+            workoutImage = [UIImage imageNamed:@"distanceIcon"];
+        }
+        else if([workout.workoutType isEqualToString:@"custom"]){
+            workoutImage = [UIImage imageNamed:@"randomIcon"];
+        }
 
-       // }
-    cell.workoutName.text = workout.workoutName;
-    cell.workoutDuration.text = [NSString stringWithFormat:@"%@", workout.workoutDuration];
-    [cell addGestureRecognizer:longPress];
+        cell.workoutName.text = workout.workoutName;
+        cell.workoutTypeImageView.image = workoutImage;
+        cell.workoutDuration.text = [NSString stringWithFormat:@"%@", workout.workoutDuration];
+        //cell.userInteractionEnabled = YES;
+        [cell addGestureRecognizer:longPress];
     
     
     return cell;
@@ -115,6 +133,78 @@ static NSString * const reuseIdentifier = @"Cell";
 
 -(void)longPressed:(UILongPressGestureRecognizer*)gesture {
     
+    if(gesture.state == UIGestureRecognizerStateBegan){
+        longPressTimeInterval = CFAbsoluteTimeGetCurrent();
+    }
+    
+    if(gesture.state == UIGestureRecognizerStateEnded){
+        CFTimeInterval currentTime = CFAbsoluteTimeGetCurrent();
+        if(currentTime - longPressTimeInterval < 0.5){
+            [self performSegueWithIdentifier:@"playWorkout" sender:nil];
+        }
+        
+        else {
+    
+    
+    WorkoutTypeCollectionViewCell * cell = (WorkoutTypeCollectionViewCell *) gesture.view;
+    
+    NSIndexPath *tappedIndexPath = [self.collectionView indexPathForCell:cell];
+     WorkoutTypeCollectionViewCell * workoutCell = (WorkoutTypeCollectionViewCell *)[self.collectionView cellForItemAtIndexPath:tappedIndexPath];
+    
+    
+    UIAlertController* alert = [UIAlertController alertControllerWithTitle:@"Delete Workout?"
+                                                                   message:[NSString stringWithFormat: @"Are you sure you want to delete %@?.", cell.workoutName.text]
+                                                            preferredStyle:UIAlertControllerStyleAlert];
+    
+    UIAlertAction * keepAction = [UIAlertAction actionWithTitle:@"NO" style:UIAlertActionStyleDefault
+                                                        handler:^(UIAlertAction * action) {
+                                                            
+                                                            [self dismissViewControllerAnimated:alert completion:nil];
+                                                        }];
+    
+    UIAlertAction* deleteAction = [UIAlertAction actionWithTitle:@"YES" style:UIAlertActionStyleDefault
+                                                       handler:^(UIAlertAction * action) {
+                                                           
+                                                           [self deleteWorkoutCell:workoutCell];
+                                                           [self dismissViewControllerAnimated:alert completion:nil];
+                                                           
+                                                           
+                                                       }];
+    
+    [alert addAction:keepAction];
+    [alert addAction:deleteAction];
+    [self presentViewController:alert animated:YES completion:nil];
+
+        }
+    }
+    
+}
+
+-(BOOL)deleteWorkoutCell:(WorkoutTypeCollectionViewCell *)cell {
+    TLCoreDataStack *coreDataStack = [TLCoreDataStack defaultStack];
+    NSNumber *duration = [NSNumber numberWithFloat:[cell.workoutDuration.text floatValue]];
+    NSPredicate *deleteWorkoutPredicate = [NSPredicate predicateWithFormat:@"workoutName == %@", cell.workoutName.text ];
+    NSFetchRequest *request = [self workoutFetchRequest];
+    [request setPredicate:deleteWorkoutPredicate];
+    NSError *error = nil;
+    
+    NSArray *fetchedObjects = [coreDataStack.managedObjectContext executeFetchRequest:request error:&error];
+    
+    if(error){
+        NSLog(@"error couldn't delete workout: %@", error);
+        return  NO;
+    }
+    
+    for( NSManagedObject * workout in fetchedObjects) {
+        
+        [[coreDataStack managedObjectContext] deleteObject:workout];
+    
+    }
+    [coreDataStack saveContext];
+    [self.collectionView reloadData];
+    
+    return YES;
+
     
 }
 
@@ -149,6 +239,29 @@ static NSString * const reuseIdentifier = @"Cell";
 }
 */
 
+#pragma mark collection view cell layout / size
+- (CGSize)collectionView:(UICollectionView*)collectionView layout:(UICollectionViewLayout *)collectionViewLayout sizeForItemAtIndexPath:(NSIndexPath *)indexPath {
+    return [self getCellSize:indexPath];  // will be w120xh100 or w190x100
+    // if the width is higher, only one image will be shown in a line
+}
+
+-(CGSize)getCellSize:(NSIndexPath *)path {
+    return CGSizeMake(105, 105);
+}
+
+
+#pragma mark collection view cell paddings
+- (UIEdgeInsets)collectionView:(UICollectionView*)collectionView layout:(UICollectionViewLayout *)collectionViewLayout insetForSectionAtIndex:(NSInteger)section {
+    return UIEdgeInsetsMake(0, 0, 0, 0); // top, left, bottom, right
+}
+
+- (CGFloat)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout*)collectionViewLayout minimumInteritemSpacingForSectionAtIndex:(NSInteger)section {
+    return 2.0;
+}
+
+- (CGFloat)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout*)collectionViewLayout minimumLineSpacingForSectionAtIndex:(NSInteger)section {
+    return 2.0;
+}
 
 
 #pragma mark - NSFetchedResultController Delegate methods

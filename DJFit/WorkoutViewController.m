@@ -22,6 +22,7 @@
 //    ProfileDetailsViewController *profileVC = [sb instantiateViewControllerWithIdentifier:@"profileDetails"];
 //    
 //    [self.navigationController pushViewController:profileVC animated:YES];
+    self.title = @"My Workouts";
     
 }
 

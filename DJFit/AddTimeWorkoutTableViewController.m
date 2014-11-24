@@ -1,18 +1,18 @@
 //
-//  PlaylistDetailsTableViewController.m
+//  AddTimeWorkoutTableViewController.m
 //  DJFit
 //
-//  Created by Taylor Ledingham on 2014-11-20.
+//  Created by Taylor Ledingham on 2014-11-22.
 //  Copyright (c) 2014 Taylor Ledingham. All rights reserved.
 //
 
-#import "PlaylistDetailsTableViewController.h"
+#import "AddTimeWorkoutTableViewController.h"
 
-@interface PlaylistDetailsTableViewController ()
+@interface AddTimeWorkoutTableViewController ()
 
 @end
 
-@implementation PlaylistDetailsTableViewController
+@implementation AddTimeWorkoutTableViewController
 
 - (void)viewDidLoad {
     [super viewDidLoad];
@@ -30,18 +30,6 @@
 }
 
 #pragma mark - Table view data source
-
-- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
-#warning Potentially incomplete method implementation.
-    // Return the number of sections.
-    return 0;
-}
-
-- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-#warning Incomplete method implementation.
-    // Return the number of rows in the section.
-    return 0;
-}
 
 /*
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {

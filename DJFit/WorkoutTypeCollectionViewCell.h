@@ -11,5 +11,6 @@
 @interface WorkoutTypeCollectionViewCell : UICollectionViewCell
 @property (weak, nonatomic) IBOutlet UILabel *workoutName;
 @property (weak, nonatomic) IBOutlet UILabel *workoutDuration;
+@property (weak, nonatomic) IBOutlet UIImageView *workoutTypeImageView;
 
 @end

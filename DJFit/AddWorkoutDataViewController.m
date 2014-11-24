@@ -47,6 +47,7 @@ typedef enum : NSInteger {
     CGPoint translation;
     NSArray *sectionArray;
     
+    
 }
 
 - (void)viewDidLoad {
@@ -195,8 +196,8 @@ typedef enum : NSInteger {
     isCellExpanded = NO;
     timeViewCreated = NO;
     NSInteger timeLabelIndex = [self getIndexForSectionIndex:editingTimeCellIndexPath.section];
-    UILabel *cellTimeLabel = [self.cellTimeLabel objectAtIndex:timeLabelIndex];
-    cellTimeLabel.text = timeSliderLabel.text;
+    UILabel *timeCellLabel = [self getTimeLabelByTag:timeLabelIndex];
+    timeCellLabel.text = timeSliderLabel.text;
     [gesture.view removeGestureRecognizer:gesture];
     [gesture.view removeGestureRecognizer:timePanViewGesture];
     [timeView removeFromSuperview];
@@ -275,6 +276,9 @@ typedef enum : NSInteger {
             return  normalCellHeight;
             
         }
+        else if(indexPath.row == 2){
+            return 80;
+        }
         else {
 
             return 85.0;
@@ -321,21 +325,21 @@ typedef enum : NSInteger {
 
 -(UILabel *)getTimeLabelByTag:(NSInteger)tag {
     
-    NSPredicate *timeTagPredicate = [NSPredicate predicateWithFormat:@"tag == %@", tag];
+    NSPredicate *timeTagPredicate = [NSPredicate predicateWithFormat:@"tag = %@", @(tag)];
     NSArray *result = [self.cellTimeLabel filteredArrayUsingPredicate:timeTagPredicate];
     return result.firstObject;
 }
 
 -(UITextField *)getSpeedTextFieldByTag:(NSInteger)tag {
     
-    NSPredicate *speedTagPredicate = [NSPredicate predicateWithFormat:@"tag == %@", tag];
+    NSPredicate *speedTagPredicate = [NSPredicate predicateWithFormat:@"tag = %@", @(tag)];
     NSArray *result = [self.speedTextField filteredArrayUsingPredicate:speedTagPredicate];
     return result.firstObject;
 }
 
 -(ASValueTrackingSlider *)getInclineSliderByTag:(NSInteger)tag {
     
-    NSPredicate *inclineTagPredicate = [NSPredicate predicateWithFormat:@"tag == %@", tag];
+    NSPredicate *inclineTagPredicate = [NSPredicate predicateWithFormat:@"tag = %@", @(tag)];
     NSArray *result = [self.inclineSliders filteredArrayUsingPredicate:inclineTagPredicate];
     return result.firstObject;
 }
@@ -345,6 +349,7 @@ typedef enum : NSInteger {
     
     TLCoreDataStack *coreDataStack = [TLCoreDataStack defaultStack];
     double workoutDuration=0;
+    NSMutableArray *timeIntervalArray = [[NSMutableArray alloc]init];
     
     workout = [NSEntityDescription insertNewObjectForEntityForName:@"Workout" inManagedObjectContext:coreDataStack.managedObjectContext];
     workout.workoutName = self.workoutNameTextField.text;
@@ -359,40 +364,51 @@ typedef enum : NSInteger {
         warmUpTimeInterval.incline = [NSNumber numberWithFloat: [self getInclineSliderByTag:0].value];
         warmUpTimeInterval.speed = [NSNumber numberWithFloat:speed];
         warmUpTimeInterval.start = [NSNumber numberWithFloat: time] ;
+        warmUpTimeInterval.workout = workout;
         workoutDuration += time;
+    [timeIntervalArray addObject:warmUpTimeInterval];
     
-    TimeInterval *highTimeInterval = [NSEntityDescription insertNewObjectForEntityForName:@"TimeInterval" inManagedObjectContext:coreDataStack.managedObjectContext];
-    time = [[self getTimeLabelByTag:1].text floatValue ];
-    speed = [[self getSpeedTextFieldByTag:1].text floatValue];
-    warmUpTimeInterval.incline = [NSNumber numberWithFloat: [self getInclineSliderByTag:1].value];
-    warmUpTimeInterval.speed = [NSNumber numberWithFloat:speed];
-    warmUpTimeInterval.start = [NSNumber numberWithFloat: time] ;
-    highTimeInterval.start = [NSNumber numberWithFloat: time] ;
-    workoutDuration += time;
-    
-    TimeInterval *lowTimeInterval = [NSEntityDescription insertNewObjectForEntityForName:@"TimeInterval" inManagedObjectContext:coreDataStack.managedObjectContext];
-    time = [[self getTimeLabelByTag:2].text floatValue ];
-    speed = [[self getSpeedTextFieldByTag:2].text floatValue];
-    warmUpTimeInterval.incline = [NSNumber numberWithFloat: [self getInclineSliderByTag:2].value];
-    warmUpTimeInterval.speed = [NSNumber numberWithFloat:speed];
-    warmUpTimeInterval.start = [NSNumber numberWithFloat: time] ;
-    highTimeInterval.start = [NSNumber numberWithFloat: time] ;
-    lowTimeInterval.start = [NSNumber numberWithFloat: time] ;
-    workoutDuration += time;
+    for (int i=0; i<[workout.numberOfRounds intValue]; i++) {
+        
+        TimeInterval *highTimeInterval = [NSEntityDescription insertNewObjectForEntityForName:@"TimeInterval" inManagedObjectContext:coreDataStack.managedObjectContext];
+        time = [[self getTimeLabelByTag:2].text floatValue ];
+        speed = [[self getSpeedTextFieldByTag:2].text floatValue];
+        highTimeInterval.incline = [NSNumber numberWithFloat: [self getInclineSliderByTag:2].value];
+        highTimeInterval.speed = [NSNumber numberWithFloat:speed];
+        highTimeInterval.start = [NSNumber numberWithFloat: time] ;
+        warmUpTimeInterval.workout = workout;
+        workoutDuration += time;
+        
+        [timeIntervalArray addObject:highTimeInterval];
+        
+        TimeInterval *lowTimeInterval = [NSEntityDescription insertNewObjectForEntityForName:@"TimeInterval" inManagedObjectContext:coreDataStack.managedObjectContext];
+        time = [[self getTimeLabelByTag:1].text floatValue ];
+        speed = [[self getSpeedTextFieldByTag:1].text floatValue];
+        lowTimeInterval.incline = [NSNumber numberWithFloat: [self getInclineSliderByTag:1].value];
+        lowTimeInterval.speed = [NSNumber numberWithFloat:speed];
+        lowTimeInterval.start = [NSNumber numberWithFloat: time] ;
+        warmUpTimeInterval.workout = workout;
+        workoutDuration += time;
+        
+        [timeIntervalArray addObject:lowTimeInterval];
+        
+        
+        
+    }
+
     
     TimeInterval *coolDownTimeInterval = [NSEntityDescription insertNewObjectForEntityForName:@"TimeInterval" inManagedObjectContext:coreDataStack.managedObjectContext];
     time = [[self getTimeLabelByTag:3].text floatValue ];
     speed = [[self getSpeedTextFieldByTag:3].text floatValue];
-    warmUpTimeInterval.incline = [NSNumber numberWithFloat: [self getInclineSliderByTag:3].value];
-    warmUpTimeInterval.speed = [NSNumber numberWithFloat:speed];
-    warmUpTimeInterval.start = [NSNumber numberWithFloat: time] ;
-    highTimeInterval.start = [NSNumber numberWithFloat: time] ;
+    coolDownTimeInterval.incline = [NSNumber numberWithFloat: [self getInclineSliderByTag:3].value];
+    coolDownTimeInterval.speed = [NSNumber numberWithFloat:speed];
     coolDownTimeInterval.start = [NSNumber numberWithFloat: time] ;
+    warmUpTimeInterval.workout = workout;
     workoutDuration += time;
     
     workout.workoutDuration = [NSNumber numberWithDouble: workoutDuration];
-    NSSet *timeIntervalSet = [NSSet setWithObjects:warmUpTimeInterval, lowTimeInterval, highTimeInterval, coolDownTimeInterval, nil];
-    workout.timeIntervals = timeIntervalSet;
+    [timeIntervalArray addObject:coolDownTimeInterval];
+    workout.timeIntervals = [[NSSet alloc]initWithArray:timeIntervalArray];
     
     [coreDataStack saveContext];
 

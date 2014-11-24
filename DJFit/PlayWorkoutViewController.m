@@ -7,16 +7,22 @@
 //
 
 #import "PlayWorkoutViewController.h"
-#import "MusicPickerViewController.h"
 #import "WorkoutViewController.h"
 #import "Playlist.h"
 #import "AVQueuePlayerPrevious.h"
+#import "TimeInterval.h"
+
 
 @interface PlayWorkoutViewController ()
 
+
+
 @property (strong, nonatomic) AVQueuePlayerPrevious *queuePlayer;
+@property (strong, nonatomic) SimpleBarChart *chart;
 
 @end
+
+
 
 @implementation PlayWorkoutViewController {
     NSTimeInterval workoutDuration;
@@ -24,13 +30,17 @@
     UIGestureRecognizer *tapGesture;
     BOOL musicPicked;
     double timeInMilliSeconds;
-    double startTimeInMilliSeconds;
-    NSTimer *workoutTimer;
+    double currentIntervalInMilliSeconds;
+    NSTimer *totalWorkoutTimer;
+    NSTimer *currentIntervalTimer;
     NSNumberFormatter *formatter;
     BOOL timerHasStarted;
     NSMutableArray *avPlayerItemsArray;
     BOOL playerIsPlaying;
     double currentSongRate;
+    NSInteger currentTimeIntervalIndex;
+    NSArray *timeIntervalsArray;
+    Song *currentPlayingSong;
     
 }
 
@@ -39,16 +49,21 @@
     // Do any additional setup after loading the view.
     self.navigationController.navigationBar.hidden = YES;
     timeInMilliSeconds = ([self.workout.workoutDuration doubleValue] * 60 * 1000);
-    startTimeInMilliSeconds = timeInMilliSeconds;
+    TimeInterval *firstinterval = timeIntervalsArray[0];
+    currentIntervalInMilliSeconds = ([firstinterval.start doubleValue] * 60 * 1000);
      formatter = [[NSNumberFormatter alloc] init];
     timerHasStarted = NO;
     playerIsPlaying = NO;
     avPlayerItemsArray = [[NSMutableArray alloc]init];
     self.queuePlayer = [[AVQueuePlayerPrevious alloc]initWithItems:avPlayerItemsArray];
     [self.queuePlayer addObserver:self forKeyPath:@"status" options:0 context:nil];
-    [self displayTime:timeInMilliSeconds];
+    [self displayTime:timeInMilliSeconds onLabel:self.durationLabel];
     [self loadPlaylist];
+    timeIntervalsArray = [[NSArray alloc]init];
+    timeIntervalsArray = [self.workout.timeIntervals allObjects];
     currentSongRate = 1.0;
+    currentTimeIntervalIndex = 0;
+    [self setUpGraph];
     //MusicPickerViewController *musicPickerVC = [[MusicPickerViewController alloc]init];
     //[self presentViewController:musicPickerVC animated:NO completion:nil];
     [self setWorkoutDetails];
@@ -58,7 +73,21 @@
     
 }
 
--(void)displayTime:(double)milliseconds {
+-(void)setUpGraph {
+    
+    self.chart = [[SimpleBarChart alloc]initWithFrame:CGRectMake(0, 0, self.barChartView.frame.size.width, 150)];
+    [self.barChartView addSubview:self.chart];
+    
+    self.chart.delegate = self;
+    self.chart.dataSource = self;
+    self.chart.backgroundColor = [UIColor colorWithRed:0.847f green:0.847f blue:0.847f alpha:1.00f];
+    self.chart.gridColor = [UIColor colorWithRed:0.847f green:0.847f blue:0.847f alpha:1.00f];
+    self.chart.barWidth	= 18.0;
+    self.chart.incrementValue = 1;
+    [self.chart reloadData];
+}
+
+-(void)displayTime:(double)milliseconds onLabel:(UILabel *)timeLabel {
 
    double seconds = milliseconds/1000;
     
@@ -70,7 +99,7 @@
    
     
     NSString *result1 = [NSString stringWithFormat:@"%.2lu:%.2lu:%.2lu", (unsigned long)h, (unsigned long)m,(unsigned long)s];
-    self.durationLabel.text = result1;
+    timeLabel.text = result1;
     
     //self.caloriesLabel.text = [NSString stringWithFormat:@"%.2f", ]
     
@@ -79,12 +108,6 @@
 -(void)calculateCalories {
     
     
-    
-}
-
--(void)viewWillAppear:(BOOL)animated {
-    
-
     
 }
 
@@ -127,8 +150,8 @@
 
 -(void)setWorkoutDetails {
     
-    self.speedLabel.text = [NSString stringWithFormat:@"Speed: 8.0MPH"];
-    self.inclineLabel.text = [NSString stringWithFormat:@"Incline: 0%%"];
+   // self.speedLabel.text = [NSString stringWithFormat:@"Speed: 8.0MPH"];
+    //self.inclineLabel.text = [NSString stringWithFormat:@"Incline: 0%%"];
     
     
 }
@@ -166,10 +189,32 @@
 
 -(void)updateTimer:(NSTimer *)timer {
     timeInMilliSeconds = timeInMilliSeconds -  10 ;
-    [self displayTime:timeInMilliSeconds];
+    [self displayTime:timeInMilliSeconds onLabel:self.durationLabel];
     if(timeInMilliSeconds <=0) {
         [timer invalidate];
     }
+}
+
+-(void)updateCurrentIntervalTimer:(NSTimer *)timer {
+    currentIntervalInMilliSeconds = currentIntervalInMilliSeconds - 10;
+    [self displayTime:currentIntervalInMilliSeconds onLabel:self.currentTimeIntervalLabel];
+    if(currentIntervalInMilliSeconds <= 0){
+        if(currentTimeIntervalIndex == timeIntervalsArray.count - 1){
+            [timer invalidate];
+        }
+        else {
+            currentTimeIntervalIndex +=1;
+            TimeInterval *interval = timeIntervalsArray[currentTimeIntervalIndex];
+            currentIntervalInMilliSeconds = ([interval.start doubleValue] * 60 * 1000);
+            double newBPM = [Song lookUpBPMForSpeed:[interval.speed doubleValue] andWorkoutType:@"treadmill"];
+            currentSongRate = newBPM / [currentPlayingSong.bpm doubleValue];
+            self.queuePlayer.rate = currentSongRate;
+            self.speedLabel.text = [NSString stringWithFormat:@"%.1f MPH",[interval.speed floatValue]];
+            self.inclineLabel.text = [NSString stringWithFormat:@"%.1f%%",[interval.incline floatValue]];
+        }
+    }
+    
+    
 }
 
 - (IBAction)startWorkoutPressed:(id)sender {
@@ -191,23 +236,13 @@
 //    
 //    [self.startWorkoutButton.layer addAnimation:group forKey:@"shrink"];
     
-    if(timerHasStarted == NO){
-        self.startStopLabel.text = @"Pause Workout";
-         workoutTimer = [NSTimer scheduledTimerWithTimeInterval:.01 target:self selector:@selector(updateTimer:) userInfo:nil repeats:YES];
-
-        timerHasStarted = YES;
-        self.queuePlayer.rate = currentSongRate;
-        playerIsPlaying = YES;
-    }
-    else {
-        timerHasStarted = NO;
-        self.startStopLabel.text = @"Resume Workout";
-        [workoutTimer invalidate];
-        [self.queuePlayer pause];
-    }
-    
     
    
+    
+}
+
+-(void)setNewBPMForSpeed:(double)speed {
+    
     
 }
 
@@ -224,6 +259,7 @@
         NSURL *songURL = [(AVURLAsset *)currentPlayerAsset URL];
 
         Song *song = [self getSongFromURL:songURL];
+            currentPlayingSong = song;
         self.songTitleLabel.text = song.songTitle;
         double newBPM = [Song lookUpBPMForSpeed:4.0 andWorkoutType:@"treadmill"];
          currentSongRate = newBPM / [song.bpm doubleValue];
@@ -283,17 +319,26 @@
 }
 
 - (IBAction)playPauseSelected:(id)sender {
-    if(playerIsPlaying == YES ){
-        [self.queuePlayer pause];
-        [self.playPauseButton.titleLabel setText:@"Play"];
-        playerIsPlaying = NO;
-    }
-    else {
-        
+    
+    
+    if(timerHasStarted == NO){
+        self.playPauseButton.imageView.image = [UIImage imageNamed:@"pauseButton"];
+        [self.playPauseButton setImage:[UIImage imageNamed:@"pauseButton"] forState:UIControlStateNormal];
+        totalWorkoutTimer = [NSTimer scheduledTimerWithTimeInterval:.01 target:self selector:@selector(updateTimer:) userInfo:nil repeats:YES];
+        currentIntervalTimer = [NSTimer scheduledTimerWithTimeInterval:.01 target:self selector:@selector(updateCurrentIntervalTimer:) userInfo:nil repeats:YES];
+        timerHasStarted = YES;
         self.queuePlayer.rate = currentSongRate;
-        [self.playPauseButton.titleLabel setText:@"Pause"];
         playerIsPlaying = YES;
     }
+    else {
+        timerHasStarted = NO;
+        //self.playPauseButton.imageView.image = [UIImage imageNamed:@"playButton"];
+        [self.playPauseButton setImage:[UIImage imageNamed:@"playButton"] forState:UIControlStateNormal];
+        [totalWorkoutTimer invalidate];
+        [currentIntervalTimer invalidate];
+        [self.queuePlayer pause];
+    }
+
     
 }
 - (IBAction)nextSelected:(id)sender {
@@ -319,8 +364,10 @@
     [self dismissViewControllerAnimated:alert completion:nil];
     UIStoryboard * aStoryBoard = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
     WorkoutViewController *controller = (WorkoutViewController *)[aStoryBoard instantiateViewControllerWithIdentifier: @"myWorkouts"];
-      [self.queuePlayer pause];
-      self.queuePlayer = nil;
+    [self.queuePlayer pause];
+    [self.queuePlayer removeObserver:self forKeyPath:@"status"];
+    [self removeObserversFromQueuePlayer];
+    self.queuePlayer = nil;
     [self presentViewController:controller animated:YES completion:nil];
                                                               }];
     
@@ -329,4 +376,109 @@
     [self presentViewController:alert animated:YES completion:nil];
     
 }
+
+-(void)removeObserversFromQueuePlayer{
+    for (AVPlayerItem *item in self.queuePlayer.items) {
+        [item removeObserver:self forKeyPath:NSStringFromSelector(@selector(status))];
+        [item removeObserver:self forKeyPath:NSStringFromSelector(@selector(playbackBufferEmpty))];
+
+    }
+    
+}
+
+-(void)dealloc{
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
+    
+    
+}
+
+- (BOOL)shouldExtendSelectionViewIntoHeaderPaddingForChartView:(JBChartView *)chartView
+{
+    return YES;
+}
+
+- (BOOL)shouldExtendSelectionViewIntoFooterPaddingForChartView:(JBChartView *)chartView
+{
+    return NO;
+}
+
+
+#pragma mark - JBBarChartViewDataSource
+
+- (NSUInteger)numberOfBarsInBarChartView:(JBBarChartView *)barChartView
+{
+    return timeIntervalsArray.count;
+}
+
+- (void)barChartView:(JBBarChartView *)barChartView didSelectBarAtIndex:(NSUInteger)index touchPoint:(CGPoint)touchPoint
+{
+//    NSNumber *valueNumber = [self.chartData objectAtIndex:index];
+//    [self.informationView setValueText:[NSString stringWithFormat:kJBStringLabelDegreesFahrenheit, [valueNumber intValue], kJBStringLabelDegreeSymbol] unitText:nil];
+//    [self.informationView setTitleText:kJBStringLabelWorldwideAverage];
+//    [self.informationView setHidden:NO animated:YES];
+//    [self setTooltipVisible:YES animated:YES atTouchPoint:touchPoint];
+//    [self.tooltipView setText:[[self.monthlySymbols objectAtIndex:index] uppercaseString]];
+}
+
+- (void)didDeselectBarChartView:(JBBarChartView *)barChartView
+{
+//    [self.informationView setHidden:YES animated:YES];
+//    [self setTooltipVisible:NO animated:YES];
+}
+
+#pragma mark SimpleBarChartDataSource
+
+- (NSUInteger)numberOfBarsInBarChart:(SimpleBarChart *)barChart
+{
+    return timeIntervalsArray.count;
+}
+
+- (CGFloat)barChart:(SimpleBarChart *)barChart valueForBarAtIndex:(NSUInteger)index
+{
+    TimeInterval *time = [timeIntervalsArray objectAtIndex:index];
+
+    return [time.speed floatValue];
+}
+
+- (NSString *)barChart:(SimpleBarChart *)barChart textForBarAtIndex:(NSUInteger)index
+{
+    TimeInterval *time = [timeIntervalsArray objectAtIndex:index];
+    return [time.speed stringValue];
+}
+
+//- (NSString *)barChart:(SimpleBarChart *)barChart xLabelForBarAtIndex:(NSUInteger)index
+//{
+//    TimeInterval *time = [timeIntervalsArray objectAtIndex:index];
+//    return [time.start stringValue];
+//}
+
+- (UIColor *)barChart:(SimpleBarChart *)barChart colorForBarAtIndex:(NSUInteger)index
+{
+    return (index % 2 == 0) ? [UIColor colorWithRed:0.659f green:0.333f blue:0.945f alpha:1.00f] : [UIColor colorWithRed:0.420f green:0.098f blue:0.486f alpha:1.00f];
+
+}
+#pragma mark - JBBarChartViewDelegate
+
+//- (CGFloat)barChartView:(JBBarChartView *)barChartView heightForBarViewAtIndex:(NSUInteger)index
+//{
+//    TimeInterval *time = [timeIntervalsArray objectAtIndex:index];
+//    return [ time.speed floatValue];
+//}
+//
+//- (UIColor *)barChartView:(JBBarChartView *)barChartView colorForBarViewAtIndex:(NSUInteger)index
+//{
+//    return (index % 2 == 0) ? [UIColor colorWithRed:0.659f green:0.333f blue:0.945f alpha:1.00f] : [UIColor colorWithRed:0.420f green:0.098f blue:0.486f alpha:1.00f];
+//}
+//
+//- (UIColor *)barSelectionColorForBarChartView:(JBBarChartView *)barChartView
+//{
+//    return [UIColor whiteColor];
+//}
+//
+//- (CGFloat)barPaddingForBarChartView:(JBBarChartView *)barChartView
+//{
+//    return 5.0;
+//}
+
+
 @end
