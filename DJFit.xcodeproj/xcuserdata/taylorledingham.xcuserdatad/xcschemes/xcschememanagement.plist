@@ -4,6 +4,11 @@
 <dict>
 	<key>SchemeUserState</key>
 	<dict>
+		<key>DJFit Watch App.xcscheme</key>
+		<dict>
+			<key>orderHint</key>
+			<integer>6</integer>
+		</dict>
 		<key>DJFit.xcscheme</key>
 		<dict>
 			<key>orderHint</key>
@@ -18,6 +23,16 @@
 			<true/>
 		</dict>
 		<key>900D22621A1A91CC00A9E5EB</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>90E870931A23C01F00AF624B</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>90E870A41A23C01F00AF624B</key>
 		<dict>
 			<key>primary</key>
 			<true/>
