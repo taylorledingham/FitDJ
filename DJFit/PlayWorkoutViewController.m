@@ -61,6 +61,7 @@
     [self loadPlaylist];
     timeIntervalsArray = [[NSArray alloc]init];
     timeIntervalsArray = [self.workout.timeIntervals allObjects];
+    [self sortTimeIntervalArray];
     currentSongRate = 1.0;
     currentTimeIntervalIndex = 0;
     [self setUpGraph];
@@ -71,6 +72,26 @@
     
     
     
+}
+
+-(void)sortTimeIntervalArray {
+    
+    timeIntervalsArray = [timeIntervalsArray sortedArrayUsingComparator:^NSComparisonResult(id obj1, id obj2) {
+        
+        TimeInterval * time1 = (TimeInterval *)obj1;
+        TimeInterval * time2 = (TimeInterval *)obj2;
+        
+        if(time1 > time2){
+            return NSOrderedDescending;
+        }
+        else if(time2 == time1){
+            return NSOrderedSame;
+        }
+        else {
+            return NSOrderedAscending;
+        }
+    }];
+
 }
 
 -(void)setUpGraph {
@@ -191,6 +212,7 @@
     timeInMilliSeconds = timeInMilliSeconds -  10 ;
     [self displayTime:timeInMilliSeconds onLabel:self.durationLabel];
     if(timeInMilliSeconds <=0) {
+        [self.queuePlayer pause];
         [timer invalidate];
     }
 }
@@ -206,6 +228,8 @@
             currentTimeIntervalIndex +=1;
             TimeInterval *interval = timeIntervalsArray[currentTimeIntervalIndex];
             currentIntervalInMilliSeconds = ([interval.start doubleValue] * 60 * 1000);
+            self.chart.animationDuration = 0;
+            [self.chart reloadData];
             double newBPM = [Song lookUpBPMForSpeed:[interval.speed doubleValue] andWorkoutType:@"treadmill"];
             currentSongRate = newBPM / [currentPlayingSong.bpm doubleValue];
             self.queuePlayer.rate = currentSongRate;
@@ -420,6 +444,9 @@
 
 - (UIColor *)barChart:(SimpleBarChart *)barChart colorForBarAtIndex:(NSUInteger)index
 {
+    if(index == currentTimeIntervalIndex){
+        return [UIColor colorWithRed:0.443f green:0.835f blue:0.969f alpha:1.00f];
+    }
     return (index % 2 == 0) ? [UIColor colorWithRed:0.659f green:0.333f blue:0.945f alpha:1.00f] : [UIColor colorWithRed:0.420f green:0.098f blue:0.486f alpha:1.00f];
 
 }

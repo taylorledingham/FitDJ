@@ -156,6 +156,11 @@ typedef enum : NSInteger {
         cellOrigin = timeView.frame.origin;
             timeViewCreated = YES;
             editingTimeCellIndexPath = indexPath;
+        
+        UILabel *time = [self getTimeLabelByTag:[self getIndexForSectionIndex:editingTimeCellIndexPath.section]];
+        UILabel *timeText = [self getTimeTextLabelByTag:[self getIndexForSectionIndex:editingTimeCellIndexPath.section]];
+            time.hidden = YES;
+            timeText.hidden = YES;
         }
         
 
@@ -204,6 +209,10 @@ typedef enum : NSInteger {
     [timeSliderLabel removeFromSuperview];
     editingTimeCell = nil;
     editingTimeCellIndexPath = nil;
+    UILabel *time = [self getTimeLabelByTag:[self getIndexForSectionIndex:editingTimeCellIndexPath.section]];
+    UILabel *timeText = [self getTimeTextLabelByTag:[self getIndexForSectionIndex:editingTimeCellIndexPath.section]];
+    time.hidden = NO;
+    timeText.hidden = NO;
     [self.tableView beginUpdates];
     [self.tableView endUpdates];
 
@@ -330,6 +339,13 @@ typedef enum : NSInteger {
     return result.firstObject;
 }
 
+-(UILabel *)getTimeTextLabelByTag:(NSInteger)tag {
+    
+    NSPredicate *timeTagPredicate = [NSPredicate predicateWithFormat:@"tag = %@", @(tag)];
+    NSArray *result = [self.cellTimeTextLabel filteredArrayUsingPredicate:timeTagPredicate];
+    return result.firstObject;
+}
+
 -(UITextField *)getSpeedTextFieldByTag:(NSInteger)tag {
     
     NSPredicate *speedTagPredicate = [NSPredicate predicateWithFormat:@"tag = %@", @(tag)];
@@ -366,7 +382,7 @@ typedef enum : NSInteger {
         warmUpTimeInterval.speed = [NSNumber numberWithFloat:speed];
         warmUpTimeInterval.start = [NSNumber numberWithFloat: time] ;
         warmUpTimeInterval.workout = workout;
-    warmUpTimeInterval.index = index;
+    warmUpTimeInterval.index = [NSNumber numberWithInteger:index];
     index += 1;
         workoutDuration += time;
     [timeIntervalArray addObject:warmUpTimeInterval];
@@ -380,7 +396,7 @@ typedef enum : NSInteger {
         lowTimeInterval.speed = [NSNumber numberWithFloat:speed];
         lowTimeInterval.start = [NSNumber numberWithFloat: time] ;
         lowTimeInterval.workout = workout;
-        lowTimeInterval.index = index;
+        lowTimeInterval.index = [NSNumber numberWithInteger:index];
         index += 1;
         workoutDuration += time;
         
@@ -394,7 +410,7 @@ typedef enum : NSInteger {
         highTimeInterval.start = [NSNumber numberWithFloat: time] ;
         highTimeInterval.workout = workout;
         workoutDuration += time;
-        highTimeInterval.index = index;
+        highTimeInterval.index = [NSNumber numberWithInteger:index];
         index += 1;
         
         [timeIntervalArray addObject:highTimeInterval];
@@ -409,7 +425,7 @@ typedef enum : NSInteger {
     coolDownTimeInterval.start = [NSNumber numberWithFloat: time] ;
     coolDownTimeInterval.workout = workout;
     workoutDuration += time;
-    coolDownTimeInterval.index = index;
+    coolDownTimeInterval.index = [NSNumber numberWithInteger:index];
     index += 1;
     
     workout.workoutDuration = [NSNumber numberWithDouble: workoutDuration];

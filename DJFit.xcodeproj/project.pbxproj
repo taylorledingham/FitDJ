@@ -633,7 +633,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods/Pods-resources.sh\"\n";
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-DJFit/Pods-DJFit-resources.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 /* End PBXShellScriptBuildPhase section */
@@ -804,7 +804,7 @@
 		};
 		900D226E1A1A91CC00A9E5EB /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = AF9FBD5A3FCECAC31671FD14 /* Pods.debug.xcconfig */;
+			baseConfigurationReference = B75CEC059837364CAE33A9FE /* Pods-DJFit.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_ENTITLEMENTS = DJFit/DJFit.entitlements;
@@ -829,7 +829,7 @@
 		};
 		900D226F1A1A91CC00A9E5EB /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 4FB270338BCAC1E98812CF39 /* Pods.release.xcconfig */;
+			baseConfigurationReference = 1F1F1E79ECA183B28986D7CB /* Pods-DJFit.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_ENTITLEMENTS = DJFit/DJFit.entitlements;
@@ -897,7 +897,7 @@
 					"$(inherited)",
 				);
 				INFOPLIST_FILE = "DJFit WatchKit Extension/Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 8.2;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.1;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @executable_path/../../Frameworks";
 				PRODUCT_NAME = "${TARGET_NAME}";
 				SKIP_INSTALL = YES;
@@ -910,7 +910,7 @@
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				INFOPLIST_FILE = "DJFit WatchKit Extension/Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 8.2;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.1;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @executable_path/../../Frameworks";
 				PRODUCT_NAME = "${TARGET_NAME}";
 				SKIP_INSTALL = YES;
