@@ -17,6 +17,7 @@
 @property (nonatomic, retain) NSNumber * incline;
 @property (nonatomic, retain) NSNumber * speed;
 @property (nonatomic, retain) NSNumber * start;
+@property (nonatomic, retain) NSNumber * index;
 @property (nonatomic, retain) Workout *workout;
 
 @end

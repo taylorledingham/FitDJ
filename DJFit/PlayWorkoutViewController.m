@@ -392,40 +392,6 @@
     
 }
 
-- (BOOL)shouldExtendSelectionViewIntoHeaderPaddingForChartView:(JBChartView *)chartView
-{
-    return YES;
-}
-
-- (BOOL)shouldExtendSelectionViewIntoFooterPaddingForChartView:(JBChartView *)chartView
-{
-    return NO;
-}
-
-
-#pragma mark - JBBarChartViewDataSource
-
-- (NSUInteger)numberOfBarsInBarChartView:(JBBarChartView *)barChartView
-{
-    return timeIntervalsArray.count;
-}
-
-- (void)barChartView:(JBBarChartView *)barChartView didSelectBarAtIndex:(NSUInteger)index touchPoint:(CGPoint)touchPoint
-{
-//    NSNumber *valueNumber = [self.chartData objectAtIndex:index];
-//    [self.informationView setValueText:[NSString stringWithFormat:kJBStringLabelDegreesFahrenheit, [valueNumber intValue], kJBStringLabelDegreeSymbol] unitText:nil];
-//    [self.informationView setTitleText:kJBStringLabelWorldwideAverage];
-//    [self.informationView setHidden:NO animated:YES];
-//    [self setTooltipVisible:YES animated:YES atTouchPoint:touchPoint];
-//    [self.tooltipView setText:[[self.monthlySymbols objectAtIndex:index] uppercaseString]];
-}
-
-- (void)didDeselectBarChartView:(JBBarChartView *)barChartView
-{
-//    [self.informationView setHidden:YES animated:YES];
-//    [self setTooltipVisible:NO animated:YES];
-}
-
 #pragma mark SimpleBarChartDataSource
 
 - (NSUInteger)numberOfBarsInBarChart:(SimpleBarChart *)barChart

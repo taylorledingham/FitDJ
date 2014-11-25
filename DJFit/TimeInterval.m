@@ -17,5 +17,6 @@
 @dynamic speed;
 @dynamic start;
 @dynamic workout;
+@dynamic index;
 
 @end
