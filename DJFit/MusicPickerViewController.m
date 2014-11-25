@@ -113,12 +113,8 @@
     NSSet *songSet = songs;
     playlist.playlistSongs = songSet;
     [coreDataStack saveContext];
-   // [self dismissViewControllerAnimated:YES completion:nil];
     musicDone = YES;
     [picker dismissViewControllerAnimated:NO completion:nil];
-    
-    //[self presentViewController:playVC animated:YES completion:nil];
-    //[self performSegueWithIdentifier:@"showWorkoutPlayer" sender:nil];
 }
 
 
@@ -167,7 +163,7 @@
 
     
         NSString *pathStr = [[NSString alloc]init];
-    pathStr = [NSString stringWithFormat:@"%@.wav", [song valueForProperty:MPMediaItemPropertyPersistentID]];
+        pathStr = [NSString stringWithFormat:@"%@.wav", [song valueForProperty:MPMediaItemPropertyPersistentID]];
     
    
     AVURLAsset *songAsset = [AVURLAsset URLAssetWithURL:assetURL options:nil];
@@ -288,10 +284,9 @@
         UIStoryboard *sb = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
         
         PlayWorkoutViewController *playVC = [sb instantiateViewControllerWithIdentifier:@"playWorkout"];
-         //= [[Workout alloc]init];
-        [playVC view];
         playVC.workout = self.workout;
-        
+        [playVC view];
+
         [spinnerView stopAnimating];
 
         [self presentViewController:playVC animated:YES completion:nil];

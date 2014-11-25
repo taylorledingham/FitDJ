@@ -124,7 +124,8 @@ static NSString * const reuseIdentifier = @"Cell";
 
         cell.workoutName.text = workout.workoutName;
         cell.workoutTypeImageView.image = workoutImage;
-        cell.workoutDuration.text = [NSString stringWithFormat:@"%@", workout.workoutDuration];
+        float duration = [workout.workoutDuration floatValue];
+        cell.workoutDuration.text = [NSString stringWithFormat:@"%.2f", duration];
         cell.workout = workout;
         //cell.userInteractionEnabled = YES;
        // [cell addGestureRecognizer:longPress];

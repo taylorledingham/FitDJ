@@ -7,6 +7,8 @@
 //
 
 #import "AppDelegate.h"
+#import "ProfileDetailsViewController.h"
+#import "WorkoutViewController.h"
 
 @import HealthKit;
 
@@ -30,8 +32,9 @@
     }
     else
     {
-        [[NSUserDefaults standardUserDefaults] setBool:YES forKey:@"HasLaunchedOnce"];
-        [[NSUserDefaults standardUserDefaults] synchronize];
+//        [[NSUserDefaults standardUserDefaults] setBool:YES forKey:@"HasLaunchedOnce"];
+//        [[NSUserDefaults standardUserDefaults] synchronize];
+//        [self askForProfileDetails];
         // This is the first launch ever
     }
 
@@ -41,6 +44,43 @@
     
     return YES;
 }
+
+//-(void)askForProfileDetails {
+//    
+//    
+//    UINavigationController *navVC = (UINavigationController *)[self.window rootViewController];
+//    WorkoutViewController *workoutVC = (WorkoutViewController *)navVC.topViewController;
+//    UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
+//    
+//    UIAlertController* alert = [UIAlertController alertControllerWithTitle:@"Add details?"
+//                                                                   message:[NSString stringWithFormat: @"Would you like to add your information to enable calorie counting?."]
+//                                                            preferredStyle:UIAlertControllerStyleAlert];
+//    
+//    UIAlertAction * addAction = [UIAlertAction actionWithTitle:@"NO" style:UIAlertActionStyleDefault
+//                                                        handler:^(UIAlertAction * action) {
+//                                                            
+//                                                            
+//                                                            [workoutVC dismissViewControllerAnimated:alert completion:nil];
+//                                                            
+//                                                            ProfileDetailsViewController *profileController = [storyboard instantiateViewControllerWithIdentifier:@"profileDetails"];
+//                                                            //[self.window makeKeyAndVisible];
+//                                                            [workoutVC presentViewController:profileController animated:YES completion:NULL];
+//
+//                                                        }];
+//    
+//    UIAlertAction* dismissAction = [UIAlertAction actionWithTitle:@"YES" style:UIAlertActionStyleDefault
+//                                                         handler:^(UIAlertAction * action) {
+//                                                             
+//                                                             [workoutVC  dismissViewControllerAnimated:alert completion:nil];
+//                                                             
+//                                                             
+//                                                         }];
+//    
+//    [alert addAction:addAction];
+//    [alert addAction:dismissAction];
+//    [workoutVC  presentViewController:alert animated:YES completion:nil];
+//    
+//}
 
 - (void)applicationWillResignActive:(UIApplication *)application {
     // Sent when the application is about to move from active to inactive state. This can occur for certain types of temporary interruptions (such as an incoming phone call or SMS message) or when the user quits the application and it begins the transition to the background state.

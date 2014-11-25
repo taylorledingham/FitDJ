@@ -9,5 +9,6 @@
 #import <UIKit/UIKit.h>
 
 @interface WorkoutViewController : UIViewController
+- (IBAction)gearButtonPressed:(id)sender;
 
 @end

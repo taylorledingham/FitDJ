@@ -7,6 +7,7 @@
 //
 
 #import "WorkoutViewController.h"
+#import "ProfileDetailsViewController.h"
 
 @interface WorkoutViewController ()
 
@@ -22,6 +23,12 @@
 //    ProfileDetailsViewController *profileVC = [sb instantiateViewControllerWithIdentifier:@"profileDetails"];
 //    
 //    [self.navigationController pushViewController:profileVC animated:YES];
+    if ([[NSUserDefaults standardUserDefaults] boolForKey:@"HasLaunchedOnce"] == NO){
+        [[NSUserDefaults standardUserDefaults] setBool:YES forKey:@"HasLaunchedOnce"];
+        [[NSUserDefaults standardUserDefaults] synchronize];
+        [self askForProfileDetails];
+        
+    }
     self.title = @"My Workouts";
     
 }
@@ -41,4 +48,49 @@
 }
 */
 
+-(void)askForProfileDetails {
+    
+    
+    UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
+    
+    UIAlertController* alert = [UIAlertController alertControllerWithTitle:@"Add details?"
+                                                                   message:[NSString stringWithFormat: @"Would you like to add your information to enable calorie counting?"]
+                                                            preferredStyle:UIAlertControllerStyleAlert];
+    
+    UIAlertAction * addAction = [UIAlertAction actionWithTitle:@"Yes" style:UIAlertActionStyleDefault
+                                                       handler:^(UIAlertAction * action) {
+                                                           
+                                                           
+                                                           [self dismissViewControllerAnimated:alert completion:nil];
+                                                           
+                                                           ProfileDetailsViewController *profileController = [storyboard instantiateViewControllerWithIdentifier:@"profileDetails"];
+                                                           [self presentViewController:profileController animated:YES completion:NULL];
+                                                           
+                                                       }];
+    
+    UIAlertAction* dismissAction = [UIAlertAction actionWithTitle:@"No, maybe later" style:UIAlertActionStyleDefault
+                                                          handler:^(UIAlertAction * action) {
+                                                              
+                                                              [self  dismissViewControllerAnimated:alert completion:nil];
+                                                              
+                                                              
+                                                          }];
+    
+    [alert addAction:addAction];
+    [alert addAction:dismissAction];
+    [self  presentViewController:alert animated:YES completion:nil];
+    
+}
+
+
+- (IBAction)gearButtonPressed:(id)sender {
+    
+    UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
+
+    
+    ProfileDetailsViewController *profileController = [storyboard instantiateViewControllerWithIdentifier:@"profileDetails"];
+    [self presentViewController:profileController animated:YES completion:NULL];
+    
+    
+}
 @end

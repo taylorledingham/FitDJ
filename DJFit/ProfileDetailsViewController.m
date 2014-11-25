@@ -59,7 +59,7 @@
     [self saveHeightIntoHealthStore:height];
     [self saveWeightIntoHealthStore:weight];
     self.navigationController.navigationBar.hidden = NO;
-    [self.navigationController popViewControllerAnimated:YES];
+    [self dismissViewControllerAnimated:YES completion:nil];
     
     
 }
