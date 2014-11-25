@@ -74,7 +74,7 @@ static NSString * const reuseIdentifier = @"Cell";
 
 -(BOOL)shouldPerformSegueWithIdentifier:(NSString *)identifier sender:(id)sender {
     if([identifier isEqualToString:@"playWorkout"]) {
-        return NO;
+        //return NO;
     }
     
     return YES;
@@ -147,7 +147,7 @@ static NSString * const reuseIdentifier = @"Cell";
         WorkoutTypeCollectionViewCell * workoutCell = (WorkoutTypeCollectionViewCell *)[self.collectionView cellForItemAtIndexPath:indexPath];
         CFTimeInterval currentTime = CFAbsoluteTimeGetCurrent();
         NSLog(@"current: %f", currentTime);
-        if(currentTime - longPressTimeInterval < 0.5 && indexPath!=nil ){
+        if(currentTime - longPressTimeInterval < 0.6 && indexPath!=nil ){
             
             [self performSegueWithIdentifier:@"playWorkout" sender:workoutCell];
         }

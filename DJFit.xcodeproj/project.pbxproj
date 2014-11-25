@@ -47,14 +47,6 @@
 		90E0CC1E1A1BD34800F73FA8 /* PlayWorkoutViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 90E0CC1D1A1BD34800F73FA8 /* PlayWorkoutViewController.m */; };
 		90E0CC211A1BDC8700F73FA8 /* Workout.m in Sources */ = {isa = PBXBuildFile; fileRef = 90E0CC201A1BDC8700F73FA8 /* Workout.m */; };
 		90E0CC241A1BE59800F73FA8 /* MusicPickerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 90E0CC231A1BE59800F73FA8 /* MusicPickerViewController.m */; };
-		90E870961A23C01F00AF624B /* WatchKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 90E870951A23C01F00AF624B /* WatchKit.framework */; };
-		90E8709D1A23C01F00AF624B /* InterfaceController.m in Sources */ = {isa = PBXBuildFile; fileRef = 90E8709C1A23C01F00AF624B /* InterfaceController.m */; };
-		90E870A01A23C01F00AF624B /* NotificationController.m in Sources */ = {isa = PBXBuildFile; fileRef = 90E8709F1A23C01F00AF624B /* NotificationController.m */; };
-		90E870A21A23C01F00AF624B /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 90E870A11A23C01F00AF624B /* Images.xcassets */; };
-		90E870A61A23C01F00AF624B /* DJFit Watch App.app in Resources */ = {isa = PBXBuildFile; fileRef = 90E870A51A23C01F00AF624B /* DJFit Watch App.app */; };
-		90E870AD1A23C01F00AF624B /* Interface.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 90E870AC1A23C01F00AF624B /* Interface.storyboard */; };
-		90E870AF1A23C01F00AF624B /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 90E870AE1A23C01F00AF624B /* Images.xcassets */; };
-		90E870B21A23C01F00AF624B /* DJFit WatchKit Extension.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = 90E870941A23C01F00AF624B /* DJFit WatchKit Extension.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		90E89AC51A22A1CE0096FCDB /* WorkoutCollectionViewFlowLayout.m in Sources */ = {isa = PBXBuildFile; fileRef = 90E89AC41A22A1CE0096FCDB /* WorkoutCollectionViewFlowLayout.m */; };
 		90E89ACB1A22E0300096FCDB /* SimpleBarChart.m in Sources */ = {isa = PBXBuildFile; fileRef = 90E89ACA1A22E0300096FCDB /* SimpleBarChart.m */; };
 		F068469F1A848B4C48500388 /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 9194DB313DE51473F899526D /* libPods.a */; };
@@ -68,20 +60,6 @@
 			remoteGlobalIDString = 900D22461A1A91CB00A9E5EB;
 			remoteInfo = DJFit;
 		};
-		90E870A71A23C01F00AF624B /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 900D223F1A1A91CB00A9E5EB /* Project object */;
-			proxyType = 1;
-			remoteGlobalIDString = 90E870A41A23C01F00AF624B;
-			remoteInfo = "DJFit Watch App";
-		};
-		90E870B01A23C01F00AF624B /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 900D223F1A1A91CB00A9E5EB /* Project object */;
-			proxyType = 1;
-			remoteGlobalIDString = 90E870931A23C01F00AF624B;
-			remoteInfo = "DJFit WatchKit Extension";
-		};
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -91,7 +69,6 @@
 			dstPath = "";
 			dstSubfolderSpec = 13;
 			files = (
-				90E870B21A23C01F00AF624B /* DJFit WatchKit Extension.appex in Embed App Extensions */,
 			);
 			name = "Embed App Extensions";
 			runOnlyForDeploymentPostprocessing = 0;
@@ -167,7 +144,6 @@
 		90E0CC201A1BDC8700F73FA8 /* Workout.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = Workout.m; path = DJFit/Workout.m; sourceTree = "<group>"; };
 		90E0CC221A1BE59800F73FA8 /* MusicPickerViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MusicPickerViewController.h; sourceTree = "<group>"; };
 		90E0CC231A1BE59800F73FA8 /* MusicPickerViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MusicPickerViewController.m; sourceTree = "<group>"; };
-		90E870941A23C01F00AF624B /* DJFit WatchKit Extension.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = "DJFit WatchKit Extension.appex"; sourceTree = BUILT_PRODUCTS_DIR; };
 		90E870951A23C01F00AF624B /* WatchKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = WatchKit.framework; path = System/Library/Frameworks/WatchKit.framework; sourceTree = SDKROOT; };
 		90E870991A23C01F00AF624B /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		90E8709A1A23C01F00AF624B /* PushNotificationPayload.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = PushNotificationPayload.json; sourceTree = "<group>"; };
@@ -176,7 +152,6 @@
 		90E8709E1A23C01F00AF624B /* NotificationController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = NotificationController.h; sourceTree = "<group>"; };
 		90E8709F1A23C01F00AF624B /* NotificationController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = NotificationController.m; sourceTree = "<group>"; };
 		90E870A11A23C01F00AF624B /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
-		90E870A51A23C01F00AF624B /* DJFit Watch App.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "DJFit Watch App.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		90E870AB1A23C01F00AF624B /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		90E870AC1A23C01F00AF624B /* Interface.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = Interface.storyboard; sourceTree = "<group>"; };
 		90E870AE1A23C01F00AF624B /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
@@ -215,14 +190,6 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		90E870911A23C01F00AF624B /* Frameworks */ = {
-			isa = PBXFrameworksBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				90E870961A23C01F00AF624B /* WatchKit.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -283,8 +250,6 @@
 			children = (
 				900D22471A1A91CB00A9E5EB /* DJFit.app */,
 				900D22631A1A91CC00A9E5EB /* DJFitTests.xctest */,
-				90E870941A23C01F00AF624B /* DJFit WatchKit Extension.appex */,
-				90E870A51A23C01F00AF624B /* DJFit Watch App.app */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -455,7 +420,6 @@
 			buildRules = (
 			);
 			dependencies = (
-				90E870B11A23C01F00AF624B /* PBXTargetDependency */,
 			);
 			name = DJFit;
 			productName = DJFit;
@@ -480,39 +444,6 @@
 			productReference = 900D22631A1A91CC00A9E5EB /* DJFitTests.xctest */;
 			productType = "com.apple.product-type.bundle.unit-test";
 		};
-		90E870931A23C01F00AF624B /* DJFit WatchKit Extension */ = {
-			isa = PBXNativeTarget;
-			buildConfigurationList = 90E870B81A23C01F00AF624B /* Build configuration list for PBXNativeTarget "DJFit WatchKit Extension" */;
-			buildPhases = (
-				90E870901A23C01F00AF624B /* Sources */,
-				90E870911A23C01F00AF624B /* Frameworks */,
-				90E870921A23C01F00AF624B /* Resources */,
-			);
-			buildRules = (
-			);
-			dependencies = (
-				90E870A81A23C01F00AF624B /* PBXTargetDependency */,
-			);
-			name = "DJFit WatchKit Extension";
-			productName = "DJFit WatchKit Extension";
-			productReference = 90E870941A23C01F00AF624B /* DJFit WatchKit Extension.appex */;
-			productType = "com.apple.product-type.watchkit-extension";
-		};
-		90E870A41A23C01F00AF624B /* DJFit Watch App */ = {
-			isa = PBXNativeTarget;
-			buildConfigurationList = 90E870B71A23C01F00AF624B /* Build configuration list for PBXNativeTarget "DJFit Watch App" */;
-			buildPhases = (
-				90E870A31A23C01F00AF624B /* Resources */,
-			);
-			buildRules = (
-			);
-			dependencies = (
-			);
-			name = "DJFit Watch App";
-			productName = "DJFit Watch App";
-			productReference = 90E870A51A23C01F00AF624B /* DJFit Watch App.app */;
-			productType = "com.apple.product-type.application.watchapp";
-		};
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
@@ -535,13 +466,6 @@
 						CreatedOnToolsVersion = 6.1;
 						TestTargetID = 900D22461A1A91CB00A9E5EB;
 					};
-					90E870931A23C01F00AF624B = {
-						CreatedOnToolsVersion = 6.2;
-						DevelopmentTeam = S8X486LY33;
-					};
-					90E870A41A23C01F00AF624B = {
-						CreatedOnToolsVersion = 6.2;
-					};
 				};
 			};
 			buildConfigurationList = 900D22421A1A91CB00A9E5EB /* Build configuration list for PBXProject "DJFit" */;
@@ -559,8 +483,6 @@
 			targets = (
 				900D22461A1A91CB00A9E5EB /* DJFit */,
 				900D22621A1A91CC00A9E5EB /* DJFitTests */,
-				90E870931A23C01F00AF624B /* DJFit WatchKit Extension */,
-				90E870A41A23C01F00AF624B /* DJFit Watch App */,
 			);
 		};
 /* End PBXProject section */
@@ -582,24 +504,6 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		90E870921A23C01F00AF624B /* Resources */ = {
-			isa = PBXResourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				90E870A21A23C01F00AF624B /* Images.xcassets in Resources */,
-				90E870A61A23C01F00AF624B /* DJFit Watch App.app in Resources */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		90E870A31A23C01F00AF624B /* Resources */ = {
-			isa = PBXResourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				90E870AD1A23C01F00AF624B /* Interface.storyboard in Resources */,
-				90E870AF1A23C01F00AF624B /* Images.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -677,15 +581,6 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		90E870901A23C01F00AF624B /* Sources */ = {
-			isa = PBXSourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				90E870A01A23C01F00AF624B /* NotificationController.m in Sources */,
-				90E8709D1A23C01F00AF624B /* InterfaceController.m in Sources */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
@@ -693,16 +588,6 @@
 			isa = PBXTargetDependency;
 			target = 900D22461A1A91CB00A9E5EB /* DJFit */;
 			targetProxy = 900D22641A1A91CC00A9E5EB /* PBXContainerItemProxy */;
-		};
-		90E870A81A23C01F00AF624B /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			target = 90E870A41A23C01F00AF624B /* DJFit Watch App */;
-			targetProxy = 90E870A71A23C01F00AF624B /* PBXContainerItemProxy */;
-		};
-		90E870B11A23C01F00AF624B /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			target = 90E870931A23C01F00AF624B /* DJFit WatchKit Extension */;
-			targetProxy = 90E870B01A23C01F00AF624B /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
 
@@ -822,6 +707,10 @@
 					"$(inherited)",
 					"-lstdc++",
 				);
+				"OTHER_LDFLAGS[arch=*]" = (
+					"$(inherited)",
+					"-lstdc++",
+				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
 			};
@@ -847,7 +736,10 @@
 					"$(inherited)",
 					"-lstdc++",
 				);
-				"OTHER_LDFLAGS[arch=*]" = "$(inherited)";
+				"OTHER_LDFLAGS[arch=*]" = (
+					"$(inherited)",
+					"-lstdc++",
+				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
 			};
@@ -887,70 +779,6 @@
 			};
 			name = Release;
 		};
-		90E870B31A23C01F00AF624B /* Debug */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				CODE_SIGN_IDENTITY = "iPhone Developer";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
-				GCC_PREPROCESSOR_DEFINITIONS = (
-					"DEBUG=1",
-					"$(inherited)",
-				);
-				INFOPLIST_FILE = "DJFit WatchKit Extension/Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 8.1;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @executable_path/../../Frameworks";
-				PRODUCT_NAME = "${TARGET_NAME}";
-				SKIP_INSTALL = YES;
-			};
-			name = Debug;
-		};
-		90E870B41A23C01F00AF624B /* Release */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				CODE_SIGN_IDENTITY = "iPhone Developer";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
-				INFOPLIST_FILE = "DJFit WatchKit Extension/Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 8.1;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @executable_path/../../Frameworks";
-				PRODUCT_NAME = "${TARGET_NAME}";
-				SKIP_INSTALL = YES;
-			};
-			name = Release;
-		};
-		90E870B51A23C01F00AF624B /* Debug */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
-				GCC_PREPROCESSOR_DEFINITIONS = (
-					"DEBUG=1",
-					"$(inherited)",
-				);
-				IBSC_MODULE = DJFit_WatchKit_Extension;
-				INFOPLIST_FILE = "DJFit Watch App/Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 8.1;
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				SKIP_INSTALL = YES;
-				TARGETED_DEVICE_FAMILY = 4;
-				"TARGETED_DEVICE_FAMILY[sdk=iphonesimulator*]" = "1,4";
-			};
-			name = Debug;
-		};
-		90E870B61A23C01F00AF624B /* Release */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
-				IBSC_MODULE = DJFit_WatchKit_Extension;
-				INFOPLIST_FILE = "DJFit Watch App/Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 8.1;
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				SKIP_INSTALL = YES;
-				TARGETED_DEVICE_FAMILY = 4;
-				"TARGETED_DEVICE_FAMILY[sdk=iphonesimulator*]" = "1,4";
-			};
-			name = Release;
-		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
@@ -977,24 +805,6 @@
 			buildConfigurations = (
 				900D22711A1A91CC00A9E5EB /* Debug */,
 				900D22721A1A91CC00A9E5EB /* Release */,
-			);
-			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Release;
-		};
-		90E870B71A23C01F00AF624B /* Build configuration list for PBXNativeTarget "DJFit Watch App" */ = {
-			isa = XCConfigurationList;
-			buildConfigurations = (
-				90E870B51A23C01F00AF624B /* Debug */,
-				90E870B61A23C01F00AF624B /* Release */,
-			);
-			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Release;
-		};
-		90E870B81A23C01F00AF624B /* Build configuration list for PBXNativeTarget "DJFit WatchKit Extension" */ = {
-			isa = XCConfigurationList;
-			buildConfigurations = (
-				90E870B31A23C01F00AF624B /* Debug */,
-				90E870B41A23C01F00AF624B /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;

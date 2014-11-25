@@ -81,10 +81,10 @@
         TimeInterval * time1 = (TimeInterval *)obj1;
         TimeInterval * time2 = (TimeInterval *)obj2;
         
-        if(time1 > time2){
+        if(time1.index > time2.index){
             return NSOrderedDescending;
         }
-        else if(time2 == time1){
+        else if(time2.index == time1.index){
             return NSOrderedSame;
         }
         else {

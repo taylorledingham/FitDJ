@@ -11,12 +11,12 @@
                 <controller id="AgC-eL-Hgc" customClass="InterfaceController">
                     <items>
                         <button width="45" height="45" alignment="left" verticalAlignment="center" backgroundImage="playButton" id="Q6d-30-ZSm"/>
-                        <label width="134" alignment="left" text="song title" textAlignment="center" id="xZf-Vk-Hpr"/>
                         <button width="45" height="45" alignment="left" verticalAlignment="bottom" backgroundImage="nextButton" id="fuY-ba-kuf"/>
-                        <button width="45" height="45" alignment="left" backgroundImage="prevButton" id="lwj-7L-atd"/>
+                        <label width="134" alignment="left" text="song title" textAlignment="center" id="xZf-Vk-Hpr"/>
                         <timer width="58" alignment="right" id="wu6-Ds-cWw">
                             <calendarUnit key="units" minute="YES" second="YES"/>
                         </timer>
+                        <button width="45" height="45" alignment="left" backgroundImage="prevButton" id="lwj-7L-atd"/>
                     </items>
                 </controller>
             </objects>

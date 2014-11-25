@@ -209,9 +209,8 @@ typedef enum : NSInteger {
     [timeSliderLabel removeFromSuperview];
     editingTimeCell = nil;
     editingTimeCellIndexPath = nil;
-    UILabel *time = [self getTimeLabelByTag:[self getIndexForSectionIndex:editingTimeCellIndexPath.section]];
-    UILabel *timeText = [self getTimeTextLabelByTag:[self getIndexForSectionIndex:editingTimeCellIndexPath.section]];
-    time.hidden = NO;
+    UILabel *timeText = [self getTimeTextLabelByTag:[self getIndexForSectionIndex:timeLabelIndex]];
+    timeCellLabel.hidden = NO;
     timeText.hidden = NO;
     [self.tableView beginUpdates];
     [self.tableView endUpdates];

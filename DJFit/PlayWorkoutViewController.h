@@ -11,8 +11,6 @@
 #import "TLCoreDataStack.h"
 #import <AVFoundation/AVFoundation.h>
 #import "MusicPickerViewController.h"
-#import "JBChartView/JBChartView.h"
-#import "JBChartView/JBBarChartView.h"
 #import "SimpleBarChart.h"
 
 
