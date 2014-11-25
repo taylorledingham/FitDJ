@@ -47,7 +47,6 @@
 		90E0CC1E1A1BD34800F73FA8 /* PlayWorkoutViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 90E0CC1D1A1BD34800F73FA8 /* PlayWorkoutViewController.m */; };
 		90E0CC211A1BDC8700F73FA8 /* Workout.m in Sources */ = {isa = PBXBuildFile; fileRef = 90E0CC201A1BDC8700F73FA8 /* Workout.m */; };
 		90E0CC241A1BE59800F73FA8 /* MusicPickerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 90E0CC231A1BE59800F73FA8 /* MusicPickerViewController.m */; };
-		90E89AC51A22A1CE0096FCDB /* WorkoutCollectionViewFlowLayout.m in Sources */ = {isa = PBXBuildFile; fileRef = 90E89AC41A22A1CE0096FCDB /* WorkoutCollectionViewFlowLayout.m */; };
 		90E89ACB1A22E0300096FCDB /* SimpleBarChart.m in Sources */ = {isa = PBXBuildFile; fileRef = 90E89ACA1A22E0300096FCDB /* SimpleBarChart.m */; };
 		F068469F1A848B4C48500388 /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 9194DB313DE51473F899526D /* libPods.a */; };
 /* End PBXBuildFile section */
@@ -155,8 +154,6 @@
 		90E870AB1A23C01F00AF624B /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		90E870AC1A23C01F00AF624B /* Interface.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = Interface.storyboard; sourceTree = "<group>"; };
 		90E870AE1A23C01F00AF624B /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
-		90E89AC31A22A1CE0096FCDB /* WorkoutCollectionViewFlowLayout.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WorkoutCollectionViewFlowLayout.h; sourceTree = "<group>"; };
-		90E89AC41A22A1CE0096FCDB /* WorkoutCollectionViewFlowLayout.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WorkoutCollectionViewFlowLayout.m; sourceTree = "<group>"; };
 		90E89AC91A22E0300096FCDB /* SimpleBarChart.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SimpleBarChart.h; path = Pods/SimpleBarChart.h; sourceTree = "<group>"; };
 		90E89ACA1A22E0300096FCDB /* SimpleBarChart.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SimpleBarChart.m; path = Pods/SimpleBarChart.m; sourceTree = "<group>"; };
 		9194DB313DE51473F899526D /* libPods.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libPods.a; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -269,8 +266,6 @@
 				9087D5CC1A1ACFE300C3C5BD /* WorkoutViewController.m */,
 				9087D5CE1A1AD02A00C3C5BD /* WorkoutsCollectionViewController.h */,
 				9087D5CF1A1AD02A00C3C5BD /* WorkoutsCollectionViewController.m */,
-				90E89AC31A22A1CE0096FCDB /* WorkoutCollectionViewFlowLayout.h */,
-				90E89AC41A22A1CE0096FCDB /* WorkoutCollectionViewFlowLayout.m */,
 				90D3991F1A1E7B5200960359 /* AddWorkoutCollectionViewCell.h */,
 				90D399201A1E7B5200960359 /* AddWorkoutCollectionViewCell.m */,
 				900D22571A1A91CC00A9E5EB /* Main.storyboard */,
@@ -547,7 +542,6 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				90E89AC51A22A1CE0096FCDB /* WorkoutCollectionViewFlowLayout.m in Sources */,
 				90D399211A1E7B5200960359 /* AddWorkoutCollectionViewCell.m in Sources */,
 				9041605D1A1B0D4C0037B130 /* Song.m in Sources */,
 				90671DBA1A218B2100CBBE26 /* AddTimeWorkoutTableViewController.m in Sources */,

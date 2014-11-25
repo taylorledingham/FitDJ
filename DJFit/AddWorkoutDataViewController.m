@@ -146,10 +146,10 @@ typedef enum : NSInteger {
         if(timeViewCreated == NO){
         timeView = [[UIView alloc]initWithFrame:CGRectMake(0, 0, cell.frame.size.width, 50)];
         timeView.backgroundColor = [UIColor colorWithRed:0.553f green:0.235f blue:0.749f alpha:1.00f];
-            timeSliderLabel = [[UILabel alloc]initWithFrame:CGRectMake(0, 0, cell.frame.size.width, 50)];
+            timeSliderLabel = [[UILabel alloc]initWithFrame:CGRectMake(cell.center.x-10, 0, cell.frame.size.width, 50)];
             timeSliderLabel.textColor = [UIColor whiteColor];
             timeSliderLabel.text = @"00:00";
-            timeSliderLabel.font = [UIFont fontWithName:@"system" size:20];
+            timeSliderLabel.font = [UIFont fontWithName:@"system" size:25];
         [timeView addSubview:timeSliderLabel];
         [timeView addGestureRecognizer:timePanViewGesture];
         [cell addSubview:timeView];
@@ -158,7 +158,7 @@ typedef enum : NSInteger {
             editingTimeCellIndexPath = indexPath;
         
         UILabel *time = [self getTimeLabelByTag:[self getIndexForSectionIndex:editingTimeCellIndexPath.section]];
-        UILabel *timeText = [self getTimeTextLabelByTag:[self getIndexForSectionIndex:editingTimeCellIndexPath.section]];
+        UILabel *timeText = [self getTimeTextLabelByTag:[self getIndexForSectionIndex:editingTimeCellIndexPath.section+4]];
             time.hidden = YES;
             timeText.hidden = YES;
         }
@@ -209,7 +209,7 @@ typedef enum : NSInteger {
     [timeSliderLabel removeFromSuperview];
     editingTimeCell = nil;
     editingTimeCellIndexPath = nil;
-    UILabel *timeText = [self getTimeTextLabelByTag:[self getIndexForSectionIndex:timeLabelIndex]];
+    UILabel *timeText = [self getTimeTextLabelByTag:[self getIndexForSectionIndex:timeLabelIndex+4]];
     timeCellLabel.hidden = NO;
     timeText.hidden = NO;
     [self.tableView beginUpdates];
@@ -225,8 +225,8 @@ typedef enum : NSInteger {
             break;
         case UIGestureRecognizerStateChanged:
             NSLog(@"changed: %f", elevation);
-            if(elevation <= 0){
-                gesture.view.center = CGPointMake(gesture.view.center.x, cellOrigin.y);
+            if(elevation <= 25.0){
+                gesture.view.center = CGPointMake(gesture.view.center.x, cellOrigin.y+25.0);
             } else if(elevation <= 375.00){
                 NSLog(@"[gesture locationInView:gesture.view]: %f", [gesture locationInView:gesture.view.superview].y);
                 gesture.view.center = CGPointMake(gesture.view.center.x, [gesture locationInView:gesture.view.superview].y);
@@ -244,8 +244,14 @@ typedef enum : NSInteger {
             break;
     }
     
+    float timeVal = gesture.view.center.y/20 - 1.5;
+    float rounded = timeVal < 0.5f ? 0.5f : floorf(timeVal * 2) / 2;
+    NSLog(@"%f", fmodf(rounded, 1.0));
+    if(fmodf(rounded, 1.0) > 0){
+        rounded = rounded - 0.20;
+    }
     
-    timeSliderLabel.text = [NSString stringWithFormat:@"%.2f", gesture.view.center.y/20];
+    timeSliderLabel.text = [NSString stringWithFormat:@"%.2f", rounded];
 
 
 }

@@ -23,6 +23,7 @@
 @property (strong, nonatomic) IBOutletCollection(UILabel) NSArray *cellTimeLabel;
 @property (strong, nonatomic) IBOutletCollection(UILabel) NSArray *cellTimeTextLabel;
 
+
 - (IBAction)speedTextViewDidBeginEditing:(id)sender;
 - (IBAction)donePressed:(id)sender;
 @end

@@ -29,6 +29,7 @@
 @property (weak, nonatomic) IBOutlet UILabel *caloriesLabel;
 @property (weak, nonatomic) IBOutlet UILabel *durationLabel;
 @property (weak, nonatomic) IBOutlet UILabel *startStopLabel;
+@property (weak, nonatomic) IBOutlet UILabel *calorieLabel;
 
 @property (weak, nonatomic) IBOutlet UIView *barChartView;
 
