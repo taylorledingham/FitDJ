@@ -79,7 +79,7 @@
     
     picker.delegate  = self;
     picker.allowsPickingMultipleItems = YES;
-    picker.prompt      = NSLocalizedString (@"AddSongsPrompt", @"Prompt to user to choose some songs to play");
+//    picker.prompt      = NSLocalizedString (@"AddSongsPrompt", @"Prompt to user to choose some songs to play");
     picker.showsCloudItems = NO;
     [self presentViewController:picker animated:YES completion:nil];
 }

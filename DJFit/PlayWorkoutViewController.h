@@ -36,10 +36,8 @@
 
 
 
-- (IBAction)startWorkoutPressed:(id)sender;
 - (IBAction)previousSelected:(id)sender;
 - (IBAction)playPauseSelected:(id)sender;
-
 - (IBAction)nextSelected:(id)sender;
 
 

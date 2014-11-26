@@ -91,6 +91,11 @@
     }
 }
 
+-(void)playFirstItem:(double)rate {
+    nowPlayingIndex = 0;
+    [self playPreviousItemWithRate:rate];
+}
+
 -(int)getIndex
 {
     // This method simply returns the now playing index

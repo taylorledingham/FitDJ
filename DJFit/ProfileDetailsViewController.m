@@ -56,6 +56,8 @@
     
     double height = [profileTableVC.heightTextField.text doubleValue];
     double weight = [profileTableVC.weightTextField.text doubleValue];
+    [[NSUserDefaults standardUserDefaults] setValue:@(height) forKey:@"height" ];
+    [[NSUserDefaults standardUserDefaults] setValue:@(weight) forKey:@"weight"];
     [self saveHeightIntoHealthStore:height];
     [self saveWeightIntoHealthStore:weight];
     self.navigationController.navigationBar.hidden = NO;

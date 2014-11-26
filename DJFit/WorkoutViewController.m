@@ -17,12 +17,7 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    // Do any additional setup after loading the view.
-//    UIStoryboard *sb = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
-//    
-//    ProfileDetailsViewController *profileVC = [sb instantiateViewControllerWithIdentifier:@"profileDetails"];
-//    
-//    [self.navigationController pushViewController:profileVC animated:YES];
+
     if ([[NSUserDefaults standardUserDefaults] boolForKey:@"HasLaunchedOnce"] == NO){
         [[NSUserDefaults standardUserDefaults] setBool:YES forKey:@"HasLaunchedOnce"];
         [[NSUserDefaults standardUserDefaults] synchronize];
@@ -30,6 +25,8 @@
         
     }
     self.title = @"My Workouts";
+    
+    self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc]initWithImage:[UIImage imageNamed:@"whiteGearIcon"] style:UIBarButtonItemStylePlain target:self action:@selector(gearButtonPressed:)];
     
 }
 

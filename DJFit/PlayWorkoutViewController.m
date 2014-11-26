@@ -19,6 +19,11 @@
 
 @property (strong, nonatomic) AVQueuePlayerPrevious *queuePlayer;
 @property (strong, nonatomic) SimpleBarChart *chart;
+@property ( nonatomic) float weight;
+@property (nonatomic) float height;
+@property (nonatomic) double caloriesBurned;
+@property (strong, nonatomic) MPNowPlayingInfoCenter *mediaCenter;
+
 
 @end
 
@@ -31,6 +36,7 @@
     BOOL musicPicked;
     double timeInMilliSeconds;
     double currentIntervalInMilliSeconds;
+    double timePassedInMilliSeconds;
     NSTimer *totalWorkoutTimer;
     NSTimer *currentIntervalTimer;
     NSNumberFormatter *formatter;
@@ -41,36 +47,74 @@
     NSInteger currentTimeIntervalIndex;
     NSArray *timeIntervalsArray;
     Song *currentPlayingSong;
+    AVSpeechUtterance *utterance;
+    AVSpeechSynthesizer *synth;
+    
     
 }
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    // Do any additional setup after loading the view.
     self.navigationController.navigationBar.hidden = YES;
-    timeInMilliSeconds = ([self.workout.workoutDuration doubleValue] * 60 * 1000);
-    TimeInterval *firstinterval = timeIntervalsArray[0];
-    currentIntervalInMilliSeconds = ([firstinterval.start doubleValue] * 60 * 1000);
-     formatter = [[NSNumberFormatter alloc] init];
     timerHasStarted = NO;
     playerIsPlaying = NO;
+    currentTimeIntervalIndex = 0;
     avPlayerItemsArray = [[NSMutableArray alloc]init];
+    [self setWorkoutDetails];
+    [self loadPlaylist];
+    [self setUpQueuePlayer];
+    [self displayTime:timeInMilliSeconds onLabel:self.durationLabel];
+    timePassedInMilliSeconds = 0;
+    [self setUpGraph];
+    synth = [[AVSpeechSynthesizer alloc] init];
+
+    
+}
+    
+    
+-(void)setUpQueuePlayer{
+    
+    self.queuePlayer = [[AVQueuePlayerPrevious alloc]init];
     self.queuePlayer = [[AVQueuePlayerPrevious alloc]initWithItems:avPlayerItemsArray];
     [self.queuePlayer addObserver:self forKeyPath:@"status" options:0 context:nil];
-    [self displayTime:timeInMilliSeconds onLabel:self.durationLabel];
-    [self loadPlaylist];
+    currentSongRate = 1.0;
+    self.mediaCenter = [MPNowPlayingInfoCenter defaultCenter];
+    
+    self.queuePlayer.actionAtItemEnd = AVPlayerActionAtItemEndNone;
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(playerItemDidReachEnd:)
+                                                 name:AVPlayerItemDidPlayToEndTimeNotification
+                                               object:[self.queuePlayer currentItem]];
+    
+    
+    NSLog(@"playlist: %@", self.workout.playlist.playlistName);
+    [[UIApplication sharedApplication] beginReceivingRemoteControlEvents];
+    [self becomeFirstResponder];
+    [[AVAudioSession sharedInstance] setCategory:AVAudioSessionCategoryPlayback error:nil];
+    [[AVAudioSession sharedInstance] setActive: YES error: nil];
+    
+}
+
+-(void)setWorkoutDetails {
+    
+    if([self.workout.workoutType  isEqual: @"timed"] || [self.workout.workoutType  isEqual: @"distance"]){
+        
+    }
+    
+    currentTimeIntervalIndex = 0;
+    timePassedInMilliSeconds = 0;
     timeIntervalsArray = [[NSArray alloc]init];
     timeIntervalsArray = [self.workout.timeIntervals allObjects];
     [self sortTimeIntervalArray];
-    currentSongRate = 1.0;
-    currentTimeIntervalIndex = 0;
-    [self setUpGraph];
-    //MusicPickerViewController *musicPickerVC = [[MusicPickerViewController alloc]init];
-    //[self presentViewController:musicPickerVC animated:NO completion:nil];
-    [self setWorkoutDetails];
-    NSLog(@"playlist: %@", self.workout.playlist.playlistName);
-    
-    
+    timeInMilliSeconds = ([self.workout.workoutDuration doubleValue] * 60 * 1000);
+    TimeInterval *firstinterval = timeIntervalsArray[0];
+    currentIntervalInMilliSeconds = ([firstinterval.start doubleValue] * 60 * 1000);
+    formatter = [[NSNumberFormatter alloc] init];
+    self.caloriesBurned = 0;
+    self.speedLabel.text = [NSString stringWithFormat:@"%.1f MPH",[firstinterval.speed floatValue]];
+    self.inclineLabel.text = [NSString stringWithFormat:@"%.1f%%",[firstinterval.incline floatValue]];
+
     
 }
 
@@ -96,7 +140,7 @@
 
 -(void)setUpGraph {
     
-    self.chart = [[SimpleBarChart alloc]initWithFrame:CGRectMake(0, 0, self.barChartView.frame.size.width, 150)];
+    self.chart = [[SimpleBarChart alloc]initWithFrame:CGRectMake(0, 0, self.barChartView.frame.size.width+10, 160)];
     [self.barChartView addSubview:self.chart];
     
     self.chart.delegate = self;
@@ -104,6 +148,10 @@
     self.chart.backgroundColor = [UIColor colorWithRed:0.847f green:0.847f blue:0.847f alpha:1.00f];
     self.chart.gridColor = [UIColor colorWithRed:0.847f green:0.847f blue:0.847f alpha:1.00f];
     self.chart.barWidth	= 18.0;
+    if([self.workout.workoutType  isEqual: @"timed"] || [self.workout.workoutType  isEqual: @"distance"]){
+        self.chart.barWidth	= 50;
+
+    }
     self.chart.incrementValue = 1;
     [self.chart reloadData];
 }
@@ -126,23 +174,15 @@
     
 }
 
--(void)calculateCalories {
-    
-    
-    
-}
-
-
 -(void)loadPlaylist {
-    
-   
-    
+
     for (Song *song in self.workout.playlist.playlistSongs) {
         
         AVURLAsset *urlAsset = [[AVURLAsset alloc] initWithURL:[NSURL URLWithString: song.songURL] options:nil];
 
         self.songTitleLabel.text = song.songTitle;
-        double newBPM = [Song lookUpBPMForSpeed:4.0 andWorkoutType:@"treadmill"];
+        TimeInterval *firstTime = [timeIntervalsArray firstObject];
+        double newBPM = [Song lookUpBPMForSpeed:[firstTime.speed doubleValue] andWorkoutType:@"treadmill"];
         currentSongRate = newBPM / [song.bpm doubleValue];
         
         NSArray *keyArray = [[NSArray alloc] initWithObjects:@"tracks", nil];
@@ -151,31 +191,16 @@
             
             AVPlayerItem *playerItem = [[AVPlayerItem alloc] initWithAsset:urlAsset];
             [playerItem addObserver:self forKeyPath:NSStringFromSelector(@selector(status)) options:0 context:nil];
-            [playerItem addObserver:self forKeyPath:NSStringFromSelector
-             (@selector(playbackBufferEmpty)) options:0 context:nil];
             [avPlayerItemsArray addObject:playerItem];
             [self.queuePlayer insertItem:playerItem afterItem:nil];
             
         }];
-
-        
-        
     }
     
     [self.queuePlayer pause];
-
-    
-    
-    
 }
 
--(void)setWorkoutDetails {
-    
-   // self.speedLabel.text = [NSString stringWithFormat:@"Speed: 8.0MPH"];
-    //self.inclineLabel.text = [NSString stringWithFormat:@"Incline: 0%%"];
-    
-    
-}
+
 
 -(Song *)getSongFromURL:(NSURL*)assetURL {
     
@@ -210,6 +235,8 @@
 
 -(void)updateTimer:(NSTimer *)timer {
     timeInMilliSeconds = timeInMilliSeconds -  10 ;
+    timePassedInMilliSeconds += 10;
+    //[self calculateCaloriesSinceSecondsPassed:timePassedInMilliSeconds * 0.001];
     [self displayTime:timeInMilliSeconds onLabel:self.durationLabel];
     if(timeInMilliSeconds <=0) {
         [self.queuePlayer pause];
@@ -220,6 +247,7 @@
 -(void)updateCurrentIntervalTimer:(NSTimer *)timer {
     currentIntervalInMilliSeconds = currentIntervalInMilliSeconds - 10;
     [self displayTime:currentIntervalInMilliSeconds onLabel:self.currentTimeIntervalLabel];
+    
     if(currentIntervalInMilliSeconds <= 0){
         if(currentTimeIntervalIndex == timeIntervalsArray.count - 1){
             [timer invalidate];
@@ -232,6 +260,7 @@
             [self.chart reloadData];
             double newBPM = [Song lookUpBPMForSpeed:[interval.speed doubleValue] andWorkoutType:@"treadmill"];
             currentSongRate = newBPM / [currentPlayingSong.bpm doubleValue];
+            [self speakTimeInterval];
             self.queuePlayer.rate = currentSongRate;
             self.speedLabel.text = [NSString stringWithFormat:@"%.1f MPH",[interval.speed floatValue]];
             self.inclineLabel.text = [NSString stringWithFormat:@"%.1f%%",[interval.incline floatValue]];
@@ -241,33 +270,42 @@
     
 }
 
-- (IBAction)startWorkoutPressed:(id)sender {
+-(void)calculateCaloriesSinceSecondsPassed:(double)seconds {
     
-//    self.view.alpha = 1.0;
-//    CABasicAnimation *animationWidth = [CABasicAnimation animation];
-//    animationWidth.keyPath = @"size.width";
-//    animationWidth.fromValue = @(self.startWorkoutButton.frame.size.width);
-//    animationWidth.toValue = @0;
-//    CABasicAnimation *animationHeight = [CABasicAnimation animation];
-//    animationHeight.keyPath = @"size.height";
-//    animationHeight.fromValue = @(self.startWorkoutButton.frame.size.height);
-//    animationHeight.toValue = @0;
-//    
-//    CAAnimationGroup *group = [[CAAnimationGroup alloc] init];
-//    group.animations = @[ animationWidth, animationHeight ];
-//    group.duration = 1.2;
-//    group.beginTime = 0.5;
-//    
-//    [self.startWorkoutButton.layer addAnimation:group forKey:@"shrink"];
+    double minutes = seconds / 60;
+    double heightInInches = [[[NSUserDefaults standardUserDefaults] valueForKey:@"height"] doubleValue];
+    double weightInPounds = 150;//[[[NSUserDefaults standardUserDefaults] valueForKey:@"weight"] doubleValue];
+    double weightInKg = weightInPounds/2.2;
+    TimeInterval *currentInterval = [timeIntervalsArray objectAtIndex:currentTimeIntervalIndex];
+    double speedMinPerMins = [currentInterval.speed doubleValue] * 26.8;
+    double incline = [currentInterval.incline doubleValue]/100;
+    double x;
+    if([currentInterval.speed doubleValue] < 3.7){
+        x =  (0.1 * speedMinPerMins) + (1.8 * speedMinPerMins * incline) + 3.5;
+    }
+    else if([currentInterval.speed doubleValue] > 3.7){
+        
+        x =  (0.2 * speedMinPerMins) + (0.9 * speedMinPerMins * incline) + 3.5;
+        
+    }
     
+    double calsPerMin = (x * weightInKg)/200;
     
-   
-    
+    double totalCals = calsPerMin * minutes;
+    self.caloriesBurned = self.caloriesBurned + totalCals;
+    self.calorieLabel.text = [NSString stringWithFormat:@"%.1f", self.caloriesBurned];
 }
+
+
 
 -(void)setNewBPMForSpeed:(double)speed {
     
     
+}
+
+- (void)playerItemDidReachEnd:(NSNotification *)notification {
+    AVPlayerItem *p = [notification object];
+   // [self.queuePlayer playFirstItem:currentSongRate];
 }
 
 - (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context
@@ -285,31 +323,25 @@
         Song *song = [self getSongFromURL:songURL];
             currentPlayingSong = song;
         self.songTitleLabel.text = song.songTitle;
-        double newBPM = [Song lookUpBPMForSpeed:4.0 andWorkoutType:@"treadmill"];
+            TimeInterval *current = [timeIntervalsArray objectAtIndex:currentTimeIntervalIndex];
+        double newBPM = [Song lookUpBPMForSpeed:[current.speed doubleValue] andWorkoutType:@"treadmill"];
          currentSongRate = newBPM / [song.bpm doubleValue];
             NSLog(@"song: %@, rate: %@", song.songTitle, song.bpm);
-            
+            [self updateControlCenterNowPlayingDictionary];
         }
-        
-        //playerItem status value changed?
+
         if ([keyPath isEqualToString:@"status"])
         {   //yes->check it...
             switch(item.status)
             {
                 case AVPlayerItemStatusFailed:
-                   // NSLog(@"player item status failed");
-                   // NSLog(@"failed: %ld", item.status);
                     break;
                 case AVPlayerItemStatusReadyToPlay:
-//                    NSLog(@"player item status is ready to play");
-//                    NSLog(@"ready: %ld", item.status);
                     if ([self isPlayerPlaying]) {
                         self.queuePlayer.rate = currentSongRate;
                     }
                     break;
                 case AVPlayerItemStatusUnknown:
-//                    NSLog(@"player item status is unknown");
-//                    NSLog(@"unknown: %ld", item.status);
                     break;
 
             }
@@ -337,8 +369,53 @@
     
 }
 
+-(void)updateControlCenterNowPlayingDictionary {
+    NSMutableDictionary *nowPlayingInfo = [[NSMutableDictionary alloc] init];
+    [nowPlayingInfo setObject:currentPlayingSong.songTitle forKey:MPMediaItemPropertyTitle];
+    [nowPlayingInfo setObject:[NSNumber numberWithDouble:self.queuePlayer.rate] forKey:MPNowPlayingInfoPropertyPlaybackRate];
+    [MPNowPlayingInfoCenter defaultCenter].nowPlayingInfo = nowPlayingInfo;
+}
+
+- (void)remoteControlReceivedWithEvent:(UIEvent *)receivedEvent {
+    
+    if (receivedEvent.type == UIEventTypeRemoteControl) {
+        
+        switch (receivedEvent.subtype) {
+                
+            case UIEventSubtypeRemoteControlTogglePlayPause:
+                [self playPauseSelected:nil];
+                break;
+                
+            case UIEventSubtypeRemoteControlPreviousTrack:
+                [self previousSelected:nil];
+                break;
+                
+            case UIEventSubtypeRemoteControlNextTrack:
+                [self nextSelected:nil];
+                break;
+                
+            default:
+                break;
+        }
+    }
+}
+
+-(void)speakTimeInterval {
+    TimeInterval *current = [timeIntervalsArray objectAtIndex:currentTimeIntervalIndex];
+    NSString *next = [NSString stringWithFormat:@"set your speed to %@ miles per hour,", current.speed];
+    if(current.incline > 0 && [self.workout.machineType isEqualToString: @"treadmill"]){
+        next = [next stringByAppendingString:[NSString stringWithFormat:@"and set your incline to  %@ percent", current.incline]];
+    }
+    utterance = [AVSpeechUtterance speechUtteranceWithString:next];
+    utterance.rate = AVSpeechUtteranceMinimumSpeechRate;
+   // utterance.voice = [[AVSpeechSynthesisVoice speechVoices] objectAtIndex:3];
+    [synth speakUtterance:utterance];
+    
+}
+
 - (IBAction)previousSelected:(id)sender {
     [self.queuePlayer playPreviousItemWithRate:currentSongRate];
+    
     
 }
 
@@ -352,6 +429,7 @@
         currentIntervalTimer = [NSTimer scheduledTimerWithTimeInterval:.01 target:self selector:@selector(updateCurrentIntervalTimer:) userInfo:nil repeats:YES];
         timerHasStarted = YES;
         self.queuePlayer.rate = currentSongRate;
+        [self speakTimeInterval];
         playerIsPlaying = YES;
     }
     else {
@@ -367,8 +445,6 @@
 }
 - (IBAction)nextSelected:(id)sender {
     [self.queuePlayer advanceToNextItem];
-    
-    
     
 }
 - (IBAction)exitWorkout:(id)sender {
@@ -404,7 +480,6 @@
 -(void)removeObserversFromQueuePlayer{
     for (AVPlayerItem *item in self.queuePlayer.items) {
         [item removeObserver:self forKeyPath:NSStringFromSelector(@selector(status))];
-        [item removeObserver:self forKeyPath:NSStringFromSelector(@selector(playbackBufferEmpty))];
 
     }
     
@@ -433,7 +508,7 @@
 - (NSString *)barChart:(SimpleBarChart *)barChart textForBarAtIndex:(NSUInteger)index
 {
     TimeInterval *time = [timeIntervalsArray objectAtIndex:index];
-    return [time.speed stringValue];
+    return [NSString stringWithFormat:@"%.1f", [time.speed floatValue]];
 }
 
 //- (NSString *)barChart:(SimpleBarChart *)barChart xLabelForBarAtIndex:(NSUInteger)index
@@ -444,34 +519,21 @@
 
 - (UIColor *)barChart:(SimpleBarChart *)barChart colorForBarAtIndex:(NSUInteger)index
 {
-    if(index == currentTimeIntervalIndex){
-        return [UIColor colorWithRed:0.443f green:0.835f blue:0.969f alpha:1.00f];
+    if(index == currentTimeIntervalIndex && timeIntervalsArray.count > 1){
+        return [UIColor colorWithRed:0.000f green:0.627f blue:0.839f alpha:1.00f];
     }
     return (index % 2 == 0) ? [UIColor colorWithRed:0.659f green:0.333f blue:0.945f alpha:1.00f] : [UIColor colorWithRed:0.420f green:0.098f blue:0.486f alpha:1.00f];
 
 }
-#pragma mark - JBBarChartViewDelegate
 
-//- (CGFloat)barChartView:(JBBarChartView *)barChartView heightForBarViewAtIndex:(NSUInteger)index
-//{
-//    TimeInterval *time = [timeIntervalsArray objectAtIndex:index];
-//    return [ time.speed floatValue];
-//}
-//
-//- (UIColor *)barChartView:(JBBarChartView *)barChartView colorForBarViewAtIndex:(NSUInteger)index
-//{
-//    return (index % 2 == 0) ? [UIColor colorWithRed:0.659f green:0.333f blue:0.945f alpha:1.00f] : [UIColor colorWithRed:0.420f green:0.098f blue:0.486f alpha:1.00f];
-//}
-//
-//- (UIColor *)barSelectionColorForBarChartView:(JBBarChartView *)barChartView
-//{
-//    return [UIColor whiteColor];
-//}
-//
-//- (CGFloat)barPaddingForBarChartView:(JBBarChartView *)barChartView
-//{
-//    return 5.0;
-//}
+- (void)viewWillDisappear:(BOOL)animated {
+    
+    // Turn off remote control event delivery
+    [[UIApplication sharedApplication] endReceivingRemoteControlEvents];
+    [self resignFirstResponder];
+    
+    [super viewWillDisappear:animated];
+}
 
 
 @end

@@ -119,10 +119,10 @@
 		904160721A1BB58C0037B130 /* libbass_fx.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libbass_fx.a; sourceTree = "<group>"; };
 		904160731A1BB58C0037B130 /* bass.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = bass.h; sourceTree = "<group>"; };
 		904160741A1BB58C0037B130 /* bassfx.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = bassfx.h; sourceTree = "<group>"; };
-		90671DB81A218B2100CBBE26 /* AddTimeWorkoutTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AddTimeWorkoutTableViewController.h; sourceTree = "<group>"; };
-		90671DB91A218B2100CBBE26 /* AddTimeWorkoutTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AddTimeWorkoutTableViewController.m; sourceTree = "<group>"; };
-		907904C51A250E5300EE30DE /* AddDistanceWorkoutTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AddDistanceWorkoutTableViewController.h; sourceTree = "<group>"; };
-		907904C61A250E5300EE30DE /* AddDistanceWorkoutTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AddDistanceWorkoutTableViewController.m; sourceTree = "<group>"; };
+		90671DB81A218B2100CBBE26 /* AddTimeWorkoutTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = AddTimeWorkoutTableViewController.h; path = DJFit/AddTimeWorkoutTableViewController.h; sourceTree = "<group>"; };
+		90671DB91A218B2100CBBE26 /* AddTimeWorkoutTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = AddTimeWorkoutTableViewController.m; path = DJFit/AddTimeWorkoutTableViewController.m; sourceTree = "<group>"; };
+		907904C51A250E5300EE30DE /* AddDistanceWorkoutTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = AddDistanceWorkoutTableViewController.h; path = DJFit/AddDistanceWorkoutTableViewController.h; sourceTree = "<group>"; };
+		907904C61A250E5300EE30DE /* AddDistanceWorkoutTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = AddDistanceWorkoutTableViewController.m; path = DJFit/AddDistanceWorkoutTableViewController.m; sourceTree = "<group>"; };
 		908796551A1CF9CB00786C11 /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
 		908796571A1D345B00786C11 /* AVQueuePlayerPrevious.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = AVQueuePlayerPrevious.h; path = DJFit/AVQueuePlayerPrevious.h; sourceTree = "<group>"; };
 		908796581A1D345B00786C11 /* AVQueuePlayerPrevious.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = AVQueuePlayerPrevious.m; path = DJFit/AVQueuePlayerPrevious.m; sourceTree = "<group>"; };
@@ -131,8 +131,8 @@
 		9087D5CC1A1ACFE300C3C5BD /* WorkoutViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WorkoutViewController.m; sourceTree = "<group>"; };
 		9087D5CE1A1AD02A00C3C5BD /* WorkoutsCollectionViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WorkoutsCollectionViewController.h; sourceTree = "<group>"; };
 		9087D5CF1A1AD02A00C3C5BD /* WorkoutsCollectionViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WorkoutsCollectionViewController.m; sourceTree = "<group>"; };
-		9087D5D71A1AED7100C3C5BD /* AddWorkoutDataViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AddWorkoutDataViewController.h; sourceTree = "<group>"; };
-		9087D5D81A1AED7100C3C5BD /* AddWorkoutDataViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AddWorkoutDataViewController.m; sourceTree = "<group>"; };
+		9087D5D71A1AED7100C3C5BD /* AddWorkoutDataViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = AddWorkoutDataViewController.h; path = DJFit/AddWorkoutDataViewController.h; sourceTree = "<group>"; };
+		9087D5D81A1AED7100C3C5BD /* AddWorkoutDataViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = AddWorkoutDataViewController.m; path = DJFit/AddWorkoutDataViewController.m; sourceTree = "<group>"; };
 		908D36AE1A1E703B0003F18E /* PlaylistsTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PlaylistsTableViewController.h; sourceTree = "<group>"; };
 		908D36AF1A1E703B0003F18E /* PlaylistsTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PlaylistsTableViewController.m; sourceTree = "<group>"; };
 		90CBF4AB1A1AC0860029EFE2 /* WorkoutTypeCollectionViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WorkoutTypeCollectionViewCell.h; sourceTree = "<group>"; };
@@ -234,6 +234,7 @@
 		900D223E1A1A91CB00A9E5EB = {
 			isa = PBXGroup;
 			children = (
+				90CB5B5E1A252D7900B2BB0F /* Add VC's */,
 				90CBF4AE1A1AC6760029EFE2 /* Podfile */,
 				900D22491A1A91CB00A9E5EB /* DJFit */,
 				900D22661A1A91CC00A9E5EB /* DJFitTests */,
@@ -272,18 +273,12 @@
 				90D3991F1A1E7B5200960359 /* AddWorkoutCollectionViewCell.h */,
 				90D399201A1E7B5200960359 /* AddWorkoutCollectionViewCell.m */,
 				900D22571A1A91CC00A9E5EB /* Main.storyboard */,
-				907904C51A250E5300EE30DE /* AddDistanceWorkoutTableViewController.h */,
-				907904C61A250E5300EE30DE /* AddDistanceWorkoutTableViewController.m */,
-				90671DB81A218B2100CBBE26 /* AddTimeWorkoutTableViewController.h */,
-				90671DB91A218B2100CBBE26 /* AddTimeWorkoutTableViewController.m */,
 				908D36AE1A1E703B0003F18E /* PlaylistsTableViewController.h */,
 				908D36AF1A1E703B0003F18E /* PlaylistsTableViewController.m */,
 				90E0CC1C1A1BD34800F73FA8 /* PlayWorkoutViewController.h */,
 				90E0CC1D1A1BD34800F73FA8 /* PlayWorkoutViewController.m */,
 				90E0CC221A1BE59800F73FA8 /* MusicPickerViewController.h */,
 				90E0CC231A1BE59800F73FA8 /* MusicPickerViewController.m */,
-				9087D5D71A1AED7100C3C5BD /* AddWorkoutDataViewController.h */,
-				9087D5D81A1AED7100C3C5BD /* AddWorkoutDataViewController.m */,
 				90CBF4AB1A1AC0860029EFE2 /* WorkoutTypeCollectionViewCell.h */,
 				90CBF4AC1A1AC0860029EFE2 /* WorkoutTypeCollectionViewCell.m */,
 				900D225A1A1A91CC00A9E5EB /* Images.xcassets */,
@@ -361,6 +356,19 @@
 			);
 			name = ProfileView;
 			path = ..;
+			sourceTree = "<group>";
+		};
+		90CB5B5E1A252D7900B2BB0F /* Add VC's */ = {
+			isa = PBXGroup;
+			children = (
+				9087D5D71A1AED7100C3C5BD /* AddWorkoutDataViewController.h */,
+				9087D5D81A1AED7100C3C5BD /* AddWorkoutDataViewController.m */,
+				907904C51A250E5300EE30DE /* AddDistanceWorkoutTableViewController.h */,
+				907904C61A250E5300EE30DE /* AddDistanceWorkoutTableViewController.m */,
+				90671DB81A218B2100CBBE26 /* AddTimeWorkoutTableViewController.h */,
+				90671DB91A218B2100CBBE26 /* AddTimeWorkoutTableViewController.m */,
+			);
+			name = "Add VC's";
 			sourceTree = "<group>";
 		};
 		90E870971A23C01F00AF624B /* DJFit WatchKit Extension */ = {

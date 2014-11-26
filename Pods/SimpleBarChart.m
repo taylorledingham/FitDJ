@@ -275,6 +275,7 @@ dataSource	= _dataSource;
 		barPathLayer.shadowColor		= self.barShadowColor.CGColor;
 		barPathLayer.shadowOpacity		= self.barShadowAlpha;
 		barPathLayer.shadowRadius		= self.barShadowRadius;
+        barPathLayer.cornerRadius       = 6.0f;
 
 		[_barLayer addSublayer:barPathLayer];
 		[_barPathLayers addObject:barPathLayer];
@@ -301,6 +302,8 @@ dataSource	= _dataSource;
 
 	CAShapeLayer *barPathLayer		= [_barPathLayers objectAtIndex:index];
 	barPathLayer.hidden				= NO;
+    barPathLayer.cornerRadius       = 8.0f;
+
 	[self drawBar:barPathLayer];
 
 	[CATransaction commit];

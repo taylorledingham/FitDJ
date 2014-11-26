@@ -34,7 +34,7 @@
 // This notification is called whenever an item finishes playing; it advances the now playing index by 1.
 -(void)songEnded:(NSNotification *)notification;
 
-
+-(void)playFirstItem:(double)rate;
 /* The following methods of AVQueuePlayer are overridden by AVQueuePlayerPrevious:
  – initWithItems: to keep track of the array used to create the player
  + queuePlayerWithItems: to keep track of the array used to create the player

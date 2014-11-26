@@ -139,6 +139,7 @@
             HKUnit *heightUnit = [HKUnit inchUnit];
             double usersHeight = [mostRecentQuantity doubleValueForUnit:heightUnit];
             
+            
             // Update the user interface.
             dispatch_async(dispatch_get_main_queue(), ^{
                 self.heightTextField.text = [NSNumberFormatter localizedStringFromNumber:@(usersHeight) numberStyle:NSNumberFormatterNoStyle];

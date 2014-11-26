@@ -65,8 +65,8 @@ static NSString * const reuseIdentifier = @"Cell";
         WorkoutTypeCollectionViewCell *cell = (WorkoutTypeCollectionViewCell *)sender;
         NSArray *selectedPath = [self.collectionView indexPathsForSelectedItems];
         NSIndexPath *pathWithoutDecrement = [selectedPath firstObject];
-        NSIndexPath *path = [NSIndexPath indexPathForRow:pathWithoutDecrement.row-1 inSection:pathWithoutDecrement.section] ;
-        Workout *workout = [self.fetchedResultsController objectAtIndexPath:path];
+        //NSIndexPath *path = [NSIndexPath indexPathForRow:pathWithoutDecrement.row-1 inSection:pathWithoutDecrement.section] ;
+        Workout *workout = cell.workout;//[self.fetchedResultsController objectAtIndexPath:path];
         playWorkoutVC.workout = cell.workout;
         
     }
@@ -74,7 +74,7 @@ static NSString * const reuseIdentifier = @"Cell";
 
 -(BOOL)shouldPerformSegueWithIdentifier:(NSString *)identifier sender:(id)sender {
     if([identifier isEqualToString:@"playWorkout"]) {
-        //return NO;
+       // return NO;
     }
     
     return YES;
@@ -192,7 +192,7 @@ static NSString * const reuseIdentifier = @"Cell";
 -(BOOL)deleteWorkoutCell:(WorkoutTypeCollectionViewCell *)cell {
     TLCoreDataStack *coreDataStack = [TLCoreDataStack defaultStack];
     NSNumber *duration = [NSNumber numberWithFloat:[cell.workoutDuration.text floatValue]];
-    NSPredicate *deleteWorkoutPredicate = [NSPredicate predicateWithFormat:@"workoutName == %@", cell.workoutName.text ];
+    NSPredicate *deleteWorkoutPredicate = [NSPredicate predicateWithFormat:@"self == %@", cell.workout ];
     NSFetchRequest *request = [self workoutFetchRequest];
     [request setPredicate:deleteWorkoutPredicate];
     NSError *error = nil;
@@ -261,7 +261,7 @@ static NSString * const reuseIdentifier = @"Cell";
 
 #pragma mark collection view cell paddings
 - (UIEdgeInsets)collectionView:(UICollectionView*)collectionView layout:(UICollectionViewLayout *)collectionViewLayout insetForSectionAtIndex:(NSInteger)section {
-    return UIEdgeInsetsMake(-30, 20, 0, 30); // top, left, bottom, right
+    return UIEdgeInsetsMake(-30, 10, 0, 30); // top, left, bottom, right
 }
 
 - (CGFloat)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout*)collectionViewLayout minimumInteritemSpacingForSectionAtIndex:(NSInteger)section {
@@ -269,7 +269,7 @@ static NSString * const reuseIdentifier = @"Cell";
 }
 
 - (CGFloat)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout*)collectionViewLayout minimumLineSpacingForSectionAtIndex:(NSInteger)section {
-    return 20.0;
+    return 10.0;
 }
 
 

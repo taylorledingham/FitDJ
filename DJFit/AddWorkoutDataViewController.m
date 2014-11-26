@@ -37,6 +37,7 @@ typedef enum : NSInteger {
     Workout *workout;
     UITapGestureRecognizer *cellTapGesture;
     UIPanGestureRecognizer *timePanViewGesture;
+    UITapGestureRecognizer *hideKeyBoardTapGesture;
     BOOL isCellExpanded;
     UILabel *timeSliderLabel;
     UIView *timeView;
@@ -64,6 +65,7 @@ typedef enum : NSInteger {
     
     cellTapGesture = [[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(didTapOnTimeCell:) ];
     timePanViewGesture = [[UIPanGestureRecognizer alloc]initWithTarget:self action:@selector(timeDidPan:)];
+    hideKeyBoardTapGesture = [[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(didTapAnywhere:)];
     isCellExpanded = NO;
     
     self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc]initWithBarButtonSystemItem: UIBarButtonSystemItemDone  target:self action:@selector(donePressed:)];
@@ -127,14 +129,6 @@ typedef enum : NSInteger {
     
 }
 
-//- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
-//    if(indexPath.row == 0 && indexPath.section==1){
-//    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"TimeCell" forIndexPath:indexPath];
-//        return cell;
-//
-//    }
-//    return nil;
-//}
 
 -(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
 
@@ -287,15 +281,15 @@ typedef enum : NSInteger {
             
         }
         else if (indexPath.row == 1){
-            return  normalCellHeight;
+            return  75.0;
             
         }
         else if(indexPath.row == 2){
-            return 80;
+            return 90;
         }
         else {
 
-            return 85.0;
+            return 60.0;
         }
     }
     
@@ -318,6 +312,17 @@ typedef enum : NSInteger {
     
     
     return YES;
+}
+
+-(void)textFieldDidBeginEditing:(UITextField *)textField {
+    [self.view addGestureRecognizer:hideKeyBoardTapGesture];
+    
+}
+
+-(void)didTapAnywhere:(UITapGestureRecognizer *)gesture {
+    
+    [gesture.view removeGestureRecognizer:gesture];
+    [self.tableView endEditing:YES];
 }
 
 - (IBAction)speedTextViewDidBeginEditing:(id)sender {
@@ -383,21 +388,23 @@ typedef enum : NSInteger {
     TimeInterval *warmUpTimeInterval = [NSEntityDescription insertNewObjectForEntityForName:@"TimeInterval" inManagedObjectContext:coreDataStack.managedObjectContext];
        float time = [[self getTimeLabelByTag:0].text floatValue ];
        float speed = [[self getSpeedTextFieldByTag:0].text floatValue];
-        warmUpTimeInterval.incline = [NSNumber numberWithFloat: [self getInclineSliderByTag:0].value];
+       float rounded = [self getInclineSliderByTag:0].value < 0.5f ? 0.5f : floorf([self getInclineSliderByTag:0].value * 2) / 2;
+        warmUpTimeInterval.incline = [NSNumber numberWithFloat: rounded];
         warmUpTimeInterval.speed = [NSNumber numberWithFloat:speed];
         warmUpTimeInterval.start = [NSNumber numberWithFloat: time] ;
         warmUpTimeInterval.workout = workout;
-    warmUpTimeInterval.index = [NSNumber numberWithInteger:index];
-    index += 1;
+        warmUpTimeInterval.index = [NSNumber numberWithInteger:index];
+        index += 1;
         workoutDuration += time;
-    [timeIntervalArray addObject:warmUpTimeInterval];
+        [timeIntervalArray addObject:warmUpTimeInterval];
     
     for (int i=0; i<[workout.numberOfRounds intValue]; i++) {
         
         TimeInterval *lowTimeInterval = [NSEntityDescription insertNewObjectForEntityForName:@"TimeInterval" inManagedObjectContext:coreDataStack.managedObjectContext];
         time = [[self getTimeLabelByTag:1].text floatValue ];
         speed = [[self getSpeedTextFieldByTag:1].text floatValue];
-        lowTimeInterval.incline = [NSNumber numberWithFloat: [self getInclineSliderByTag:1].value];
+        rounded = [self getInclineSliderByTag:1].value < 0.5f ? 0.5f : floorf([self getInclineSliderByTag:1].value * 2) / 2;
+        lowTimeInterval.incline = [NSNumber numberWithFloat: rounded];
         lowTimeInterval.speed = [NSNumber numberWithFloat:speed];
         lowTimeInterval.start = [NSNumber numberWithFloat: time] ;
         lowTimeInterval.workout = workout;
@@ -410,7 +417,8 @@ typedef enum : NSInteger {
         TimeInterval *highTimeInterval = [NSEntityDescription insertNewObjectForEntityForName:@"TimeInterval" inManagedObjectContext:coreDataStack.managedObjectContext];
         time = [[self getTimeLabelByTag:2].text floatValue ];
         speed = [[self getSpeedTextFieldByTag:2].text floatValue];
-        highTimeInterval.incline = [NSNumber numberWithFloat: [self getInclineSliderByTag:2].value];
+        rounded = [self getInclineSliderByTag:2].value < 0.5f ? 0.5f : floorf([self getInclineSliderByTag:2].value * 2) / 2;
+        highTimeInterval.incline = [NSNumber numberWithFloat: rounded];
         highTimeInterval.speed = [NSNumber numberWithFloat:speed];
         highTimeInterval.start = [NSNumber numberWithFloat: time] ;
         highTimeInterval.workout = workout;
@@ -425,7 +433,8 @@ typedef enum : NSInteger {
     TimeInterval *coolDownTimeInterval = [NSEntityDescription insertNewObjectForEntityForName:@"TimeInterval" inManagedObjectContext:coreDataStack.managedObjectContext];
     time = [[self getTimeLabelByTag:3].text floatValue ];
     speed = [[self getSpeedTextFieldByTag:3].text floatValue];
-    coolDownTimeInterval.incline = [NSNumber numberWithFloat: [self getInclineSliderByTag:3].value];
+    rounded = [self getInclineSliderByTag:1].value < 0.5f ? 0.5f : floorf([self getInclineSliderByTag:3].value * 2) / 2;
+    coolDownTimeInterval.incline = [NSNumber numberWithFloat: rounded];
     coolDownTimeInterval.speed = [NSNumber numberWithFloat:speed];
     coolDownTimeInterval.start = [NSNumber numberWithFloat: time] ;
     coolDownTimeInterval.workout = workout;

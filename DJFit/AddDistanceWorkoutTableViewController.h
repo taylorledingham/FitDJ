@@ -7,7 +7,24 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "Workout.h"
+#import <ASValueTrackingSlider/ASValueTrackingSlider.h>
+#import <ASValueTrackingSlider/ASValuePopUpView.h>
 
-@interface AddDistanceWorkoutTableViewController : UITableViewController
+@interface AddDistanceWorkoutTableViewController : UITableViewController <UITextFieldDelegate>
+
+@property (weak, nonatomic) IBOutlet UITextField *workoutNameTextField;
+@property (weak, nonatomic) IBOutlet UISegmentedControl *distanceUnitsSegmentControl;
+
+@property (weak, nonatomic) IBOutlet UITableViewCell *inclineCell;
+@property (weak, nonatomic) IBOutlet UILabel *inclineLabel;
+@property (weak, nonatomic) IBOutlet ASValueTrackingSlider *inclineSlider;
+@property (weak, nonatomic) IBOutlet UILabel *distanceInputLabel;
+@property (weak, nonatomic) IBOutlet UILabel *distanceLabel;
+@property (weak, nonatomic) IBOutlet UITextField *speedTextField;
+
+
+- (IBAction)distanceUnitsChanged:(id)sender;
+
 
 @end
