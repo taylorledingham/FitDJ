@@ -8,12 +8,17 @@
 
 #import "WorkoutViewController.h"
 #import "ProfileDetailsViewController.h"
+#import "WorkoutsCollectionViewController.h"
 
 @interface WorkoutViewController ()
 
 @end
 
-@implementation WorkoutViewController
+@implementation WorkoutViewController {
+    WorkoutsCollectionViewController *  workoutCollectionView;
+    UIBarButtonItem *done;
+    UIBarButtonItem *edit;
+}
 
 - (void)viewDidLoad {
     [super viewDidLoad];
@@ -25,7 +30,11 @@
         
     }
     self.title = @"My Workouts";
-    self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc]initWithImage:[UIImage imageNamed:@"whiteGearIcon"] style:UIBarButtonItemStylePlain target:self action:@selector(gearButtonPressed:)];
+
+    edit = [[UIBarButtonItem alloc]initWithBarButtonSystemItem: UIBarButtonSystemItemEdit  target:self action:@selector(editButtonPressed:)];
+    done = [[UIBarButtonItem alloc]initWithBarButtonSystemItem: UIBarButtonSystemItemDone  target:self action:@selector(doneButtonPressed:)];
+    self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc]initWithImage:[UIImage imageNamed:@"gear"]  style:UIBarButtonItemStylePlain target:self action:@selector(gearButtonPressed:)];
+     self.navigationItem.leftBarButtonItem = edit;
 }
 
 - (void)didReceiveMemoryWarning {
@@ -33,15 +42,21 @@
     // Dispose of any resources that can be recreated.
 }
 
-/*
+
 #pragma mark - Navigation
 
 // In a storyboard-based application, you will often want to do a little preparation before navigation
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
     // Get the new view controller using [segue destinationViewController].
     // Pass the selected object to the new view controller.
+    if([segue.identifier isEqualToString:@"workoutCollectionView"]){
+        workoutCollectionView = (WorkoutsCollectionViewController *)segue.destinationViewController;
+        
+        self.delegate = workoutCollectionView;
+    }
+    
 }
-*/
+
 
 -(void)askForProfileDetails {
     
@@ -77,6 +92,14 @@
     
 }
 
+-(void)editButtonPressed:(id)sender {
+    [workoutCollectionView startEditing];
+    self.navigationItem.leftBarButtonItem = done;
+}
+
+-(void)doneButtonPressed:(id)sender {
+    [self.delegate doneEditing];
+}
 
 - (IBAction)gearButtonPressed:(id)sender {
     

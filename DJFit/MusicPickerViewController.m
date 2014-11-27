@@ -89,7 +89,6 @@
    // [self dismissViewControllerAnimated:YES completion:nil];
     self.songsArray = [collection items] ;
     self.items = collection;
-    [self convertMediaItem:(MPMediaItem *)self.songsArray[0]];
     [self loadPlaylistWithSongs];
     
     
@@ -102,10 +101,17 @@
     spinnerView.hidden = NO;
     index = self.songsArray.count;
     
-    for(int i=1; i<self.songsArray.count; i++){
+    for(int i=0; i<self.songsArray.count; i++){
         
         MPMediaItem *item = self.songsArray[i];
-        [self convertMediaItem:item];
+        TLCoreDataStack *coreDataStack = [TLCoreDataStack defaultStack];
+        Song *newSong = [NSEntityDescription insertNewObjectForEntityForName:@"Song" inManagedObjectContext:coreDataStack.managedObjectContext];
+        newSong.persistentID = [item valueForProperty:MPMediaItemPropertyPersistentID];
+        newSong.songURL = [NSString stringWithFormat:@"%@",[item valueForKey:MPMediaItemPropertyAssetURL]];
+        newSong.songTitle = item.title;
+        [songs addObject:newSong];
+
+        [self convertMediaItem:item andSong:newSong ];
 
         
     }
@@ -115,6 +121,15 @@
     [coreDataStack saveContext];
     musicDone = YES;
     [picker dismissViewControllerAnimated:NO completion:nil];
+    UIStoryboard *sb = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
+    
+    PlayWorkoutViewController *playVC = [sb instantiateViewControllerWithIdentifier:@"playWorkout"];
+    playVC.workout = self.workout;
+    //[playVC view];
+    
+    [spinnerView stopAnimating];
+    
+    [self presentViewController:playVC animated:YES completion:nil];
 }
 
 
@@ -134,23 +149,20 @@
     if(result.count == 0){
         return NO;
     }
-    index = index - 1;
+    NSLog(@"line 147: index: %lu", (unsigned long)index);
     return YES;
 }
 
 #pragma mark - convert media item AVURLAsset
 
--(void)convertMediaItem:(MPMediaItem *)song {
+-(void)convertMediaItem:(MPMediaItem *)song andSong:(Song *)newSong {
     
-    if ([self doesSongExist:[song valueForProperty:MPMediaItemPropertyPersistentID]] == NO){
+    if ([self doesSongExist:[song valueForProperty:MPMediaItemPropertyPersistentID]] == YES){
+        index = index - 1;
         
-    TLCoreDataStack *coreDataStack = [TLCoreDataStack defaultStack];
-    Song *newSong = [NSEntityDescription insertNewObjectForEntityForName:@"Song" inManagedObjectContext:coreDataStack.managedObjectContext];
-        newSong.persistentID = [song valueForProperty:MPMediaItemPropertyPersistentID];
-        newSong.songURL = [NSString stringWithFormat:@"%@",[song valueForKey:MPMediaItemPropertyAssetURL]];
-        newSong.songTitle = song.title;
-        [songs addObject:newSong];
-        NSURL *assetURL = [song valueForProperty:MPMediaItemPropertyAssetURL];
+    }
+    else {
+            NSURL *assetURL = [song valueForProperty:MPMediaItemPropertyAssetURL];
         AVPlayerItem *avItem = [[AVPlayerItem alloc] initWithURL:assetURL];
         BOOL isDRM = avItem.asset.hasProtectedContent;
         if(isDRM == YES  || assetURL == nil){
@@ -159,9 +171,7 @@
             
         }
         else {
-        
 
-    
         NSString *pathStr = [[NSString alloc]init];
         pathStr = [NSString stringWithFormat:@"%@.wav", [song valueForProperty:MPMediaItemPropertyPersistentID]];
     
@@ -274,23 +284,24 @@
      }];
     }
     }
-    
+
 }
 
 -(void)done:(NSArray *)pathAndSong {
     [self calculateBPMWithPathString:pathAndSong[0] andSong:pathAndSong[1]];
-    //index = index - 1;
-    //if(index == self.songsArray.count - 2){
-        UIStoryboard *sb = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
-        
-        PlayWorkoutViewController *playVC = [sb instantiateViewControllerWithIdentifier:@"playWorkout"];
-        playVC.workout = self.workout;
-        [playVC view];
-
-        [spinnerView stopAnimating];
-
-        [self presentViewController:playVC animated:YES completion:nil];
-   // }
+    index = index - 1;
+    NSLog(@"index: %lu", (unsigned long)index);
+    if(index == 0){
+//        UIStoryboard *sb = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
+//        
+//        PlayWorkoutViewController *playVC = [sb instantiateViewControllerWithIdentifier:@"playWorkout"];
+//        playVC.workout = self.workout;
+//        //[playVC view];
+//
+//        [spinnerView stopAnimating];
+//
+//        [self presentViewController:playVC animated:YES completion:nil];
+   }
 
     
     

@@ -8,7 +8,12 @@
 
 #import <UIKit/UIKit.h>
 #import <CoreData/CoreData.h>
+#import "WorkoutTypeCollectionViewCell.h"
+#import "WorkoutViewController.h"
 
-@interface WorkoutsCollectionViewController : UICollectionViewController <UICollectionViewDelegateFlowLayout>
+
+@interface WorkoutsCollectionViewController : UICollectionViewController <UICollectionViewDelegateFlowLayout, deleteWorkoutDelegate, doneEditingDelegate>
+
+-(void)startEditing ;
 
 @end

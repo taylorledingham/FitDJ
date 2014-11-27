@@ -9,7 +9,6 @@
 #import "WorkoutsCollectionViewController.h"
 #import "TLCoreDataStack.h"
 #import "Workout.h"
-#import "WorkoutTypeCollectionViewCell.h"
 #import "PlayWorkoutViewController.h"
 #import "AddWorkoutCollectionViewCell.h"
 
@@ -26,6 +25,8 @@
     UILongPressGestureRecognizer *longPress;
     UIButton *deleteButton;
     CFTimeInterval longPressTimeInterval;
+    UITapGestureRecognizer *doubleTap;
+    BOOL isEditing;
 }
 
 static NSString * const reuseIdentifier = @"Cell";
@@ -39,9 +40,12 @@ static NSString * const reuseIdentifier = @"Cell";
     // Register cell classe
     deleteButton.imageView.image = [UIImage imageNamed:@"deleteX"];
     
-
-    longPress = [[UILongPressGestureRecognizer alloc]initWithTarget:self action:@selector(longPressed:)];
+    isEditing = NO;
+   longPress = [[UILongPressGestureRecognizer alloc]initWithTarget:self action:@selector(longPressed:)];
+    doubleTap = [[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(doubleTapped:)];
+    doubleTap.numberOfTapsRequired = 2;
      [self.collectionView addGestureRecognizer:longPress];
+    //[self.collectionView addGestureRecognizer:doubleTap];
     [self.fetchedResultsController performFetch:nil];
 
     
@@ -124,32 +128,75 @@ static NSString * const reuseIdentifier = @"Cell";
         cell.workoutDuration.text = [NSString stringWithFormat:@"%.2f", duration];
         cell.workout = workout;
         //cell.userInteractionEnabled = YES;
-       // [cell addGestureRecognizer:longPress];
-    
+        [cell addGestureRecognizer:doubleTap];
+        if(isEditing){
+            cell.deleteButton.hidden = NO;
+        }
+         else {
+             cell.deleteButton.hidden = YES;
+         }
+        cell.delegate = self;
     
     return cell;
     }
 }
 
+-(void)doubleTapped:(UITapGestureRecognizer *)gesture {
+    
+    if(gesture.state == UIGestureRecognizerStateEnded){
+        CGPoint p = [gesture locationInView:self.collectionView];
+        NSIndexPath *indexPath = [self.collectionView indexPathForItemAtPoint:p];
+       // WorkoutTypeCollectionViewCell * workoutCell = (WorkoutTypeCollectionViewCell *)[self.collectionView cellForItemAtIndexPath:indexPath];
+        WorkoutTypeCollectionViewCell * workoutCell = (WorkoutTypeCollectionViewCell *)gesture.view;
+        
+       // if(indexPath != nil){
+        if(workoutCell !=nil){
+            //isnt space between cells
+            
+            
+            
+            UIAlertController* alert = [UIAlertController alertControllerWithTitle:@"Delete Workout?"
+                                                                           message:[NSString stringWithFormat: @"Are you sure you want to delete %@?.", workoutCell.workoutName.text]
+                                                                    preferredStyle:UIAlertControllerStyleAlert];
+            
+            UIAlertAction * keepAction = [UIAlertAction actionWithTitle:@"NO" style:UIAlertActionStyleDefault
+                                                                handler:^(UIAlertAction * action) {
+                                                                    
+                                                                    [self dismissViewControllerAnimated:alert completion:nil];
+                                                                }];
+            
+            UIAlertAction* deleteAction = [UIAlertAction actionWithTitle:@"YES" style:UIAlertActionStyleDefault
+                                                                 handler:^(UIAlertAction * action) {
+                                                                     
+                                                                     [self deleteWorkoutCell:workoutCell];
+                                                                     [self dismissViewControllerAnimated:alert completion:nil];
+                                                                     
+                                                                     
+                                                                 }];
+            
+            [alert addAction:keepAction];
+            [alert addAction:deleteAction];
+            [self presentViewController:alert animated:YES completion:nil];
+            
+        }
+    }
+
+
+    
+}
+
 -(void)longPressed:(UILongPressGestureRecognizer*)gesture {
     
-    if(gesture.state == UIGestureRecognizerStateBegan){
-        longPressTimeInterval = CFAbsoluteTimeGetCurrent();
-        NSLog(@"first tap: %f", longPressTimeInterval);
-    }
+//    if(gesture.state == UIGestureRecognizerStateBegan){
+//        longPressTimeInterval = CFAbsoluteTimeGetCurrent();
+//        NSLog(@"first tap: %f", longPressTimeInterval);
+//    }
     
     if(gesture.state == UIGestureRecognizerStateEnded){
         CGPoint p = [gesture locationInView:self.collectionView];
         NSIndexPath *indexPath = [self.collectionView indexPathForItemAtPoint:p];
         WorkoutTypeCollectionViewCell * workoutCell = (WorkoutTypeCollectionViewCell *)[self.collectionView cellForItemAtIndexPath:indexPath];
-        CFTimeInterval currentTime = CFAbsoluteTimeGetCurrent();
-        NSLog(@"current: %f", currentTime);
-        if(currentTime - longPressTimeInterval < 0.6 && indexPath!=nil ){
-            
-            [self performSegueWithIdentifier:@"playWorkout" sender:workoutCell];
-        }
-        
-        else {
+    
     
     if(indexPath != nil){
         //isnt space between cells
@@ -181,7 +228,6 @@ static NSString * const reuseIdentifier = @"Cell";
 
         }
     }
-    }
     
 }
 
@@ -210,6 +256,29 @@ static NSString * const reuseIdentifier = @"Cell";
     
     return YES;
 
+    
+}
+
+-(void)deleteWorkout:(WorkoutTypeCollectionViewCell *)cell {
+    [self deleteWorkoutCell:cell];
+    
+    
+}
+
+-(void)startEditing {
+    
+    if(isEditing == NO){
+    
+    isEditing = YES;
+    }
+    [self.collectionView reloadData];
+        
+    
+}
+
+-(void)doneEditing {
+    isEditing = NO;
+    [self.collectionView reloadData];
     
 }
 

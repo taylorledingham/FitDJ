@@ -76,7 +76,7 @@
 -(void)setUpQueuePlayer{
     
     self.queuePlayer = [[AVQueuePlayerPrevious alloc]init];
-    //self.queuePlayer = [[AVQueuePlayerPrevious alloc]initWithItems:avPlayerItemsArray];
+    self.queuePlayer = [[AVQueuePlayerPrevious alloc]initWithItems:avPlayerItemsArray];
     [self.queuePlayer addObserver:self forKeyPath:@"status" options:0 context:nil];
     currentSongRate = 1.0;
     self.mediaCenter = [MPNowPlayingInfoCenter defaultCenter];
@@ -175,8 +175,10 @@
             
             AVPlayerItem *playerItem = [[AVPlayerItem alloc] initWithAsset:urlAsset];
             [playerItem addObserver:self forKeyPath:NSStringFromSelector(@selector(status)) options:0 context:nil];
-            //[avPlayerItemsArray addObject:playerItem];
-            [self.queuePlayer insertItem:playerItem afterItem:nil];
+            [avPlayerItemsArray addObject:playerItem];
+            dispatch_async(dispatch_get_main_queue(), ^{
+                [self.queuePlayer insertItem:playerItem afterItem:nil];
+            });
             
         }];
     }
@@ -260,8 +262,7 @@
             currentIntervalInMilliSeconds = ([interval.start doubleValue] * 60 * 1000);
             self.chart.animationDuration = 0;
             [self.chart reloadData];
-            double newBPM = [Song lookUpBPMForSpeed:[interval.speed doubleValue] andWorkoutType:@"treadmill"];
-            currentSongRate = newBPM / [currentPlayingSong.bpm doubleValue];
+            [self setNewBPMForSpeed];
             [self speakTimeInterval];
             self.queuePlayer.rate = currentSongRate;
             self.speedLabel.text = [NSString stringWithFormat:@"%.1f MPH",[interval.speed floatValue]];
@@ -300,14 +301,17 @@
 
 
 
--(void)setNewBPMForSpeed:(double)speed {
+-(void)setNewBPMForSpeed {
     
-    
+    TimeInterval *interval = timeIntervalsArray[currentTimeIntervalIndex];
+    double newBPM = [Song lookUpBPMForSpeed:[interval.speed doubleValue] andWorkoutType:@"treadmill"];
+    currentSongRate = newBPM / [currentPlayingSong.bpm doubleValue];
+    self.queuePlayer.rate = currentSongRate;
 }
 
 - (void)playerItemDidReachEnd:(NSNotification *)notification {
-    AVPlayerItem *p = [notification object];
-   // [self.queuePlayer playFirstItem:currentSongRate];
+    AVPlayerItem *item = [notification object];
+    [self.queuePlayer advanceToNextItem];
 }
 
 - (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context
@@ -349,13 +353,6 @@
             }
             
             if(playerIsPlaying == YES){
-            }
-        }
-        else if ([keyPath isEqualToString:@"playbackBufferEmpty"])
-        {
-            if (item.playbackBufferEmpty)
-            {
-                NSLog(@"player item playback buffer is empty");
             }
         }
     }
@@ -410,7 +407,7 @@
         next = [next stringByAppendingString:[NSString stringWithFormat:@"and set your incline to  %@ percent", current.incline]];
     }
     utterance = [AVSpeechUtterance speechUtteranceWithString:next];
-    utterance.rate = AVSpeechUtteranceMinimumSpeechRate;
+    utterance.rate = 0.2;
    // utterance.voice = [[AVSpeechSynthesisVoice speechVoices] objectAtIndex:3];
     [synth speakUtterance:utterance];
     }
@@ -419,7 +416,7 @@
 
 - (IBAction)previousSelected:(id)sender {
     [self.queuePlayer playPreviousItemWithRate:currentSongRate];
-    
+    [self setNewBPMForSpeed];
     
 }
 
@@ -449,6 +446,7 @@
 }
 - (IBAction)nextSelected:(id)sender {
     [self.queuePlayer advanceToNextItem];
+    [self setNewBPMForSpeed];
     
 }
 - (IBAction)exitWorkout:(id)sender {
@@ -467,14 +465,15 @@
                                                           handler:^(UIAlertAction * action) {
     [self dismissViewControllerAnimated:alert completion:nil];
     UIStoryboard * aStoryBoard = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
-    WorkoutViewController *controller = (WorkoutViewController *)[aStoryBoard instantiateViewControllerWithIdentifier: @"myWorkouts"];
+     UINavigationController *navController = (UINavigationController *)[aStoryBoard instantiateViewControllerWithIdentifier:@"workoutNavController"];
+
+    
     [self.queuePlayer pause];
     [self.queuePlayer removeObserver:self forKeyPath:@"status"];
     [self removeObserversFromQueuePlayer];
     self.queuePlayer = nil;
-    [self presentViewController:controller animated:YES completion:nil];
-                                                              }];
-    
+   [self presentViewController:navController.topViewController animated:YES completion:nil];
+                                                          }];
     [alert addAction:stayAction];
     [alert addAction:exitAction];
     [self presentViewController:alert animated:YES completion:nil];
@@ -490,7 +489,7 @@
 }
 
 -(void)dealloc{
-    [[NSNotificationCenter defaultCenter] removeObserver:self];
+   [[NSNotificationCenter defaultCenter] removeObserver:self];
     
     
 }
@@ -514,12 +513,6 @@
     TimeInterval *time = [timeIntervalsArray objectAtIndex:index];
     return [NSString stringWithFormat:@"%.1f", [time.speed floatValue]];
 }
-
-//- (NSString *)barChart:(SimpleBarChart *)barChart xLabelForBarAtIndex:(NSUInteger)index
-//{
-//    TimeInterval *time = [timeIntervalsArray objectAtIndex:index];
-//    return [time.start stringValue];
-//}
 
 - (UIColor *)barChart:(SimpleBarChart *)barChart colorForBarAtIndex:(NSUInteger)index
 {
