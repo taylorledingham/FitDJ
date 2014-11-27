@@ -56,8 +56,10 @@
     
     double height = [profileTableVC.heightTextField.text doubleValue];
     double weight = [profileTableVC.weightTextField.text doubleValue];
+    NSInteger index = [profileTableVC.voiceCoachingSegmentControl selectedSegmentIndex];
     [[NSUserDefaults standardUserDefaults] setValue:@(height) forKey:@"height" ];
     [[NSUserDefaults standardUserDefaults] setValue:@(weight) forKey:@"weight"];
+    [[NSUserDefaults standardUserDefaults] setBool:index ? YES : NO  forKey:@"wantsVoiceCoaching"];
     [self saveHeightIntoHealthStore:height];
     [self saveWeightIntoHealthStore:weight];
     self.navigationController.navigationBar.hidden = NO;

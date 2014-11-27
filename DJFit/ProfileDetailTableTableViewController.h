@@ -14,6 +14,7 @@
 @property (weak, nonatomic) IBOutlet UITextField *heightTextField;
 @property (weak, nonatomic) IBOutlet UITextField *weightTextField;
 @property (nonatomic) HKHealthStore *healthStore;
+@property (weak, nonatomic) IBOutlet UISegmentedControl *voiceCoachingSegmentControl;
 
 - (void)updateUsersWeightLabel;
 - (void)updateUsersHeightLabel;

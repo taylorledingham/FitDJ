@@ -23,6 +23,7 @@
 @property (nonatomic) float height;
 @property (nonatomic) double caloriesBurned;
 @property (strong, nonatomic) MPNowPlayingInfoCenter *mediaCenter;
+@property (nonatomic) BOOL voiceCoachingEnabled;
 
 
 @end
@@ -61,13 +62,13 @@
     currentTimeIntervalIndex = 0;
     avPlayerItemsArray = [[NSMutableArray alloc]init];
     [self setWorkoutDetails];
-    [self loadPlaylist];
     [self setUpQueuePlayer];
+    [self loadPlaylist];
     [self displayTime:timeInMilliSeconds onLabel:self.durationLabel];
     timePassedInMilliSeconds = 0;
     [self setUpGraph];
     synth = [[AVSpeechSynthesizer alloc] init];
-
+    self.voiceCoachingEnabled = [[NSUserDefaults standardUserDefaults] boolForKey:@"wantsVoiceCoaching"];
     
 }
     
@@ -75,7 +76,7 @@
 -(void)setUpQueuePlayer{
     
     self.queuePlayer = [[AVQueuePlayerPrevious alloc]init];
-    self.queuePlayer = [[AVQueuePlayerPrevious alloc]initWithItems:avPlayerItemsArray];
+    //self.queuePlayer = [[AVQueuePlayerPrevious alloc]initWithItems:avPlayerItemsArray];
     [self.queuePlayer addObserver:self forKeyPath:@"status" options:0 context:nil];
     currentSongRate = 1.0;
     self.mediaCenter = [MPNowPlayingInfoCenter defaultCenter];
@@ -146,6 +147,7 @@
     self.chart.delegate = self;
     self.chart.dataSource = self;
     self.chart.backgroundColor = [UIColor colorWithRed:0.847f green:0.847f blue:0.847f alpha:1.00f];
+    
     self.chart.gridColor = [UIColor colorWithRed:0.847f green:0.847f blue:0.847f alpha:1.00f];
     self.chart.barWidth	= 18.0;
     if([self.workout.workoutType  isEqual: @"timed"] || [self.workout.workoutType  isEqual: @"distance"]){
@@ -154,24 +156,6 @@
     }
     self.chart.incrementValue = 1;
     [self.chart reloadData];
-}
-
--(void)displayTime:(double)milliseconds onLabel:(UILabel *)timeLabel {
-
-   double seconds = milliseconds/1000;
-    
- 
-    NSUInteger h = seconds / 3600;
-    NSUInteger m = (int)(seconds / 60) % 60;
-    NSUInteger s = (int)seconds % 60;
-    
-   
-    
-    NSString *result1 = [NSString stringWithFormat:@"%.2lu:%.2lu:%.2lu", (unsigned long)h, (unsigned long)m,(unsigned long)s];
-    timeLabel.text = result1;
-    
-    //self.caloriesLabel.text = [NSString stringWithFormat:@"%.2f", ]
-    
 }
 
 -(void)loadPlaylist {
@@ -191,7 +175,7 @@
             
             AVPlayerItem *playerItem = [[AVPlayerItem alloc] initWithAsset:urlAsset];
             [playerItem addObserver:self forKeyPath:NSStringFromSelector(@selector(status)) options:0 context:nil];
-            [avPlayerItemsArray addObject:playerItem];
+            //[avPlayerItemsArray addObject:playerItem];
             [self.queuePlayer insertItem:playerItem afterItem:nil];
             
         }];
@@ -215,6 +199,24 @@
     
     return song;
     
+    
+}
+
+-(void)displayTime:(double)milliseconds onLabel:(UILabel *)timeLabel {
+    
+    double seconds = milliseconds/1000;
+    
+    
+    NSUInteger h = seconds / 3600;
+    NSUInteger m = (int)(seconds / 60) % 60;
+    NSUInteger s = (int)seconds % 60;
+    
+    
+    
+    NSString *result1 = [NSString stringWithFormat:@"%.2lu:%.2lu:%.2lu", (unsigned long)h, (unsigned long)m,(unsigned long)s];
+    timeLabel.text = result1;
+    
+    //self.caloriesLabel.text = [NSString stringWithFormat:@"%.2f", ]
     
 }
 
@@ -401,6 +403,7 @@
 }
 
 -(void)speakTimeInterval {
+    if(self.voiceCoachingEnabled == YES){
     TimeInterval *current = [timeIntervalsArray objectAtIndex:currentTimeIntervalIndex];
     NSString *next = [NSString stringWithFormat:@"set your speed to %@ miles per hour,", current.speed];
     if(current.incline > 0 && [self.workout.machineType isEqualToString: @"treadmill"]){
@@ -410,6 +413,7 @@
     utterance.rate = AVSpeechUtteranceMinimumSpeechRate;
    // utterance.voice = [[AVSpeechSynthesisVoice speechVoices] objectAtIndex:3];
     [synth speakUtterance:utterance];
+    }
     
 }
 
@@ -520,10 +524,12 @@
 - (UIColor *)barChart:(SimpleBarChart *)barChart colorForBarAtIndex:(NSUInteger)index
 {
     if(index == currentTimeIntervalIndex && timeIntervalsArray.count > 1){
+        self.chart.barTextColor = [UIColor blackColor];
         return [UIColor colorWithRed:0.000f green:0.627f blue:0.839f alpha:1.00f];
     }
+    self.chart.barTextColor = [UIColor whiteColor];
     return (index % 2 == 0) ? [UIColor colorWithRed:0.659f green:0.333f blue:0.945f alpha:1.00f] : [UIColor colorWithRed:0.420f green:0.098f blue:0.486f alpha:1.00f];
-
+    
 }
 
 - (void)viewWillDisappear:(BOOL)animated {

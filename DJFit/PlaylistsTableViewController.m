@@ -8,6 +8,10 @@
 
 #import "PlaylistsTableViewController.h"
 #import "TLCoreDataStack.h"
+#import <AVKit/AVKit.h>
+#import <MediaPlayer/MediaPlayer.h>
+#import "SongTableViewCell.h"
+#import "BPMViewController.h"
 
 @interface PlaylistsTableViewController ()  <NSFetchedResultsControllerDelegate>
 
@@ -15,7 +19,11 @@
 
 @end
 
-@implementation PlaylistsTableViewController
+@implementation PlaylistsTableViewController {
+    MPMusicPlayerController* musicPlayer;
+    MPMediaQuery *songQuery;
+    NSArray *songArray;
+}
 
 - (void)viewDidLoad {
     [super viewDidLoad];
@@ -24,7 +32,10 @@
     // self.clearsSelectionOnViewWillAppear = NO;
     
     // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
-     self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc]initWithBarButtonSystemItem:UIBarButtonSystemItemAdd target:self action:@selector(addObject:)];
+    songArray = [[NSArray alloc]init];
+    songQuery = [[MPMediaQuery alloc] init];
+    //musicPlayer = [MPMusicPlayerController iPodMusicPlayer];
+     self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc]initWithBarButtonSystemItem:UIBarButtonSystemItemDone target:self action:@selector(donePressed:)];
     
     [self.fetchedResultsController performFetch:nil];
 
@@ -50,12 +61,43 @@
 
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
-    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"Cell" forIndexPath:indexPath];
+    SongTableViewCell *cell = (SongTableViewCell *)[tableView dequeueReusableCellWithIdentifier:@"Cell" forIndexPath:indexPath];
     
-    Playlist *playlist = [self.fetchedResultsController objectAtIndexPath:indexPath];
+    Song *song = [self.fetchedResultsController objectAtIndexPath:indexPath];
+    cell.songTitleLabel.text = song.songTitle;
+    cell.songBPMLabel.text = [NSString stringWithFormat:@"%.1f", [song.bpm floatValue]];
+    cell.song = song;
+    
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+        MPMediaItemArtwork* artwork ;
+            // try album artwork
+            MPMediaQuery*   mediaQuery = [MPMediaQuery songsQuery];
+            MPMediaPropertyPredicate* predicate = [MPMediaPropertyPredicate predicateWithValue:song.persistentID forProperty:MPMediaItemPropertyPersistentID];
+            [mediaQuery addFilterPredicate:predicate];
+            NSArray* arrMediaItems = [mediaQuery items];
+            if ( [arrMediaItems count] > 0 ) {
+                artwork = [[arrMediaItems objectAtIndex:0] valueForProperty:MPMediaItemPropertyArtwork];
+            }
+        dispatch_sync(dispatch_get_main_queue(), ^{
+            if ( artwork != nil) {
+                cell.songImageView.image =  [artwork imageWithSize:CGSizeMake (cell.songImageView.frame.size.width, cell.songImageView.frame.size.width)];
+            }
+            else {
+                //cell.imageView.image = [UIImage imageNamed:@"musicNote"];
+            }
+       });
+    });
+    
     
     return cell;
 }
+
+- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+
+    return 80;
+}
+
 
 
 - (NSFetchedResultsController *)fetchedResultsController {
@@ -74,9 +116,9 @@
 
 
 -(NSFetchRequest *)entryListFetchRequest {
-    NSFetchRequest *fetchRequest = [NSFetchRequest fetchRequestWithEntityName:@"Playlist"];
+    NSFetchRequest *fetchRequest = [NSFetchRequest fetchRequestWithEntityName:@"Song"];
     
-    fetchRequest.sortDescriptors = @[[NSSortDescriptor sortDescriptorWithKey:@"playlistName" ascending:NO]];
+    fetchRequest.sortDescriptors = @[[NSSortDescriptor sortDescriptorWithKey:@"songTitle" ascending:NO]];
     
     return fetchRequest;
 }
@@ -114,49 +156,31 @@
     [self.tableView endUpdates];
 }
 
-
-/*
-// Override to support conditional editing of the table view.
-- (BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath {
-    // Return NO if you do not want the specified item to be editable.
-    return YES;
+-(void)donePressed:(id)sender {
+    
+    [self dismissViewControllerAnimated:YES completion:nil];
+    
 }
-*/
 
-/*
-// Override to support editing the table view.
-- (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath {
-    if (editingStyle == UITableViewCellEditingStyleDelete) {
-        // Delete the row from the data source
-        [tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationFade];
-    } else if (editingStyle == UITableViewCellEditingStyleInsert) {
-        // Create a new instance of the appropriate class, insert it into the array, and add a new row to the table view
-    }   
-}
-*/
 
-/*
-// Override to support rearranging the table view.
-- (void)tableView:(UITableView *)tableView moveRowAtIndexPath:(NSIndexPath *)fromIndexPath toIndexPath:(NSIndexPath *)toIndexPath {
-}
-*/
 
-/*
-// Override to support conditional rearranging of the table view.
-- (BOOL)tableView:(UITableView *)tableView canMoveRowAtIndexPath:(NSIndexPath *)indexPath {
-    // Return NO if you do not want the item to be re-orderable.
-    return YES;
-}
-*/
-
-/*
 #pragma mark - Navigation
 
 // In a storyboard-based application, you will often want to do a little preparation before navigation
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
     // Get the new view controller using [segue destinationViewController].
     // Pass the selected object to the new view controller.
+    
+    NSIndexPath * indexPath = [self.tableView indexPathsForSelectedRows].firstObject;
+    SongTableViewCell *cell = (SongTableViewCell *)[self.tableView cellForRowAtIndexPath:indexPath];
+    BPMViewController *bpmVC = (BPMViewController *)segue.destinationViewController;
+    [bpmVC view];
+    bpmVC.songTitleLabel.text = cell.songTitleLabel.text;
+    bpmVC.songArtworkImageView.image = cell.songImageView.image;
+    bpmVC.song = cell.song;
+    [bpmVC.bpmPickerView selectRow:[cell.songBPMLabel.text integerValue ] inComponent:0 animated:YES];
+    
 }
-*/
+
 
 @end

@@ -54,7 +54,7 @@
     self.workout.playlist = playlist;
     [coreDataStack saveContext];
     fileManager = [NSFileManager defaultManager];
-    spinnerView = [[LLARingSpinnerView alloc] initWithFrame:CGRectMake(self.view.center.x, self.view.center.y, 40, 40)];
+    spinnerView = [[LLARingSpinnerView alloc] initWithFrame:CGRectMake(self.view.center.x-20, self.view.center.y, 40, 40)];
     // Optionally set the current progress
     spinnerView.lineWidth = 1.5f;
     // Optionally change the tint color
@@ -75,11 +75,10 @@
     picker =
     [[MPMediaPickerController alloc] initWithMediaTypes: MPMediaTypeMusic];
     
-    [[picker view] setFrame:CGRectMake(0, 0, 320, 480)];
+    [[picker view] setFrame:CGRectMake(0, 0, self.view.frame.size.width, self.view.frame.size.height)];
     
     picker.delegate  = self;
     picker.allowsPickingMultipleItems = YES;
-//    picker.prompt      = NSLocalizedString (@"AddSongsPrompt", @"Prompt to user to choose some songs to play");
     picker.showsCloudItems = NO;
     [self presentViewController:picker animated:YES completion:nil];
 }
@@ -90,6 +89,7 @@
    // [self dismissViewControllerAnimated:YES completion:nil];
     self.songsArray = [collection items] ;
     self.items = collection;
+    [self convertMediaItem:(MPMediaItem *)self.songsArray[0]];
     [self loadPlaylistWithSongs];
     
     
@@ -102,7 +102,7 @@
     spinnerView.hidden = NO;
     index = self.songsArray.count;
     
-    for(int i=0; i<self.songsArray.count; i++){
+    for(int i=1; i<self.songsArray.count; i++){
         
         MPMediaItem *item = self.songsArray[i];
         [self convertMediaItem:item];
@@ -279,8 +279,8 @@
 
 -(void)done:(NSArray *)pathAndSong {
     [self calculateBPMWithPathString:pathAndSong[0] andSong:pathAndSong[1]];
-    index = index - 1;
-    if(index <= 0){
+    //index = index - 1;
+    //if(index == self.songsArray.count - 2){
         UIStoryboard *sb = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
         
         PlayWorkoutViewController *playVC = [sb instantiateViewControllerWithIdentifier:@"playWorkout"];
@@ -290,7 +290,7 @@
         [spinnerView stopAnimating];
 
         [self presentViewController:playVC animated:YES completion:nil];
-    }
+   // }
 
     
     

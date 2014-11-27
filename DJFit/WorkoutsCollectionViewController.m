@@ -63,10 +63,6 @@ static NSString * const reuseIdentifier = @"Cell";
     if([segue.identifier isEqualToString:@"playWorkout"]) {
         PlayWorkoutViewController *playWorkoutVC = (PlayWorkoutViewController *)segue.destinationViewController;
         WorkoutTypeCollectionViewCell *cell = (WorkoutTypeCollectionViewCell *)sender;
-        NSArray *selectedPath = [self.collectionView indexPathsForSelectedItems];
-        NSIndexPath *pathWithoutDecrement = [selectedPath firstObject];
-        //NSIndexPath *path = [NSIndexPath indexPathForRow:pathWithoutDecrement.row-1 inSection:pathWithoutDecrement.section] ;
-        Workout *workout = cell.workout;//[self.fetchedResultsController objectAtIndexPath:path];
         playWorkoutVC.workout = cell.workout;
         
     }
@@ -261,7 +257,7 @@ static NSString * const reuseIdentifier = @"Cell";
 
 #pragma mark collection view cell paddings
 - (UIEdgeInsets)collectionView:(UICollectionView*)collectionView layout:(UICollectionViewLayout *)collectionViewLayout insetForSectionAtIndex:(NSInteger)section {
-    return UIEdgeInsetsMake(-30, 10, 0, 30); // top, left, bottom, right
+    return UIEdgeInsetsMake(-30, 10, 0, 40); // top, left, bottom, right
 }
 
 - (CGFloat)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout*)collectionViewLayout minimumInteritemSpacingForSectionAtIndex:(NSInteger)section {

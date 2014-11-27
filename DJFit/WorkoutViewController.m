@@ -25,9 +25,7 @@
         
     }
     self.title = @"My Workouts";
-    
     self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc]initWithImage:[UIImage imageNamed:@"whiteGearIcon"] style:UIBarButtonItemStylePlain target:self action:@selector(gearButtonPressed:)];
-    
 }
 
 - (void)didReceiveMemoryWarning {

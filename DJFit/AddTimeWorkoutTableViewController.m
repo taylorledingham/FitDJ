@@ -105,7 +105,7 @@ CGPoint cellOrigin;
     
     isCellExpanded = NO;
     timeViewCreated = NO;
-    self.workoutTimeLabel.text = timeSliderLabel.text;
+    self.workoutTimeLabel.text = [@"Duration: " stringByAppendingString: timeSliderLabel.text];
     [gesture.view removeGestureRecognizer:gesture];
     [gesture.view removeGestureRecognizer:timePanViewGesture];
     [timeView removeFromSuperview];
@@ -147,11 +147,12 @@ CGPoint cellOrigin;
     }
     
     float timeVal = gesture.view.center.y/20 - 1.5;
-    float rounded = timeVal < 0.5f ? 0.5f : floorf(timeVal * 2) / 2;
-    NSLog(@"%f", fmodf(rounded, 1.0));
-    if(fmodf(rounded, 1.0) > 0){
-        rounded = rounded - 0.20;
-    }
+    
+    timeVal = timeVal * 3.5;
+    float rounded = timeVal < 1.0f ? 1.0f : floorf(timeVal * 2) / 2;
+   // NSLog(@"%f", fmodf(rounded, 1.0));
+   float remainder = fmodf(rounded, 1.0);
+    rounded = rounded - remainder;
     
     timeSliderLabel.text = [NSString stringWithFormat:@"%.2f", rounded];
     
@@ -246,7 +247,8 @@ CGPoint cellOrigin;
     NSInteger index = 0;
     
     TimeInterval *warmUpTimeInterval = [NSEntityDescription insertNewObjectForEntityForName:@"TimeInterval" inManagedObjectContext:coreDataStack.managedObjectContext];
-    float time = [self.workoutTimeLabel.text floatValue ];
+    NSString *timeString = [[self.workoutTimeLabel.text componentsSeparatedByString:@" "] objectAtIndex:1];
+    float time = [timeString floatValue ];
     float speed = [self.speedTextField.text floatValue];
     float rounded = self.inclineSlider.value < 0.5f ? 0.5f : floorf(self.inclineSlider.value * 2) / 2;
     warmUpTimeInterval.incline = [NSNumber numberWithFloat: rounded];
