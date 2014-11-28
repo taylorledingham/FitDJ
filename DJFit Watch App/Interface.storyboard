@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<document type="com.apple.InterfaceBuilder.WatchKit.Storyboard" version="3.0" toolsVersion="6221" systemVersion="14B25" targetRuntime="watchKit" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="AgC-eL-Hgc">
+    <dependencies>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6213"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBWatchKitPlugin" version="3734"/>
+    </dependencies>
+    <scenes>
+        <!--Interface Controller-->
+        <scene sceneID="aou-V4-d1y">
+            <objects>
+                <controller id="AgC-eL-Hgc" customClass="InterfaceController">
+                    <items>
+                        <label width="135" alignment="center" verticalAlignment="center" text="song title" textAlignment="center" id="xM5-OE-d7c">
+                            <fontDescription key="font" name="Avenir-Roman" family="Avenir" pointSize="16"/>
+                        </label>
+                        <group width="1" alignment="center" verticalAlignment="bottom" animationDuration="1" hasDetent="YES" id="gT1-Xg-RlO">
+                            <items>
+                                <button width="43" height="43" alignment="left" backgroundImage="prevButton" id="wwc-nx-8Yw">
+                                    <connections>
+                                        <action selector="prevButtonPressed" destination="AgC-eL-Hgc" id="ZG3-1y-6Nt"/>
+                                    </connections>
+                                </button>
+                                <button width="46" height="46" alignment="center" backgroundImage="playButton" id="dDY-c3-Dik">
+                                    <connections>
+                                        <action selector="playPauseButtonPressed" destination="AgC-eL-Hgc" id="ZKY-qS-muq"/>
+                                    </connections>
+                                </button>
+                                <button width="43" height="43" alignment="right" backgroundImage="nextButton" id="OYJ-CJ-xyz">
+                                    <connections>
+                                        <action selector="nextButtonPressed" destination="AgC-eL-Hgc" id="coV-Kn-81z"/>
+                                    </connections>
+                                </button>
+                            </items>
+                            <edgeInsets key="margins" left="2" right="2" top="0.0" bottom="0.0"/>
+                        </group>
+                        <timer width="130" height="28" alignment="center" textAlignment="center" format="short" previewedSeconds="1200" id="HF1-BX-Ws0">
+                            <color key="textColor" red="0.92263971560000002" green="0.92263971560000002" blue="0.92263971560000002" alpha="1" colorSpace="calibratedRGB"/>
+                        </timer>
+                        <label width="127" alignment="center" text=" 5.5 MPH   4%" textAlignment="center" numberOfLines="2" id="Gzb-SP-Wsz">
+                            <fontDescription key="font" name="Avenir-Roman" family="Avenir" pointSize="16"/>
+                        </label>
+                        <label width="132" alignment="left" textAlignment="center" id="VD5-39-SC2">
+                            <fontDescription key="font" name="Avenir-Roman" family="Avenir" pointSize="16"/>
+                        </label>
+                        <imageView width="37" height="33" alignment="center" image="ipod" id="cEG-RD-NoL"/>
+                    </items>
+                    <connections>
+                        <outlet property="playPauseButton" destination="dDY-c3-Dik" id="3dG-R7-bTE"/>
+                        <outlet property="songTitleLabel" destination="xM5-OE-d7c" id="khK-lY-pSS"/>
+                        <outlet property="workoutTimer" destination="HF1-BX-Ws0" id="PEr-AQ-WaC"/>
+                    </connections>
+                </controller>
+            </objects>
+            <point key="canvasLocation" x="220" y="337"/>
+        </scene>
+        <!--Static Notification Interface Controller-->
+        <scene sceneID="AEw-b0-oYE">
+            <objects>
+                <notificationController id="YCC-NB-fut">
+                    <items>
+                        <label alignment="left" text="Alert Label" id="IdU-wH-bcW"/>
+                    </items>
+                    <notificationCategory key="notificationCategory" id="JfB-70-Muf"/>
+                    <connections>
+                        <outlet property="notificationAlertLabel" destination="IdU-wH-bcW" id="JKC-fr-R95"/>
+                        <segue destination="4sK-HA-Art" kind="relationship" relationship="dynamicNotificationInterface" id="kXh-Jw-8B1"/>
+                    </connections>
+                </notificationController>
+            </objects>
+            <point key="canvasLocation" x="220" y="643"/>
+        </scene>
+        <!--Notification Controller-->
+        <scene sceneID="ZPc-GJ-vnh">
+            <objects>
+                <controller id="4sK-HA-Art" customClass="NotificationController"/>
+            </objects>
+            <point key="canvasLocation" x="468" y="643"/>
+        </scene>
+    </scenes>
+</document>
