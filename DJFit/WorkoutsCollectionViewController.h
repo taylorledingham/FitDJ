@@ -14,6 +14,9 @@
 
 @interface WorkoutsCollectionViewController : UICollectionViewController <UICollectionViewDelegateFlowLayout, deleteWorkoutDelegate, doneEditingDelegate>
 
+
+@property (weak, nonatomic) Workout *workoutToDisplay;
+
 -(void)startEditing ;
 
 @end

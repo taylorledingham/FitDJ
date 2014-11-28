@@ -12,6 +12,7 @@
 
 - (IBAction)deleteButtonPressed:(id)sender {
     
+    
     [self.delegate deleteWorkout:self];
 }
 @end

@@ -40,7 +40,7 @@
     hideKeyBoardTapGesture = [[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(didTapAnywhere:)];
     isCellExpanded = NO;
     
-    self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc]initWithBarButtonSystemItem: UIBarButtonSystemItemDone  target:self action:@selector(donePressed:)];
+    self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc]initWithTitle:@"Next" style:UIBarButtonItemStyleDone target:self action:@selector(donePressed:)];
     [self setUpSlidersAndTexFields];
 
 }
@@ -75,9 +75,11 @@
         if(distanceViewCreated == NO){
             distanceView = [[UIView alloc]initWithFrame:CGRectMake(0, 0, cell.frame.size.width, 50)];
             distanceView.backgroundColor = [UIColor colorWithRed:0.553f green:0.235f blue:0.749f alpha:1.00f];
-            distanceSliderLabel = [[UILabel alloc]initWithFrame:CGRectMake(cell.center.x-10, 0, cell.frame.size.width, 50)];
+            distanceView.layer.cornerRadius = 6.0;
+            distanceSliderLabel = [[UILabel alloc]initWithFrame:CGRectMake(0, 0, cell.frame.size.width, 50)];
             distanceSliderLabel.textColor = [UIColor whiteColor];
-            distanceSliderLabel.text = @"00:00";
+            distanceSliderLabel.text = @"▼    00:00    ▲";
+            distanceSliderLabel.textAlignment = NSTextAlignmentCenter;
             distanceSliderLabel.font = [UIFont fontWithName:@"system" size:25];
             [distanceView addSubview:distanceSliderLabel];
             [distanceView addGestureRecognizer:timePanViewGesture];
@@ -105,7 +107,8 @@
     
     isCellExpanded = NO;
     distanceViewCreated = NO;
-    self.distanceInputLabel.text = distanceSliderLabel.text;
+    NSString *distance = [distanceSliderLabel.text substringWithRange:NSMakeRange(5, 4)];
+    self.distanceInputLabel.text = distance;
     [gesture.view removeGestureRecognizer:gesture];
     [gesture.view removeGestureRecognizer:timePanViewGesture];
     [distanceView removeFromSuperview];
@@ -152,13 +155,18 @@
 //    if(fmodf(rounded, 1.0) > 0){
 //        rounded = rounded - 0.20;
 //    }
-    
-    distanceSliderLabel.text = [NSString stringWithFormat:@"%.2f", rounded];
+    distanceSliderLabel.text = [NSString stringWithFormat:@"▼    %.2f    ▲", rounded];
     
     
 }
 
+- (void)tableView:(UITableView *)tableView willDisplayHeaderView:(UIView *)view forSection:(NSInteger)section
+{
 
+    UITableViewHeaderFooterView *headerIndexText = (UITableViewHeaderFooterView *)view;
+    [headerIndexText.textLabel setTextColor:[UIColor colorWithRed:0.498f green:0.180f blue:0.635f alpha:1.00f]];
+    
+}
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
@@ -248,9 +256,12 @@
     TimeInterval *warmUpTimeInterval = [NSEntityDescription insertNewObjectForEntityForName:@"TimeInterval" inManagedObjectContext:coreDataStack.managedObjectContext];
     
     float speed = [self.speedTextField.text floatValue];
+    float roundedSpeed = speed < 0.5f ? 0.5f : floorf(speed * 2) / 2;
+
     float time = ([self getConvertedDistance] / speed)*60;
 
     float rounded = self.inclineSlider.value < 0.5f ? 0.5f : floorf(self.inclineSlider.value * 2) / 2;
+    
     warmUpTimeInterval.incline = [NSNumber numberWithFloat: rounded];
     warmUpTimeInterval.speed = [NSNumber numberWithFloat:speed];
     warmUpTimeInterval.start = [NSNumber numberWithFloat: time] ;

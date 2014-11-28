@@ -35,6 +35,7 @@
 -(void)songEnded:(NSNotification *)notification;
 
 -(void)playFirstItem:(double)rate;
+- (void)advanceToNextItem:(double)rate;
 /* The following methods of AVQueuePlayer are overridden by AVQueuePlayerPrevious:
  – initWithItems: to keep track of the array used to create the player
  + queuePlayerWithItems: to keep track of the array used to create the player

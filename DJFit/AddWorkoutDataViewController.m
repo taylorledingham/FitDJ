@@ -68,7 +68,7 @@ typedef enum : NSInteger {
     hideKeyBoardTapGesture = [[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(didTapAnywhere:)];
     isCellExpanded = NO;
     
-    self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc]initWithBarButtonSystemItem: UIBarButtonSystemItemDone  target:self action:@selector(donePressed:)];
+    self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc]initWithTitle:@"Next" style:UIBarButtonItemStyleDone target:self action:@selector(donePressed:)];
     
 }
 
@@ -140,9 +140,11 @@ typedef enum : NSInteger {
         if(timeViewCreated == NO){
         timeView = [[UIView alloc]initWithFrame:CGRectMake(0, 0, cell.frame.size.width, 50)];
         timeView.backgroundColor = [UIColor colorWithRed:0.553f green:0.235f blue:0.749f alpha:1.00f];
-            timeSliderLabel = [[UILabel alloc]initWithFrame:CGRectMake(cell.center.x-10, 0, cell.frame.size.width, 50)];
+            timeView.layer.cornerRadius = 6.0;
+            timeSliderLabel = [[UILabel alloc]initWithFrame:CGRectMake(0, 0, cell.frame.size.width, 50)];
             timeSliderLabel.textColor = [UIColor whiteColor];
-            timeSliderLabel.text = @"00:00";
+            timeSliderLabel.textAlignment = NSTextAlignmentCenter;
+            timeSliderLabel.text = @"▼    00:00    ▲";
             timeSliderLabel.font = [UIFont fontWithName:@"system" size:25];
         [timeView addSubview:timeSliderLabel];
         [timeView addGestureRecognizer:timePanViewGesture];
@@ -152,7 +154,7 @@ typedef enum : NSInteger {
             editingTimeCellIndexPath = indexPath;
         
         UILabel *time = [self getTimeLabelByTag:[self getIndexForSectionIndex:editingTimeCellIndexPath.section]];
-        UILabel *timeText = [self getTimeTextLabelByTag:[self getIndexForSectionIndex:editingTimeCellIndexPath.section+4]];
+        UILabel *timeText = [self getTimeTextLabelByTag:[self getIndexForSectionIndex:editingTimeCellIndexPath.section]+4];
             time.hidden = YES;
             timeText.hidden = YES;
         }
@@ -196,14 +198,15 @@ typedef enum : NSInteger {
     timeViewCreated = NO;
     NSInteger timeLabelIndex = [self getIndexForSectionIndex:editingTimeCellIndexPath.section];
     UILabel *timeCellLabel = [self getTimeLabelByTag:timeLabelIndex];
-    timeCellLabel.text = timeSliderLabel.text;
+    NSString *time = [timeSliderLabel.text substringWithRange:NSMakeRange(5, 4)];
+    timeCellLabel.text = time;
     [gesture.view removeGestureRecognizer:gesture];
     [gesture.view removeGestureRecognizer:timePanViewGesture];
     [timeView removeFromSuperview];
     [timeSliderLabel removeFromSuperview];
     editingTimeCell = nil;
     editingTimeCellIndexPath = nil;
-    UILabel *timeText = [self getTimeTextLabelByTag:[self getIndexForSectionIndex:timeLabelIndex+4]];
+    UILabel *timeText = [self getTimeTextLabelByTag:timeLabelIndex+4];
     timeCellLabel.hidden = NO;
     timeText.hidden = NO;
     [self.tableView beginUpdates];
@@ -244,17 +247,14 @@ typedef enum : NSInteger {
     if(fmodf(rounded, 1.0) > 0){
         rounded = rounded - 0.20;
     }
-    
-    timeSliderLabel.text = [NSString stringWithFormat:@"%.2f", rounded];
+    timeSliderLabel.text = [NSString stringWithFormat:@"▼    %.2f    ▲", rounded];
 
 
 }
 
 - (void)tableView:(UITableView *)tableView willDisplayHeaderView:(UIView *)view forSection:(NSInteger)section
 {
-    //view.tintColor = [UIColor redColor];
-    
-    // if you have index/header text in your tableview change your index text color
+
     UITableViewHeaderFooterView *headerIndexText = (UITableViewHeaderFooterView *)view;
     [headerIndexText.textLabel setTextColor:[UIColor colorWithRed:0.498f green:0.180f blue:0.635f alpha:1.00f]];
     
@@ -285,7 +285,7 @@ typedef enum : NSInteger {
             
         }
         else if(indexPath.row == 2){
-            return 90;
+            return 100;
         }
         else {
 
@@ -403,6 +403,7 @@ typedef enum : NSInteger {
         TimeInterval *lowTimeInterval = [NSEntityDescription insertNewObjectForEntityForName:@"TimeInterval" inManagedObjectContext:coreDataStack.managedObjectContext];
         time = [[self getTimeLabelByTag:1].text floatValue ];
         speed = [[self getSpeedTextFieldByTag:1].text floatValue];
+        
         rounded = [self getInclineSliderByTag:1].value < 0.5f ? 0.5f : floorf([self getInclineSliderByTag:1].value * 2) / 2;
         lowTimeInterval.incline = [NSNumber numberWithFloat: rounded];
         lowTimeInterval.speed = [NSNumber numberWithFloat:speed];

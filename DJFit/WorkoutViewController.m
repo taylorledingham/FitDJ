@@ -8,6 +8,7 @@
 
 #import "WorkoutViewController.h"
 #import "ProfileDetailsViewController.h"
+#import "PlayWorkoutViewController.h"
 #import "WorkoutsCollectionViewController.h"
 
 @interface WorkoutViewController ()
@@ -49,21 +50,35 @@
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
     // Get the new view controller using [segue destinationViewController].
     // Pass the selected object to the new view controller.
-    if([segue.identifier isEqualToString:@"workoutCollectionView"]){
-        workoutCollectionView = (WorkoutsCollectionViewController *)segue.destinationViewController;
+    if([segue.identifier isEqualToString:@"workoutsCollectionView"]){
+        self.collectionVC = (WorkoutsCollectionViewController *)segue.destinationViewController;
         
-        self.delegate = workoutCollectionView;
+        self.delegate = self.collectionVC;
     }
+    
+   else if([segue.identifier isEqualToString:@"playNewWorkout"]){
+        PlayWorkoutViewController *playVC = (PlayWorkoutViewController *)segue.destinationViewController;
+        playVC.workout = (Workout *)sender;
+        
+    }
+
     
 }
 
+-(BOOL)shouldPerformSegueWithIdentifier:(NSString *)identifier sender:(id)sender {
+    if([identifier isEqualToString:@"playNewWorkout"]){
+        return  NO;
+    }
+    
+    return YES;
+}
 
 -(void)askForProfileDetails {
     
     
     UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
     
-    UIAlertController* alert = [UIAlertController alertControllerWithTitle:@"Add details?"
+    UIAlertController* alert = [UIAlertController alertControllerWithTitle:@"Add details"
                                                                    message:[NSString stringWithFormat: @"Would you like to add your information to enable calorie counting?"]
                                                             preferredStyle:UIAlertControllerStyleAlert];
     
@@ -93,12 +108,13 @@
 }
 
 -(void)editButtonPressed:(id)sender {
-    [workoutCollectionView startEditing];
+    [self.collectionVC startEditing];
     self.navigationItem.leftBarButtonItem = done;
 }
 
 -(void)doneButtonPressed:(id)sender {
     [self.delegate doneEditing];
+    self.navigationItem.leftBarButtonItem = edit;
 }
 
 - (IBAction)gearButtonPressed:(id)sender {

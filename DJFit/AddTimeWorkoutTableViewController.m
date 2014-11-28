@@ -40,7 +40,7 @@ CGPoint cellOrigin;
     hideKeyBoardTapGesture = [[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(didTapAnywhere:)];
     isCellExpanded = NO;
     
-    self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc]initWithBarButtonSystemItem: UIBarButtonSystemItemDone  target:self action:@selector(donePressed:)];
+    self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc]initWithTitle:@"Next" style:UIBarButtonItemStyleDone target:self action:@selector(donePressed:)];
     [self setUpSlidersAndTexFields];
 }
 
@@ -74,9 +74,11 @@ CGPoint cellOrigin;
         if(timeViewCreated == NO){
             timeView = [[UIView alloc]initWithFrame:CGRectMake(0, 0, cell.frame.size.width, 50)];
             timeView.backgroundColor = [UIColor colorWithRed:0.553f green:0.235f blue:0.749f alpha:1.00f];
-            timeSliderLabel = [[UILabel alloc]initWithFrame:CGRectMake(cell.center.x-10, 0, cell.frame.size.width, 50)];
+            timeView.layer.cornerRadius = 6.0;
+            timeSliderLabel = [[UILabel alloc]initWithFrame:CGRectMake(0, 0, cell.frame.size.width, 50)];
+            timeSliderLabel.textAlignment = NSTextAlignmentCenter;
             timeSliderLabel.textColor = [UIColor whiteColor];
-            timeSliderLabel.text = @"00:00";
+            timeSliderLabel.text = @"▼    00:00    ▲";
             timeSliderLabel.font = [UIFont fontWithName:@"system" size:25];
             [timeView addSubview:timeSliderLabel];
             [timeView addGestureRecognizer:timePanViewGesture];
@@ -85,8 +87,8 @@ CGPoint cellOrigin;
             timeViewCreated = YES;
             editingTimeCellIndexPath = indexPath;
             
-            self.durationLabel.hidden = NO;
-            self.workoutTimeLabel.hidden = NO;
+            self.durationLabel.hidden = YES;
+            self.workoutTimeLabel.hidden = YES;
         }
         
         
@@ -105,7 +107,8 @@ CGPoint cellOrigin;
     
     isCellExpanded = NO;
     timeViewCreated = NO;
-    self.workoutTimeLabel.text = [@"Duration: " stringByAppendingString: timeSliderLabel.text];
+    NSString *time = [timeSliderLabel.text substringWithRange:NSMakeRange(5, 4)];
+    self.workoutTimeLabel.text = [@"Duration: " stringByAppendingString: time];
     [gesture.view removeGestureRecognizer:gesture];
     [gesture.view removeGestureRecognizer:timePanViewGesture];
     [timeView removeFromSuperview];
@@ -153,13 +156,19 @@ CGPoint cellOrigin;
    // NSLog(@"%f", fmodf(rounded, 1.0));
    float remainder = fmodf(rounded, 1.0);
     rounded = rounded - remainder;
-    
-    timeSliderLabel.text = [NSString stringWithFormat:@"%.2f", rounded];
+    timeSliderLabel.text = [NSString stringWithFormat:@"▼    %.2f    ▲", rounded];
+    //timeSliderLabel.center = (CGPoint){timeSliderLabel.superview.center.x, timeSliderLabel.center.y};
     
     
 }
 
+- (void)tableView:(UITableView *)tableView willDisplayHeaderView:(UIView *)view forSection:(NSInteger)section
+{
 
+    UITableViewHeaderFooterView *headerIndexText = (UITableViewHeaderFooterView *)view;
+    [headerIndexText.textLabel setTextColor:[UIColor colorWithRed:0.498f green:0.180f blue:0.635f alpha:1.00f]];
+    
+}
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
@@ -182,7 +191,7 @@ CGPoint cellOrigin;
             
         }
         else if(indexPath.row == 2){
-            return 90;
+            return 100;
         }
         else {
             
@@ -250,6 +259,7 @@ CGPoint cellOrigin;
     NSString *timeString = [[self.workoutTimeLabel.text componentsSeparatedByString:@" "] objectAtIndex:1];
     float time = [timeString floatValue ];
     float speed = [self.speedTextField.text floatValue];
+    float roundedSpeed = speed < 0.5f ? 0.5f : floorf(speed * 2) / 2;
     float rounded = self.inclineSlider.value < 0.5f ? 0.5f : floorf(self.inclineSlider.value * 2) / 2;
     warmUpTimeInterval.incline = [NSNumber numberWithFloat: rounded];
     warmUpTimeInterval.speed = [NSNumber numberWithFloat:speed];

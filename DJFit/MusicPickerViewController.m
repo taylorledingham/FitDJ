@@ -14,6 +14,8 @@
 #import <LLARingSpinnerView/LLARingSpinnerView.h>
 #import "PlayWorkoutViewController.h"
 #import "Workout.h"
+#import "WorkoutViewController.h"
+#import "WorkoutsCollectionViewController.h"
 
 
 @interface MusicPickerViewController () <NSFetchedResultsControllerDelegate>
@@ -120,17 +122,17 @@
     playlist.playlistSongs = songSet;
     [coreDataStack saveContext];
     musicDone = YES;
-    [picker dismissViewControllerAnimated:NO completion:nil];
-    UIStoryboard *sb = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
-    
-    PlayWorkoutViewController *playVC = [sb instantiateViewControllerWithIdentifier:@"playWorkout"];
-    playVC.workout = self.workout;
-    //[playVC view];
-    
     [spinnerView stopAnimating];
+    WorkoutViewController *rootController =
+    (WorkoutViewController *)
+    [self.navigationController.viewControllers objectAtIndex: 0];
+    WorkoutsCollectionViewController *collectionVC = rootController.collectionVC;
+    collectionVC.workoutToDisplay = self.workout;
     
-    [self presentViewController:playVC animated:YES completion:nil];
-}
+    [picker dismissViewControllerAnimated:NO completion:^{
+        [self.navigationController popToRootViewControllerAnimated:NO];
+    }];
+    }
 
 
 - (void)didReceiveMemoryWarning {

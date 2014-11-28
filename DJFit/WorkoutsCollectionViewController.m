@@ -38,18 +38,25 @@ static NSString * const reuseIdentifier = @"Cell";
     // self.clearsSelectionOnViewWillAppear = NO;
     
     // Register cell classe
+    _objectChanges = [NSMutableArray array];
+
     deleteButton.imageView.image = [UIImage imageNamed:@"deleteX"];
     
     isEditing = NO;
-   longPress = [[UILongPressGestureRecognizer alloc]initWithTarget:self action:@selector(longPressed:)];
-    doubleTap = [[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(doubleTapped:)];
-    doubleTap.numberOfTapsRequired = 2;
-     [self.collectionView addGestureRecognizer:longPress];
     //[self.collectionView addGestureRecognizer:doubleTap];
     [self.fetchedResultsController performFetch:nil];
 
     
     // Do any additional setup after loading the view.
+}
+
+-(void)viewDidAppear:(BOOL)animated {
+    
+    [super viewDidAppear:NO];
+    if(self.workoutToDisplay){
+    
+        [self performSegueWithIdentifier:@"playWorkout" sender:self.workoutToDisplay];
+    }
 }
 
 - (void)didReceiveMemoryWarning {
@@ -66,8 +73,14 @@ static NSString * const reuseIdentifier = @"Cell";
     // Pass the selected object to the new view controller.
     if([segue.identifier isEqualToString:@"playWorkout"]) {
         PlayWorkoutViewController *playWorkoutVC = (PlayWorkoutViewController *)segue.destinationViewController;
+        self.workoutToDisplay = nil;
+        if([sender isKindOfClass:[WorkoutTypeCollectionViewCell class]]){
         WorkoutTypeCollectionViewCell *cell = (WorkoutTypeCollectionViewCell *)sender;
         playWorkoutVC.workout = cell.workout;
+        }
+        else {
+            playWorkoutVC.workout = (Workout *)sender;
+        }
         
     }
 }
@@ -127,8 +140,6 @@ static NSString * const reuseIdentifier = @"Cell";
         float duration = [workout.workoutDuration floatValue];
         cell.workoutDuration.text = [NSString stringWithFormat:@"%.2f", duration];
         cell.workout = workout;
-        //cell.userInteractionEnabled = YES;
-        [cell addGestureRecognizer:doubleTap];
         if(isEditing){
             cell.deleteButton.hidden = NO;
         }
@@ -141,95 +152,8 @@ static NSString * const reuseIdentifier = @"Cell";
     }
 }
 
--(void)doubleTapped:(UITapGestureRecognizer *)gesture {
-    
-    if(gesture.state == UIGestureRecognizerStateEnded){
-        CGPoint p = [gesture locationInView:self.collectionView];
-        NSIndexPath *indexPath = [self.collectionView indexPathForItemAtPoint:p];
-       // WorkoutTypeCollectionViewCell * workoutCell = (WorkoutTypeCollectionViewCell *)[self.collectionView cellForItemAtIndexPath:indexPath];
-        WorkoutTypeCollectionViewCell * workoutCell = (WorkoutTypeCollectionViewCell *)gesture.view;
-        
-       // if(indexPath != nil){
-        if(workoutCell !=nil){
-            //isnt space between cells
-            
-            
-            
-            UIAlertController* alert = [UIAlertController alertControllerWithTitle:@"Delete Workout?"
-                                                                           message:[NSString stringWithFormat: @"Are you sure you want to delete %@?.", workoutCell.workoutName.text]
-                                                                    preferredStyle:UIAlertControllerStyleAlert];
-            
-            UIAlertAction * keepAction = [UIAlertAction actionWithTitle:@"NO" style:UIAlertActionStyleDefault
-                                                                handler:^(UIAlertAction * action) {
-                                                                    
-                                                                    [self dismissViewControllerAnimated:alert completion:nil];
-                                                                }];
-            
-            UIAlertAction* deleteAction = [UIAlertAction actionWithTitle:@"YES" style:UIAlertActionStyleDefault
-                                                                 handler:^(UIAlertAction * action) {
-                                                                     
-                                                                     [self deleteWorkoutCell:workoutCell];
-                                                                     [self dismissViewControllerAnimated:alert completion:nil];
-                                                                     
-                                                                     
-                                                                 }];
-            
-            [alert addAction:keepAction];
-            [alert addAction:deleteAction];
-            [self presentViewController:alert animated:YES completion:nil];
-            
-        }
-    }
 
 
-    
-}
-
--(void)longPressed:(UILongPressGestureRecognizer*)gesture {
-    
-//    if(gesture.state == UIGestureRecognizerStateBegan){
-//        longPressTimeInterval = CFAbsoluteTimeGetCurrent();
-//        NSLog(@"first tap: %f", longPressTimeInterval);
-//    }
-    
-    if(gesture.state == UIGestureRecognizerStateEnded){
-        CGPoint p = [gesture locationInView:self.collectionView];
-        NSIndexPath *indexPath = [self.collectionView indexPathForItemAtPoint:p];
-        WorkoutTypeCollectionViewCell * workoutCell = (WorkoutTypeCollectionViewCell *)[self.collectionView cellForItemAtIndexPath:indexPath];
-    
-    
-    if(indexPath != nil){
-        //isnt space between cells
-        
-    
-    
-    UIAlertController* alert = [UIAlertController alertControllerWithTitle:@"Delete Workout?"
-                                                                   message:[NSString stringWithFormat: @"Are you sure you want to delete %@?.", workoutCell.workoutName.text]
-                                                            preferredStyle:UIAlertControllerStyleAlert];
-    
-    UIAlertAction * keepAction = [UIAlertAction actionWithTitle:@"NO" style:UIAlertActionStyleDefault
-                                                        handler:^(UIAlertAction * action) {
-                                                            
-                                                            [self dismissViewControllerAnimated:alert completion:nil];
-                                                        }];
-    
-    UIAlertAction* deleteAction = [UIAlertAction actionWithTitle:@"YES" style:UIAlertActionStyleDefault
-                                                       handler:^(UIAlertAction * action) {
-                                                           
-                                                           [self deleteWorkoutCell:workoutCell];
-                                                           [self dismissViewControllerAnimated:alert completion:nil];
-                                                           
-                                                           
-                                                       }];
-    
-    [alert addAction:keepAction];
-    [alert addAction:deleteAction];
-    [self presentViewController:alert animated:YES completion:nil];
-
-        }
-    }
-    
-}
 
 -(BOOL)deleteWorkoutCell:(WorkoutTypeCollectionViewCell *)cell {
     TLCoreDataStack *coreDataStack = [TLCoreDataStack defaultStack];
@@ -260,9 +184,30 @@ static NSString * const reuseIdentifier = @"Cell";
 }
 
 -(void)deleteWorkout:(WorkoutTypeCollectionViewCell *)cell {
-    [self deleteWorkoutCell:cell];
+    UIAlertController* alert = [UIAlertController alertControllerWithTitle:@"Delete Workout?"
+                                                                   message:[NSString stringWithFormat: @"Are you sure you want to delete this workout?"]
+                                                            preferredStyle:UIAlertControllerStyleAlert];
     
+    UIAlertAction * keepAction = [UIAlertAction actionWithTitle:@"NO" style:UIAlertActionStyleDefault
+                                                        handler:^(UIAlertAction * action) {
+                                                            
+                                                            [self dismissViewControllerAnimated:alert completion:nil];
+                                                        }];
     
+    UIAlertAction* deleteAction = [UIAlertAction actionWithTitle:@"YES" style:UIAlertActionStyleDefault
+                                                         handler:^(UIAlertAction * action) {
+                                                             
+                                                             [self deleteWorkoutCell:cell];
+                                                             [self dismissViewControllerAnimated:alert completion:nil];
+                                                             
+                                                             
+                                                         }];
+    
+    [alert addAction:keepAction];
+    [alert addAction:deleteAction];
+    [self presentViewController:alert animated:YES completion:nil];
+
+
 }
 
 -(void)startEditing {
@@ -272,7 +217,7 @@ static NSString * const reuseIdentifier = @"Cell";
     isEditing = YES;
     }
     [self.collectionView reloadData];
-        
+    
     
 }
 
@@ -320,13 +265,33 @@ static NSString * const reuseIdentifier = @"Cell";
 }
 
 -(CGSize)getCellSize:(NSIndexPath *)path {
-    return CGSizeMake(105, 105);
+    //return CGSizeMake(self.view.frame.size.width / 3 - 30, self.view.frame.size.width / 3 - 30);
+    float width;
+    if([UIScreen mainScreen].bounds.size.width < 375){
+    width = 86;
+    }
+    else {
+        width = 105;
+    }
+    return CGSizeMake(width, width);
+
 }
 
 
 #pragma mark collection view cell paddings
 - (UIEdgeInsets)collectionView:(UICollectionView*)collectionView layout:(UICollectionViewLayout *)collectionViewLayout insetForSectionAtIndex:(NSInteger)section {
-    return UIEdgeInsetsMake(-30, 10, 0, 40); // top, left, bottom, right
+    float right;
+    float left;
+    if([UIScreen mainScreen].bounds.size.width <375){
+        right = 10;
+        left = 15;
+    }
+    else {
+        right = 30;
+        left = 10;
+    }
+
+    return UIEdgeInsetsMake(-30, left, 0, right); // top, left, bottom, right
 }
 
 - (CGFloat)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout*)collectionViewLayout minimumInteritemSpacingForSectionAtIndex:(NSInteger)section {

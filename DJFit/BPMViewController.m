@@ -8,6 +8,7 @@
 
 #import "BPMViewController.h"
 #import "TLCoreDataStack.h"
+#import "PlayWorkoutViewController.h"
 
 @interface BPMViewController ()
 
@@ -115,7 +116,7 @@
     else
     {
         bpmAvg = 60000 * count / (msecs - msecsFirst);
-        bpmAvg = (bpmAvg +  [self.song.bpm doubleValue]) / 2;
+        //bpmAvg = (bpmAvg +  [self.song.bpm doubleValue]) / 2;
        // double roundedNumber = ceil(bpmAvg/3);
         int roundedNumber = (bpmAvg + 0.5);
         count++;

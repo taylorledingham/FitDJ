@@ -37,9 +37,11 @@
     BOOL musicPicked;
     double timeInMilliSeconds;
     double currentIntervalInMilliSeconds;
-    double timePassedInMilliSeconds;
+    double workoutDurationInSeconds;
+    double timePassedInSeconds;
     NSTimer *totalWorkoutTimer;
     NSTimer *currentIntervalTimer;
+    NSTimer *calorieTimer;
     NSNumberFormatter *formatter;
     BOOL timerHasStarted;
     NSMutableArray *avPlayerItemsArray;
@@ -65,7 +67,6 @@
     [self setUpQueuePlayer];
     [self loadPlaylist];
     [self displayTime:timeInMilliSeconds onLabel:self.durationLabel];
-    timePassedInMilliSeconds = 0;
     [self setUpGraph];
     synth = [[AVSpeechSynthesizer alloc] init];
     self.voiceCoachingEnabled = [[NSUserDefaults standardUserDefaults] boolForKey:@"wantsVoiceCoaching"];
@@ -104,7 +105,8 @@
     }
     
     currentTimeIntervalIndex = 0;
-    timePassedInMilliSeconds = 0;
+    timePassedInSeconds = 0;
+    workoutDurationInSeconds = [self.workout.workoutDuration doubleValue] * 60;
     timeIntervalsArray = [[NSArray alloc]init];
     timeIntervalsArray = [self.workout.timeIntervals allObjects];
     [self sortTimeIntervalArray];
@@ -141,7 +143,7 @@
 
 -(void)setUpGraph {
     
-    self.chart = [[SimpleBarChart alloc]initWithFrame:CGRectMake(0, 0, self.barChartView.frame.size.width+10, 160)];
+    self.chart = [[SimpleBarChart alloc]initWithFrame:CGRectMake(0, 0, self.barChartView.frame.size.width, self.barChartView.bounds.size.height/3)];
     [self.barChartView addSubview:self.chart];
     
     self.chart.delegate = self;
@@ -222,6 +224,8 @@
     
 }
 
+
+
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
@@ -237,10 +241,19 @@
 }
 */
 
+-(void)updateCalories:(NSTimer *)timer {
+    
+    timePassedInSeconds = timePassedInSeconds + 1;
+    workoutDurationInSeconds = workoutDurationInSeconds -1;
+    [self calculateCaloriesSinceSecondsPassed: 1];
+    if(workoutDurationInSeconds <= 0){
+        [timer invalidate];
+    }
+}
+
 -(void)updateTimer:(NSTimer *)timer {
     timeInMilliSeconds = timeInMilliSeconds -  10 ;
-    timePassedInMilliSeconds += 10;
-    //[self calculateCaloriesSinceSecondsPassed:timePassedInMilliSeconds * 0.001];
+    //[self calculateCaloriesSinceSecondsPassed:(timePassedInSeconds /100000 )];
     [self displayTime:timeInMilliSeconds onLabel:self.durationLabel];
     if(timeInMilliSeconds <=0) {
         [self.queuePlayer pause];
@@ -250,6 +263,7 @@
 
 -(void)updateCurrentIntervalTimer:(NSTimer *)timer {
     currentIntervalInMilliSeconds = currentIntervalInMilliSeconds - 10;
+
     [self displayTime:currentIntervalInMilliSeconds onLabel:self.currentTimeIntervalLabel];
     
     if(currentIntervalInMilliSeconds <= 0){
@@ -277,7 +291,7 @@
     
     double minutes = seconds / 60;
     double heightInInches = [[[NSUserDefaults standardUserDefaults] valueForKey:@"height"] doubleValue];
-    double weightInPounds = 150;//[[[NSUserDefaults standardUserDefaults] valueForKey:@"weight"] doubleValue];
+    double weightInPounds = [[[NSUserDefaults standardUserDefaults] valueForKey:@"weight"] doubleValue];
     double weightInKg = weightInPounds/2.2;
     TimeInterval *currentInterval = [timeIntervalsArray objectAtIndex:currentTimeIntervalIndex];
     double speedMinPerMins = [currentInterval.speed doubleValue] * 26.8;
@@ -294,9 +308,9 @@
     
     double calsPerMin = (x * weightInKg)/200;
     
-    double totalCals = calsPerMin * minutes;
+    double totalCals = (calsPerMin * minutes);
     self.caloriesBurned = self.caloriesBurned + totalCals;
-    self.calorieLabel.text = [NSString stringWithFormat:@"%.1f", self.caloriesBurned];
+    self.calorieLabel.text = [NSString stringWithFormat:@"%.2f kCal", self.caloriesBurned];
 }
 
 
@@ -310,7 +324,6 @@
 }
 
 - (void)playerItemDidReachEnd:(NSNotification *)notification {
-    AVPlayerItem *item = [notification object];
     [self.queuePlayer advanceToNextItem];
 }
 
@@ -402,7 +415,8 @@
 -(void)speakTimeInterval {
     if(self.voiceCoachingEnabled == YES){
     TimeInterval *current = [timeIntervalsArray objectAtIndex:currentTimeIntervalIndex];
-    NSString *next = [NSString stringWithFormat:@"set your speed to %@ miles per hour,", current.speed];
+    float speed = [current.speed floatValue];
+    NSString *next = [NSString stringWithFormat:@"set your speed to %.1f miles per hour,", speed];
     if(current.incline > 0 && [self.workout.machineType isEqualToString: @"treadmill"]){
         next = [next stringByAppendingString:[NSString stringWithFormat:@"and set your incline to  %@ percent", current.incline]];
     }
@@ -428,6 +442,7 @@
         [self.playPauseButton setImage:[UIImage imageNamed:@"pauseButton"] forState:UIControlStateNormal];
         totalWorkoutTimer = [NSTimer scheduledTimerWithTimeInterval:.01 target:self selector:@selector(updateTimer:) userInfo:nil repeats:YES];
         currentIntervalTimer = [NSTimer scheduledTimerWithTimeInterval:.01 target:self selector:@selector(updateCurrentIntervalTimer:) userInfo:nil repeats:YES];
+        calorieTimer = [NSTimer scheduledTimerWithTimeInterval:1 target:self selector:@selector(updateCalories:) userInfo:nil repeats:YES];
         timerHasStarted = YES;
         self.queuePlayer.rate = currentSongRate;
         [self speakTimeInterval];
@@ -439,13 +454,14 @@
         [self.playPauseButton setImage:[UIImage imageNamed:@"playButton"] forState:UIControlStateNormal];
         [totalWorkoutTimer invalidate];
         [currentIntervalTimer invalidate];
+        [calorieTimer invalidate];
         [self.queuePlayer pause];
     }
 
     
 }
 - (IBAction)nextSelected:(id)sender {
-    [self.queuePlayer advanceToNextItem];
+    [self.queuePlayer advanceToNextItem:currentSongRate];
     [self setNewBPMForSpeed];
     
 }
@@ -458,22 +474,21 @@
     UIAlertAction * stayAction = [UIAlertAction actionWithTitle:@"NO" style:UIAlertActionStyleDefault
                                                         handler:^(UIAlertAction * action) {
                                                         
-                                                            [self dismissViewControllerAnimated:alert completion:nil];
+                                                            //[self.presentedViewController dismissViewControllerAnimated:YES completion:nil];
                                                         }];
     
     UIAlertAction* exitAction = [UIAlertAction actionWithTitle:@"YES" style:UIAlertActionStyleDefault
                                                           handler:^(UIAlertAction * action) {
-    [self dismissViewControllerAnimated:alert completion:nil];
-    UIStoryboard * aStoryBoard = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
-     UINavigationController *navController = (UINavigationController *)[aStoryBoard instantiateViewControllerWithIdentifier:@"workoutNavController"];
-
-    
-    [self.queuePlayer pause];
-    [self.queuePlayer removeObserver:self forKeyPath:@"status"];
-    [self removeObserversFromQueuePlayer];
-    self.queuePlayer = nil;
-   [self presentViewController:navController.topViewController animated:YES completion:nil];
-                                                          }];
+                                                    
+                                                                  
+                                                                  [self.queuePlayer pause];
+                                                                  [self.queuePlayer removeObserver:self forKeyPath:@"status"];
+                                                                  [self removeObserversFromQueuePlayer];
+                                                                  self.queuePlayer = nil;
+                                                                  [self dismissViewControllerAnimated:YES completion:nil];
+                                                             
+                                                              }];
+                                                              
     [alert addAction:stayAction];
     [alert addAction:exitAction];
     [self presentViewController:alert animated:YES completion:nil];

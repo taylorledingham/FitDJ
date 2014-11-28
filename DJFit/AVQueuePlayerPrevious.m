@@ -131,12 +131,17 @@
     [_itemsForPlayer removeObject:item];
 }
 
-- (void)advanceToNextItem
+- (void)advanceToNextItem:(double)rate
 {
     // The only addition this method makes to AVQueuePlayer is advancing the nowPlayingIndex by 1.
-    [super advanceToNextItem];
     if (nowPlayingIndex < [_itemsForPlayer count] - 1){
         nowPlayingIndex++;
+        [super advanceToNextItem];
+
+    }
+    else if(nowPlayingIndex == [_itemsForPlayer count] - 1){
+        nowPlayingIndex = 1;
+        [self playPreviousItemWithRate:rate];
     }
 }
 -(void)insertItem:(AVPlayerItem *)item afterItem:(AVPlayerItem *)afterItem
