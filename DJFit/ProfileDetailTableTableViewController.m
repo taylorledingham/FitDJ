@@ -36,6 +36,9 @@
    AppDelegate *appdelgate = (AppDelegate*)[[UIApplication sharedApplication] delegate];
     self.healthStore = appdelgate.healthStore;
     [self loadHealthKitData];
+
+    BOOL voiceCoaching = [[NSUserDefaults standardUserDefaults] boolForKey:@"wantsVoiceCoaching"];
+    self.voiceCoachingSegmentControl.selectedSegmentIndex = voiceCoaching;
     
 }
 

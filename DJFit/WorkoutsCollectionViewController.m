@@ -388,13 +388,16 @@ static NSString * const reuseIdentifier = @"Cell";
                 {
                     [change enumerateKeysAndObjectsUsingBlock:^(NSNumber *key, id obj, BOOL *stop) {
                         NSFetchedResultsChangeType type = [key unsignedIntegerValue];
+                        NSIndexPath *path = (NSIndexPath *)obj;
+                        NSInteger row = path.row + 1;
+                        NSIndexPath *newPath = [NSIndexPath indexPathForRow:row inSection:path.section];
                         switch (type)
                         {
                             case NSFetchedResultsChangeInsert:
-                                [self.collectionView insertItemsAtIndexPaths:@[obj]];
+                                [self.collectionView insertItemsAtIndexPaths:@[newPath]];
                                 break;
                             case NSFetchedResultsChangeDelete:
-                                [self.collectionView deleteItemsAtIndexPaths:@[obj]];
+                                [self.collectionView deleteItemsAtIndexPaths:@[newPath]];
                                 break;
                             case NSFetchedResultsChangeUpdate:
                                 [self.collectionView reloadItemsAtIndexPaths:@[obj]];
