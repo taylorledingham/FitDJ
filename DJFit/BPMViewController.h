@@ -9,12 +9,15 @@
 #import <UIKit/UIKit.h>
 #import "Song.h"
 #import <AVFoundation/AVFoundation.h>
+#import "PlaylistsTableViewController.h"
 
 
 @interface BPMViewController : UIViewController <UIPickerViewDataSource, UIPickerViewDelegate>
 
 @property (strong, nonatomic) IBOutlet UIImageView *songArtworkImageView;
 @property (strong, nonatomic) IBOutlet UIPickerView *bpmPickerView;
+@property (weak, nonatomic) id <reloadSongsDelegate> delegate;
+@property (weak, nonatomic) IBOutlet UIButton *playPauseButton;
 
 @property (strong, nonatomic) IBOutlet UILabel *songTitleLabel;
 @property (strong, nonatomic) Song *song;

@@ -11,6 +11,7 @@
 #import "Playlist.h"
 #import "AVQueuePlayerPrevious.h"
 #import "TimeInterval.h"
+#import "BPMViewController.h"
 
 
 @interface PlayWorkoutViewController ()
@@ -52,6 +53,7 @@
     Song *currentPlayingSong;
     AVSpeechUtterance *utterance;
     AVSpeechSynthesizer *synth;
+    BOOL firstSongFlag;
     
     
 }
@@ -62,6 +64,7 @@
     timerHasStarted = NO;
     playerIsPlaying = NO;
     currentTimeIntervalIndex = 0;
+    firstSongFlag = YES;
     avPlayerItemsArray = [[NSMutableArray alloc]init];
     [self setWorkoutDetails];
     [self setUpQueuePlayer];
@@ -81,8 +84,6 @@
     [self.queuePlayer addObserver:self forKeyPath:@"status" options:0 context:nil];
     currentSongRate = 1.0;
     self.mediaCenter = [MPNowPlayingInfoCenter defaultCenter];
-    
-    self.queuePlayer.actionAtItemEnd = AVPlayerActionAtItemEndNone;
     
     [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(playerItemDidReachEnd:)
@@ -143,7 +144,7 @@
 
 -(void)setUpGraph {
     
-    self.chart = [[SimpleBarChart alloc]initWithFrame:CGRectMake(0, 0, self.barChartView.frame.size.width, self.barChartView.bounds.size.height/3)];
+    self.chart = [[SimpleBarChart alloc]initWithFrame:CGRectMake(5, 0, self.barChartView.frame.size.width, self.barChartView.bounds.size.height/3)];
     [self.barChartView addSubview:self.chart];
     
     self.chart.delegate = self;
@@ -231,15 +232,21 @@
     // Dispose of any resources that can be recreated.
 }
 
-/*
 #pragma mark - Navigation
 
 // In a storyboard-based application, you will often want to do a little preparation before navigation
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
     // Get the new view controller using [segue destinationViewController].
     // Pass the selected object to the new view controller.
+    if([segue.identifier isEqualToString:@"showSongs"]){
+        
+        if(playerIsPlaying == YES){
+        [self playPauseSelected:nil];
+        }
+        
+    }
 }
-*/
+
 
 -(void)updateCalories:(NSTimer *)timer {
     
@@ -324,7 +331,14 @@
 }
 
 - (void)playerItemDidReachEnd:(NSNotification *)notification {
+    if(firstSongFlag == YES){
+        
+    }
+    else {
     [self.queuePlayer advanceToNextItem];
+       
+    }
+     firstSongFlag = NO;
 }
 
 - (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context
@@ -468,13 +482,13 @@
 - (IBAction)exitWorkout:(id)sender {
     
     UIAlertController* alert = [UIAlertController alertControllerWithTitle:@"Exit Workout"
-                                                                   message:@"Are you sure you want to exit the workout?."
+                                                                   message:@"Are you sure you want to exit the workout?"
                                                             preferredStyle:UIAlertControllerStyleAlert];
     
     UIAlertAction * stayAction = [UIAlertAction actionWithTitle:@"NO" style:UIAlertActionStyleDefault
                                                         handler:^(UIAlertAction * action) {
                                                         
-                                                            //[self.presentedViewController dismissViewControllerAnimated:YES completion:nil];
+
                                                         }];
     
     UIAlertAction* exitAction = [UIAlertAction actionWithTitle:@"YES" style:UIAlertActionStyleDefault
@@ -484,6 +498,9 @@
                                                                   [self.queuePlayer pause];
                                                                   [self.queuePlayer removeObserver:self forKeyPath:@"status"];
                                                                   [self removeObserversFromQueuePlayer];
+                                                              [[NSNotificationCenter defaultCenter] removeObserver:self];
+                                                              synth = nil;
+                                                              utterance = nil;
                                                                   self.queuePlayer = nil;
                                                                   [self dismissViewControllerAnimated:YES completion:nil];
                                                              
@@ -496,7 +513,7 @@
 }
 
 -(void)removeObserversFromQueuePlayer{
-    for (AVPlayerItem *item in self.queuePlayer.items) {
+    for (AVPlayerItem *item in avPlayerItemsArray) {
         [item removeObserver:self forKeyPath:NSStringFromSelector(@selector(status))];
 
     }

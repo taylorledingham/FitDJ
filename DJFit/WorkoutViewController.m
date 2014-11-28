@@ -86,8 +86,6 @@
                                                        handler:^(UIAlertAction * action) {
                                                            
                                                            
-                                                           [self dismissViewControllerAnimated:alert completion:nil];
-                                                           
                                                            ProfileDetailsViewController *profileController = [storyboard instantiateViewControllerWithIdentifier:@"profileDetails"];
                                                            [self presentViewController:profileController animated:YES completion:NULL];
                                                            
@@ -95,9 +93,7 @@
     
     UIAlertAction* dismissAction = [UIAlertAction actionWithTitle:@"No, maybe later" style:UIAlertActionStyleDefault
                                                           handler:^(UIAlertAction * action) {
-                                                              
-                                                              [self  dismissViewControllerAnimated:alert completion:nil];
-                                                              
+
                                                               
                                                           }];
     

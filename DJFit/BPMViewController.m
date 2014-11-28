@@ -32,6 +32,7 @@
     count = 0;
     msecsFirst = 0;
     msecsPrevious = 0;
+    playerIsPlaying = NO;
     
     player = [[AVPlayer alloc]init];
      self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc]initWithBarButtonSystemItem: UIBarButtonSystemItemSave  target:self action:@selector(savePressed:)];
@@ -59,7 +60,9 @@
 }
 
 -(void)viewWillDisappear:(BOOL)animated {
+    if(playerIsPlaying){
     [player pause];
+    }
 }
 
 - (void)didReceiveMemoryWarning {
@@ -128,9 +131,13 @@
 
 -(void)savePressed:(id)sender {
     
+    if(playerIsPlaying){
+        [player pause];
+    }
    TLCoreDataStack *coreDataStack =  [TLCoreDataStack defaultStack];
     self.song.bpm = [NSNumber numberWithInteger: [self.bpmPickerView selectedRowInComponent:0]];
     [coreDataStack saveContext];
+    [self.delegate reloadSongs];
     [self.navigationController popViewControllerAnimated:YES];
     
 }
@@ -141,7 +148,16 @@
 }
 
 - (IBAction)playButtonPressed:(id)sender {
+    if(playerIsPlaying == NO){
+      [self.playPauseButton setImage:[UIImage imageNamed:@"playButton"] forState:UIControlStateNormal];
     [player play];
+    playerIsPlaying = YES;
+    }
+    else {
+        playerIsPlaying = NO;
+        [self.playPauseButton setImage:[UIImage imageNamed:@"pauseButton"] forState:UIControlStateNormal];
+        [player pause];
+    }
 }
 
 - (IBAction)tapButtonPressed:(id)sender {

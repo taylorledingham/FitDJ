@@ -11,10 +11,14 @@
 #import "Playlist.h"
 #import "Song.h"
 
+@protocol reloadSongsDelegate <NSObject>
+
+-(void)reloadSongs;
+
+@end
 
 
-
-@interface PlaylistsTableViewController : UITableViewController
+@interface PlaylistsTableViewController : UITableViewController <reloadSongsDelegate>
 
 @property (weak, nonatomic) IBOutlet UIImageView *songImageView;
 @property (weak, nonatomic) IBOutlet UILabel *songTitleLabel;

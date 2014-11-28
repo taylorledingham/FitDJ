@@ -73,14 +73,14 @@
         [cell addGestureRecognizer:cellTapGesture];
         isCellExpanded = YES;
         if(distanceViewCreated == NO){
-            distanceView = [[UIView alloc]initWithFrame:CGRectMake(0, 0, cell.frame.size.width, 50)];
+            distanceView = [[UIView alloc]initWithFrame:CGRectMake(0, 0, cell.frame.size.width, 60)];
             distanceView.backgroundColor = [UIColor colorWithRed:0.553f green:0.235f blue:0.749f alpha:1.00f];
             distanceView.layer.cornerRadius = 6.0;
-            distanceSliderLabel = [[UILabel alloc]initWithFrame:CGRectMake(0, 0, cell.frame.size.width, 50)];
+            distanceSliderLabel = [[UILabel alloc]initWithFrame:CGRectMake(0, 0, cell.frame.size.width, 60)];
             distanceSliderLabel.textColor = [UIColor whiteColor];
             distanceSliderLabel.text = @"▼    00:00    ▲";
             distanceSliderLabel.textAlignment = NSTextAlignmentCenter;
-            distanceSliderLabel.font = [UIFont fontWithName:@"system" size:25];
+            distanceSliderLabel.font = [UIFont systemFontOfSize:20];
             [distanceView addSubview:distanceSliderLabel];
             [distanceView addGestureRecognizer:timePanViewGesture];
             [cell addSubview:distanceView];

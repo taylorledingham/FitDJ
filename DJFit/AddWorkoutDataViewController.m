@@ -138,14 +138,14 @@ typedef enum : NSInteger {
         [cell addGestureRecognizer:cellTapGesture];
         isCellExpanded = YES;
         if(timeViewCreated == NO){
-        timeView = [[UIView alloc]initWithFrame:CGRectMake(0, 0, cell.frame.size.width, 50)];
+        timeView = [[UIView alloc]initWithFrame:CGRectMake(0, 0, cell.frame.size.width, 60)];
         timeView.backgroundColor = [UIColor colorWithRed:0.553f green:0.235f blue:0.749f alpha:1.00f];
             timeView.layer.cornerRadius = 6.0;
-            timeSliderLabel = [[UILabel alloc]initWithFrame:CGRectMake(0, 0, cell.frame.size.width, 50)];
+            timeSliderLabel = [[UILabel alloc]initWithFrame:CGRectMake(0, 0, cell.frame.size.width, 60)];
             timeSliderLabel.textColor = [UIColor whiteColor];
             timeSliderLabel.textAlignment = NSTextAlignmentCenter;
             timeSliderLabel.text = @"▼    00:00    ▲";
-            timeSliderLabel.font = [UIFont fontWithName:@"system" size:25];
+            timeSliderLabel.font = [UIFont systemFontOfSize:20];
         [timeView addSubview:timeSliderLabel];
         [timeView addGestureRecognizer:timePanViewGesture];
         [cell addSubview:timeView];

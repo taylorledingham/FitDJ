@@ -157,7 +157,6 @@ static NSString * const reuseIdentifier = @"Cell";
 
 -(BOOL)deleteWorkoutCell:(WorkoutTypeCollectionViewCell *)cell {
     TLCoreDataStack *coreDataStack = [TLCoreDataStack defaultStack];
-    NSNumber *duration = [NSNumber numberWithFloat:[cell.workoutDuration.text floatValue]];
     NSPredicate *deleteWorkoutPredicate = [NSPredicate predicateWithFormat:@"self == %@", cell.workout ];
     NSFetchRequest *request = [self workoutFetchRequest];
     [request setPredicate:deleteWorkoutPredicate];
@@ -287,7 +286,7 @@ static NSString * const reuseIdentifier = @"Cell";
         left = 15;
     }
     else {
-        right = 30;
+        right = 40;
         left = 10;
     }
 

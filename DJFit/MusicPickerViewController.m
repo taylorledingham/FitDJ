@@ -38,6 +38,7 @@
     LLARingSpinnerView *spinnerView;
     BOOL musicDone;
     NSUInteger index;
+    UILabel *waiting ;
     
 }
 
@@ -51,17 +52,31 @@
     self.view.backgroundColor = [UIColor colorWithRed:0.808f green:0.808f blue:0.808f alpha:1.00f];
     
     TLCoreDataStack *coreDataStack = [TLCoreDataStack defaultStack];
+    NSFetchRequest *playlistRequest = [[NSFetchRequest alloc]initWithEntityName:@"Playlist"];
+    NSError *error;
+    NSArray *result = [coreDataStack.managedObjectContext executeFetchRequest:playlistRequest error:&error];
+    playlist = (Playlist *)result.firstObject;
+    if(result.count == 0){
     playlist = [NSEntityDescription insertNewObjectForEntityForName:@"Playlist" inManagedObjectContext:coreDataStack.managedObjectContext];
+    }
    playlist.playlistName = @"playlist";
     self.workout.playlist = playlist;
+    songs = [NSMutableSet setWithSet: playlist.playlistSongs];
     [coreDataStack saveContext];
     fileManager = [NSFileManager defaultManager];
-    spinnerView = [[LLARingSpinnerView alloc] initWithFrame:CGRectMake(self.view.center.x-20, self.view.center.y, 40, 40)];
+    waiting = [[UILabel alloc]initWithFrame:CGRectMake(0, self.view.center.y, self.view.frame.size.width, 100)];
+    waiting.numberOfLines = 2;
+    waiting.textColor = [UIColor colorWithRed:0.537f green:0.220f blue:0.714f alpha:1.00f];
+    waiting.text = @"Calculating BPM...";
+    waiting.textAlignment = NSTextAlignmentCenter;
+    waiting.font = [UIFont fontWithName:@"Avenir-Black" size:30];
+    
+    spinnerView = [[LLARingSpinnerView alloc] initWithFrame:CGRectMake(self.view.center.x-20, self.view.center.y-80, 40, 40)];
     // Optionally set the current progress
     spinnerView.lineWidth = 1.5f;
-    // Optionally change the tint color
-    spinnerView.tintColor = [UIColor purpleColor];
     spinnerView.hidden = YES;
+    // Optionally change the tint color
+    spinnerView.tintColor = [UIColor colorWithRed:0.537f green:0.220f blue:0.714f alpha:1.00f];
     [self.view addSubview:spinnerView];
     
 
@@ -78,7 +93,7 @@
     [[MPMediaPickerController alloc] initWithMediaTypes: MPMediaTypeMusic];
     
     [[picker view] setFrame:CGRectMake(0, 0, self.view.frame.size.width, self.view.frame.size.height)];
-    
+    [[UITabBar appearance] setTintColor:[UIColor colorWithRed:0.537f green:0.220f blue:0.714f alpha:1.00f]];
     picker.delegate  = self;
     picker.allowsPickingMultipleItems = YES;
     picker.showsCloudItems = NO;
@@ -88,10 +103,14 @@
 - (void) mediaPicker: (MPMediaPickerController *) mediaPicker
    didPickMediaItems: (MPMediaItemCollection *) collection
 {
-   // [self dismissViewControllerAnimated:YES completion:nil];
+    spinnerView.hidden = NO;
+   [self dismissViewControllerAnimated:YES completion:nil];
     self.songsArray = [collection items] ;
     self.items = collection;
+    [self.view addSubview:waiting];
     [self loadPlaylistWithSongs];
+    [spinnerView startAnimating];
+
     
     
 }
@@ -99,39 +118,18 @@
 - (void)loadPlaylistWithSongs {
     
     TLCoreDataStack *coreDataStack = [TLCoreDataStack defaultStack];
-    [spinnerView startAnimating];
-    spinnerView.hidden = NO;
     index = self.songsArray.count;
     
     for(int i=0; i<self.songsArray.count; i++){
         
         MPMediaItem *item = self.songsArray[i];
-        TLCoreDataStack *coreDataStack = [TLCoreDataStack defaultStack];
-        Song *newSong = [NSEntityDescription insertNewObjectForEntityForName:@"Song" inManagedObjectContext:coreDataStack.managedObjectContext];
-        newSong.persistentID = [item valueForProperty:MPMediaItemPropertyPersistentID];
-        newSong.songURL = [NSString stringWithFormat:@"%@",[item valueForKey:MPMediaItemPropertyAssetURL]];
-        newSong.songTitle = item.title;
-        [songs addObject:newSong];
 
-        [self convertMediaItem:item andSong:newSong ];
-
-        
+        [self convertMediaItem:item ];
     }
     
-    NSSet *songSet = songs;
-    playlist.playlistSongs = songSet;
-    [coreDataStack saveContext];
-    musicDone = YES;
-    [spinnerView stopAnimating];
-    WorkoutViewController *rootController =
-    (WorkoutViewController *)
-    [self.navigationController.viewControllers objectAtIndex: 0];
-    WorkoutsCollectionViewController *collectionVC = rootController.collectionVC;
-    collectionVC.workoutToDisplay = self.workout;
     
-    [picker dismissViewControllerAnimated:NO completion:^{
-        [self.navigationController popToRootViewControllerAnimated:NO];
-    }];
+    musicDone = YES;
+
     }
 
 
@@ -140,7 +138,7 @@
     // Dispose of any resources that can be recreated.
 }
 
--(BOOL)doesSongExist:(NSNumber *)mediaID {
+-(Song *)doesSongExist:(NSNumber *)mediaID {
     
     TLCoreDataStack *coreDataStack = [TLCoreDataStack defaultStack];
     NSFetchRequest *songRequest = [[NSFetchRequest alloc]initWithEntityName:@"Song"];
@@ -149,22 +147,31 @@
     NSError *error;
     NSArray *result = [coreDataStack.managedObjectContext executeFetchRequest:songRequest error:&error];
     if(result.count == 0){
-        return NO;
+        return nil;
     }
     NSLog(@"line 147: index: %lu", (unsigned long)index);
-    return YES;
+    return result.firstObject;
 }
 
 #pragma mark - convert media item AVURLAsset
 
--(void)convertMediaItem:(MPMediaItem *)song andSong:(Song *)newSong {
+-(void)convertMediaItem:(MPMediaItem *)song {
     
-    if ([self doesSongExist:[song valueForProperty:MPMediaItemPropertyPersistentID]] == YES){
-        index = index - 1;
-        
+    Song *mySong = [self doesSongExist:[song valueForProperty:MPMediaItemPropertyPersistentID]];
+    if (mySong != nil){
+        NSArray *songArray = @[@"", mySong];
+        [songs addObject:mySong];
+        [self done:songArray];
     }
     else {
-            NSURL *assetURL = [song valueForProperty:MPMediaItemPropertyAssetURL];
+        TLCoreDataStack *coreDataStack = [TLCoreDataStack defaultStack];
+        Song *newSong = [NSEntityDescription insertNewObjectForEntityForName:@"Song" inManagedObjectContext:coreDataStack.managedObjectContext];
+        newSong.persistentID = [song valueForProperty:MPMediaItemPropertyPersistentID];
+        newSong.songURL = [NSString stringWithFormat:@"%@",[song valueForKey:MPMediaItemPropertyAssetURL]];
+        newSong.songTitle = song.title;
+        [songs addObject:newSong];
+        
+        NSURL *assetURL = [song valueForProperty:MPMediaItemPropertyAssetURL];
         AVPlayerItem *avItem = [[AVPlayerItem alloc] initWithURL:assetURL];
         BOOL isDRM = avItem.asset.hasProtectedContent;
         if(isDRM == YES  || assetURL == nil){
@@ -290,22 +297,31 @@
 }
 
 -(void)done:(NSArray *)pathAndSong {
+    TLCoreDataStack *coreDataStack = [TLCoreDataStack defaultStack];
+    if(![pathAndSong[0]  isEqual: @""]){
     [self calculateBPMWithPathString:pathAndSong[0] andSong:pathAndSong[1]];
+    }
+    NSSet *songSet = songs;
+    playlist.playlistSongs = songSet;
+    self.workout.playlist = playlist;
     index = index - 1;
     NSLog(@"index: %lu", (unsigned long)index);
-    if(index == 0){
-//        UIStoryboard *sb = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
-//        
-//        PlayWorkoutViewController *playVC = [sb instantiateViewControllerWithIdentifier:@"playWorkout"];
-//        playVC.workout = self.workout;
-//        //[playVC view];
-//
-//        [spinnerView stopAnimating];
-//
-//        [self presentViewController:playVC animated:YES completion:nil];
+    if(index <= self.songsArray.count){
+        WorkoutViewController *rootController =
+        (WorkoutViewController *)
+        [self.navigationController.viewControllers objectAtIndex: 0];
+        WorkoutsCollectionViewController *collectionVC = rootController.collectionVC;
+        collectionVC.workoutToDisplay = self.workout;
+
+        [self.navigationController popToRootViewControllerAnimated:NO];
+
+        [spinnerView stopAnimating];
+        [coreDataStack saveContext];
+
+
    }
 
-    
+
     
 }
 

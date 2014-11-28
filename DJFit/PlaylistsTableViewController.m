@@ -36,6 +36,7 @@
     songQuery = [[MPMediaQuery alloc] init];
     //musicPlayer = [MPMusicPlayerController iPodMusicPlayer];
      self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc]initWithBarButtonSystemItem:UIBarButtonSystemItemDone target:self action:@selector(donePressed:)];
+     self.navigationItem.leftBarButtonItem = self.editButtonItem;
     
     [self.fetchedResultsController performFetch:nil];
 
@@ -43,6 +44,7 @@
 
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
+    
     // Dispose of any resources that can be recreated.
 }
 
@@ -98,7 +100,48 @@
     return 80;
 }
 
+- (BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath {
+    // Return NO if you do not want the specified item to be editable.
+    return YES;
+}
 
+
+
+ // Override to support editing the table view.
+ - (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath {
+ if (editingStyle == UITableViewCellEditingStyleDelete) {
+ // Delete the row from the data source
+     SongTableViewCell *cell = (SongTableViewCell *)[self.tableView cellForRowAtIndexPath:indexPath];
+     [self deleteSong:cell];
+     
+ 
+ } else if (editingStyle == UITableViewCellEditingStyleInsert) {
+ // Create a new instance of the appropriate class, insert it into the array, and add a new row to the table view
+ }
+ }
+ 
+
+-(void)deleteSong:(SongTableViewCell *)cell {
+    
+    TLCoreDataStack *coreDataStack = [TLCoreDataStack defaultStack];
+    NSPredicate *deleteSongPredicate = [NSPredicate predicateWithFormat:@"self == %@", cell.song ];
+    NSFetchRequest *request = [self entryListFetchRequest];
+    [request setPredicate:deleteSongPredicate];
+    NSError *error = nil;
+    
+    NSArray *fetchedObjects = [coreDataStack.managedObjectContext executeFetchRequest:request error:&error];
+
+    
+    for( NSManagedObject * song in fetchedObjects) {
+        
+        [[coreDataStack managedObjectContext] deleteObject:song];
+        
+    }
+    [coreDataStack saveContext];
+    [self.tableView reloadData];
+
+    
+}
 
 - (NSFetchedResultsController *)fetchedResultsController {
     if (_fetchedResultsController != nil) {
@@ -162,7 +205,9 @@
     
 }
 
-
+-(void)reloadSongs {
+    [self.tableView reloadData];
+}
 
 #pragma mark - Navigation
 
@@ -178,6 +223,7 @@
     bpmVC.songTitleLabel.text = cell.songTitleLabel.text;
     bpmVC.songArtworkImageView.image = cell.songImageView.image;
     bpmVC.song = cell.song;
+    bpmVC.delegate = self;
     [bpmVC.bpmPickerView selectRow:[cell.songBPMLabel.text integerValue ] inComponent:0 animated:YES];
     
 }

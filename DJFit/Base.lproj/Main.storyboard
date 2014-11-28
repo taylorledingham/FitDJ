@@ -2088,6 +2088,7 @@
                     </view>
                     <connections>
                         <outlet property="bpmPickerView" destination="9xR-AX-Lqt" id="qz2-Yn-48f"/>
+                        <outlet property="playPauseButton" destination="rxB-eP-BU2" id="pyj-Bt-qw8"/>
                         <outlet property="songArtworkImageView" destination="jI8-mf-An2" id="Xcz-LB-dVQ"/>
                         <outlet property="songTitleLabel" destination="PPT-sY-938" id="gkI-hG-vwA"/>
                     </connections>
@@ -2407,7 +2408,7 @@
                                     </mask>
                                 </variation>
                                 <connections>
-                                    <segue destination="csD-iL-9ML" kind="show" id="ulp-Cj-J0A"/>
+                                    <segue destination="csD-iL-9ML" kind="show" identifier="showSongs" id="ulp-Cj-J0A"/>
                                 </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="VBp-nv-1wV">
@@ -2643,7 +2644,7 @@
                                 <variation key="heightClass=regular-widthClass=compact" constant="10"/>
                             </constraint>
                             <constraint firstItem="7un-wO-j6m" firstAttribute="top" secondItem="Np9-3s-XPu" secondAttribute="bottom" constant="14" id="f34-8q-XLL">
-                                <variation key="heightClass=regular-widthClass=compact" constant="8"/>
+                                <variation key="heightClass=regular-widthClass=compact" constant="26"/>
                             </constraint>
                             <constraint firstItem="VBp-nv-1wV" firstAttribute="leading" secondItem="5Ka-mv-EZW" secondAttribute="trailing" constant="15" id="fLF-nx-XGy">
                                 <variation key="heightClass=regular-widthClass=compact" constant="10"/>
@@ -2651,8 +2652,8 @@
                             <constraint firstItem="5Ka-mv-EZW" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="UdR-N2-Cxp" secondAttribute="leadingMargin" constant="10" id="ffM-Zu-8KT"/>
                             <constraint firstItem="nzF-br-mZg" firstAttribute="height" secondItem="7un-wO-j6m" secondAttribute="height" id="g6e-9N-X0F"/>
                             <constraint firstItem="VBp-nv-1wV" firstAttribute="top" secondItem="yBz-5F-FEP" secondAttribute="bottom" constant="22" id="glc-Q3-zV9"/>
-                            <constraint firstItem="Np9-3s-XPu" firstAttribute="top" secondItem="Kfo-mL-MP1" secondAttribute="bottom" constant="15" id="hs2-Ef-QhW">
-                                <variation key="heightClass=regular-widthClass=compact" constant="26"/>
+                            <constraint firstItem="Np9-3s-XPu" firstAttribute="top" secondItem="Kfo-mL-MP1" secondAttribute="bottom" constant="10" id="hs2-Ef-QhW">
+                                <variation key="heightClass=regular-widthClass=compact" constant="8"/>
                             </constraint>
                             <constraint firstItem="nzF-br-mZg" firstAttribute="width" secondItem="47c-88-PUa" secondAttribute="width" id="j4R-xO-UHO"/>
                             <constraint firstItem="T93-Ih-jcc" firstAttribute="top" secondItem="S9N-Nk-F4c" secondAttribute="bottom" constant="22" id="jFL-vY-URs">
@@ -2674,7 +2675,7 @@
                                 <variation key="heightClass=regular-widthClass=compact" constant="24"/>
                             </constraint>
                             <constraint firstItem="47c-88-PUa" firstAttribute="top" secondItem="Np9-3s-XPu" secondAttribute="bottom" constant="14" id="sNe-Ba-TvC">
-                                <variation key="heightClass=regular-widthClass=compact" constant="8"/>
+                                <variation key="heightClass=regular-widthClass=compact" constant="26"/>
                             </constraint>
                             <constraint firstItem="h5g-Xg-duw" firstAttribute="leading" secondItem="UdR-N2-Cxp" secondAttribute="leadingMargin" id="shb-ee-Zue"/>
                             <constraint firstItem="qoi-fj-6xS" firstAttribute="top" secondItem="5Ka-mv-EZW" secondAttribute="bottom" constant="35" id="spK-Lu-5GT">
@@ -4024,14 +4025,11 @@
                                                     <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                     <color key="textColor" red="0.38431372549999998" green="0.039215686270000001" blue="0.5450980392" alpha="1" colorSpace="calibratedRGB"/>
                                                     <nil key="highlightedColor"/>
-                                                    <variation key="heightClass=regular-widthClass=compact" misplaced="YES">
-                                                        <rect key="frame" x="22" y="9" width="55" height="21"/>
-                                                    </variation>
                                                 </label>
                                                 <slider opaque="NO" tag="1" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" value="0.5" minValue="0.0" maxValue="15" translatesAutoresizingMaskIntoConstraints="NO" id="XGW-YO-kcM" customClass="ASValueTrackingSlider">
                                                     <rect key="frame" x="0.0" y="-15" width="118" height="31"/>
                                                     <variation key="heightClass=regular-widthClass=compact" misplaced="YES">
-                                                        <rect key="frame" x="80" y="46" width="309" height="36"/>
+                                                        <rect key="frame" x="80" y="46" width="149" height="35"/>
                                                     </variation>
                                                 </slider>
                                             </subviews>
