@@ -36,7 +36,6 @@
 		904160751A1BB58C0037B130 /* libbass_fx.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 904160721A1BB58C0037B130 /* libbass_fx.a */; };
 		90671DBA1A218B2100CBBE26 /* AddTimeWorkoutTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 90671DB91A218B2100CBBE26 /* AddTimeWorkoutTableViewController.m */; };
 		906D2BDE1A265BDB0031A397 /* BPMViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 906D2BDD1A265BDB0031A397 /* BPMViewController.m */; };
-		906D2BE51A28FD090031A397 /* testTableTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 906D2BE41A28FD090031A397 /* testTableTableViewController.m */; };
 		907904C71A250E5300EE30DE /* AddDistanceWorkoutTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 907904C61A250E5300EE30DE /* AddDistanceWorkoutTableViewController.m */; };
 		908796561A1CF9CB00786C11 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 908796551A1CF9CB00786C11 /* QuartzCore.framework */; };
 		908796591A1D345B00786C11 /* AVQueuePlayerPrevious.m in Sources */ = {isa = PBXBuildFile; fileRef = 908796581A1D345B00786C11 /* AVQueuePlayerPrevious.m */; };
@@ -128,8 +127,6 @@
 		90671DB91A218B2100CBBE26 /* AddTimeWorkoutTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = AddTimeWorkoutTableViewController.m; path = DJFit/AddTimeWorkoutTableViewController.m; sourceTree = "<group>"; };
 		906D2BDC1A265BDB0031A397 /* BPMViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BPMViewController.h; sourceTree = "<group>"; };
 		906D2BDD1A265BDB0031A397 /* BPMViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BPMViewController.m; sourceTree = "<group>"; };
-		906D2BE31A28FD090031A397 /* testTableTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = testTableTableViewController.h; sourceTree = "<group>"; };
-		906D2BE41A28FD090031A397 /* testTableTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = testTableTableViewController.m; sourceTree = "<group>"; };
 		907904C51A250E5300EE30DE /* AddDistanceWorkoutTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = AddDistanceWorkoutTableViewController.h; path = DJFit/AddDistanceWorkoutTableViewController.h; sourceTree = "<group>"; };
 		907904C61A250E5300EE30DE /* AddDistanceWorkoutTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = AddDistanceWorkoutTableViewController.m; path = DJFit/AddDistanceWorkoutTableViewController.m; sourceTree = "<group>"; };
 		908796551A1CF9CB00786C11 /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
@@ -271,8 +268,6 @@
 				900D22571A1A91CC00A9E5EB /* Main.storyboard */,
 				908D36AE1A1E703B0003F18E /* PlaylistsTableViewController.h */,
 				908D36AF1A1E703B0003F18E /* PlaylistsTableViewController.m */,
-				906D2BE31A28FD090031A397 /* testTableTableViewController.h */,
-				906D2BE41A28FD090031A397 /* testTableTableViewController.m */,
 				906D2BDC1A265BDB0031A397 /* BPMViewController.h */,
 				906D2BDD1A265BDB0031A397 /* BPMViewController.m */,
 				90E0CC221A1BE59800F73FA8 /* MusicPickerViewController.h */,
@@ -533,7 +528,6 @@
 				90671DBA1A218B2100CBBE26 /* AddTimeWorkoutTableViewController.m in Sources */,
 				90E0CC241A1BE59800F73FA8 /* MusicPickerViewController.m in Sources */,
 				900D22501A1A91CB00A9E5EB /* AppDelegate.m in Sources */,
-				906D2BE51A28FD090031A397 /* testTableTableViewController.m in Sources */,
 				900D22531A1A91CC00A9E5EB /* DJFit.xcdatamodeld in Sources */,
 				90E0CC1E1A1BD34800F73FA8 /* PlayWorkoutViewController.m in Sources */,
 				904160601A1B0D4D0037B130 /* TimeInterval.m in Sources */,

@@ -54,12 +54,24 @@
     AVSpeechUtterance *utterance;
     AVSpeechSynthesizer *synth;
     BOOL firstSongFlag;
+    NSArray *fetchedObjects;
     
     
 }
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+    
+    TLCoreDataStack *coreDataStack = [TLCoreDataStack defaultStack];
+    NSFetchRequest *fetchRequest = [NSFetchRequest fetchRequestWithEntityName:@"Song"];
+    
+    fetchRequest.sortDescriptors = @[[NSSortDescriptor sortDescriptorWithKey:@"songTitle" ascending:NO]];
+    
+    NSError *error = nil;
+    
+    fetchedObjects = [coreDataStack.managedObjectContext executeFetchRequest:fetchRequest error:&error];
+    
+    self.workout.playlist.playlistSongs = [[NSSet alloc]initWithArray:fetchedObjects];
     self.navigationController.navigationBar.hidden = YES;
     timerHasStarted = NO;
     playerIsPlaying = NO;
@@ -162,8 +174,10 @@
 }
 
 -(void)loadPlaylist {
+   
 
-    for (Song *song in self.workout.playlist.playlistSongs) {
+
+    for (Song *song in fetchedObjects) {
         
         AVURLAsset *urlAsset = [[AVURLAsset alloc] initWithURL:[NSURL URLWithString: song.songURL] options:nil];
 
