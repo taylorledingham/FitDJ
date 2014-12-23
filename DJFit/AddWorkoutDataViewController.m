@@ -83,7 +83,7 @@ typedef enum : NSInteger {
   
     for (ASValueTrackingSlider *slider in self.inclineSliders) {
         slider.popUpViewCornerRadius = 12.0;
-        [slider setMaxFractionDigitsDisplayed:0];
+        [slider setMaxFractionDigitsDisplayed:1];
         slider.popUpViewColor = [UIColor colorWithRed:0.518f green:0.200f blue:0.678f alpha:1.00f];
         slider.font = [UIFont fontWithName:@"AppleSDGothicNeo-Bold" size:20];
         slider.textColor = [UIColor whiteColor];
@@ -221,19 +221,15 @@ typedef enum : NSInteger {
         case UIGestureRecognizerStateBegan:
             break;
         case UIGestureRecognizerStateChanged:
-            NSLog(@"changed: %f", elevation);
             if(elevation <= 25.0){
                 gesture.view.center = CGPointMake(gesture.view.center.x, cellOrigin.y+25.0);
             } else if(elevation <= 375.00){
-                NSLog(@"[gesture locationInView:gesture.view]: %f", [gesture locationInView:gesture.view.superview].y);
                 gesture.view.center = CGPointMake(gesture.view.center.x, [gesture locationInView:gesture.view.superview].y);
             } else if(elevation > 375.0){
                 gesture.view.center = CGPointMake(gesture.view.center.x, 375);
             }
             break;
         case UIGestureRecognizerStateEnded:
-            
-            //[gesture setTranslation:CGPointMake(0, 0) inView:editingTimeCell];
             break;
 
         default:
@@ -332,13 +328,39 @@ typedef enum : NSInteger {
 
 - (IBAction)donePressed:(id)sender {
     
+    NSArray *errorMessages = [self getEmptyReqFields];
+    if(errorMessages.count > 0){
+        NSString *errorString = @"Please enter in the following fields: ";
+        for (NSString *str in errorMessages) {
+            errorString = [errorString stringByAppendingString:[NSString stringWithFormat:@"▪️%@ \n", str]];
+            
+        }
+        UIAlertController* alert = [UIAlertController alertControllerWithTitle:@"Error - Missing Fields"
+                                                                       message: errorString
+                                                                preferredStyle:UIAlertControllerStyleAlert];
+        
+        UIAlertAction * keepAction = [UIAlertAction actionWithTitle:@"Okay" style:UIAlertActionStyleDefault
+                                                            handler:^(UIAlertAction * action) {
+                                                                
+                                                                
+                                                            }];
+        
+        
+        [alert addAction:keepAction];
+        [self presentViewController:alert animated:YES completion:nil];
+        
+    }
+    else {
+        
+
+    
     [self saveWorkout];
     
     MusicPickerViewController *musicVC = [[MusicPickerViewController alloc]init];
     musicVC.workout = workout;
     
     [self.navigationController pushViewController:musicVC animated:YES];
-
+    }
     
 }
 
@@ -371,6 +393,53 @@ typedef enum : NSInteger {
 }
 
 
+-(NSArray *)getEmptyReqFields {
+    
+    BOOL emptyReqFields = NO;
+    NSMutableArray *errorMessages = [[NSMutableArray alloc]init];
+    
+    if(self.numberOfRoundsSlider.value == 0){
+        [errorMessages addObject:@"Number of Rounds cannot be 0"];
+    }
+
+    
+    if([[self getTimeLabelByTag:0].text isEqualToString:@"00:00"] && !([[self getSpeedTextFieldByTag:0].text isEqualToString:@""]))
+    {
+        emptyReqFields = NO;
+        [errorMessages addObject:@"Warm-Up: Duration"];
+        
+    }
+        
+    
+    
+    if([[self getTimeLabelByTag:1].text isEqualToString:@"00:00"] ){
+        [errorMessages addObject:@"Low Intensity - Duration"];
+        emptyReqFields = YES;
+    }
+    if([[self getSpeedTextFieldByTag:1].text isEqualToString:@""]){
+        [errorMessages addObject:@"Low Intensity - Speed"];
+        emptyReqFields = YES;
+    }
+    
+    if([[self getTimeLabelByTag:2].text isEqualToString:@"00:00"] ){
+        [errorMessages addObject:@"High Intensity - Duration"];
+        emptyReqFields = YES;
+    }
+    if([[self getSpeedTextFieldByTag:2].text isEqualToString:@""]){
+        [errorMessages addObject:@"High Intensity - Speed"];
+        emptyReqFields = YES;
+    }
+    
+    if([[self getTimeLabelByTag:3].text isEqualToString:@"00:00"] && !([[self getSpeedTextFieldByTag:3].text isEqualToString:@""]))
+    {
+        emptyReqFields = NO;
+        [errorMessages addObject:@"Cool-down: Duration"];
+        
+    }
+    
+    return errorMessages;
+}
+
 -(void)saveWorkout {
     
     TLCoreDataStack *coreDataStack = [TLCoreDataStack defaultStack];
@@ -385,10 +454,11 @@ typedef enum : NSInteger {
     workout.machineType = @"treadmill";
     NSInteger index = 0;
 
+    float time = [[self getTimeLabelByTag:0].text floatValue ];
+    float speed = [[self getSpeedTextFieldByTag:0].text floatValue];
+    float rounded = [self getInclineSliderByTag:0].value < 0.5f ? 0.5f : floorf([self getInclineSliderByTag:0].value * 2) / 2;
+    if(time != 0 || speed != 0){
     TimeInterval *warmUpTimeInterval = [NSEntityDescription insertNewObjectForEntityForName:@"TimeInterval" inManagedObjectContext:coreDataStack.managedObjectContext];
-       float time = [[self getTimeLabelByTag:0].text floatValue ];
-       float speed = [[self getSpeedTextFieldByTag:0].text floatValue];
-       float rounded = [self getInclineSliderByTag:0].value < 0.5f ? 0.5f : floorf([self getInclineSliderByTag:0].value * 2) / 2;
         warmUpTimeInterval.incline = [NSNumber numberWithFloat: rounded];
         warmUpTimeInterval.speed = [NSNumber numberWithFloat:speed];
         warmUpTimeInterval.start = [NSNumber numberWithFloat: time] ;
@@ -397,6 +467,7 @@ typedef enum : NSInteger {
         index += 1;
         workoutDuration += time;
         [timeIntervalArray addObject:warmUpTimeInterval];
+    }
     
     for (int i=0; i<[workout.numberOfRounds intValue]; i++) {
         
@@ -430,11 +501,13 @@ typedef enum : NSInteger {
         [timeIntervalArray addObject:highTimeInterval];
     }
 
-    
-    TimeInterval *coolDownTimeInterval = [NSEntityDescription insertNewObjectForEntityForName:@"TimeInterval" inManagedObjectContext:coreDataStack.managedObjectContext];
-    time = [[self getTimeLabelByTag:3].text floatValue ];
+        time = [[self getTimeLabelByTag:3].text floatValue ];
     speed = [[self getSpeedTextFieldByTag:3].text floatValue];
-    rounded = [self getInclineSliderByTag:1].value < 0.5f ? 0.5f : floorf([self getInclineSliderByTag:3].value * 2) / 2;
+    rounded = [self getInclineSliderByTag:3].value < 0.5f ? 0.5f : floorf([self getInclineSliderByTag:3].value * 2) / 2;
+     if(time != 0 || speed != 0){
+         
+     TimeInterval *coolDownTimeInterval = [NSEntityDescription insertNewObjectForEntityForName:@"TimeInterval" inManagedObjectContext:coreDataStack.managedObjectContext];
+
     coolDownTimeInterval.incline = [NSNumber numberWithFloat: rounded];
     coolDownTimeInterval.speed = [NSNumber numberWithFloat:speed];
     coolDownTimeInterval.start = [NSNumber numberWithFloat: time] ;
@@ -442,9 +515,10 @@ typedef enum : NSInteger {
     workoutDuration += time;
     coolDownTimeInterval.index = [NSNumber numberWithInteger:index];
     index += 1;
-    
-    workout.workoutDuration = [NSNumber numberWithDouble: workoutDuration];
     [timeIntervalArray addObject:coolDownTimeInterval];
+
+     }
+    workout.workoutDuration = [NSNumber numberWithDouble: workoutDuration];
     workout.timeIntervals = [[NSSet alloc]initWithArray:timeIntervalArray];
     
     [coreDataStack saveContext];

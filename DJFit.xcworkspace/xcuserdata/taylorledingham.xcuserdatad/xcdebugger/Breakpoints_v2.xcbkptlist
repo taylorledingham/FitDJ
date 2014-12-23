@@ -74,11 +74,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "DJFit/PlayWorkoutViewController.m"
-            timestampString = "438911770.626928"
+            timestampString = "440788774.886796"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "356"
-            endingLineNumber = "356"
+            startingLineNumber = "394"
+            endingLineNumber = "394"
             landmarkName = "-playerItemDidReachEnd:"
             landmarkType = "5">
          </BreakpointContent>
@@ -154,11 +154,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "DJFit/PlayWorkoutViewController.m"
-            timestampString = "438911770.626928"
+            timestampString = "440788774.886796"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "301"
-            endingLineNumber = "301"
+            startingLineNumber = "339"
+            endingLineNumber = "339"
             landmarkName = "-updateCurrentIntervalTimer:"
             landmarkType = "5">
          </BreakpointContent>
@@ -170,11 +170,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "DJFit/PlayWorkoutViewController.m"
-            timestampString = "438911770.626928"
+            timestampString = "440788774.886796"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "562"
-            endingLineNumber = "562"
+            startingLineNumber = "599"
+            endingLineNumber = "599"
             landmarkName = "-barChart:colorForBarAtIndex:"
             landmarkType = "5">
          </BreakpointContent>
@@ -234,11 +234,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "DJFit/AddTimeWorkoutTableViewController.m"
-            timestampString = "438818107.118793"
+            timestampString = "440699702.801097"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "159"
-            endingLineNumber = "159"
+            startingLineNumber = "161"
+            endingLineNumber = "161"
             landmarkName = "-timeDidPan:"
             landmarkType = "5">
          </BreakpointContent>
@@ -260,12 +260,44 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "DJFit/PlayWorkoutViewController.m"
-            timestampString = "438911770.626928"
+            timestampString = "440788774.886796"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "193"
-            endingLineNumber = "193"
+            startingLineNumber = "221"
+            endingLineNumber = "221"
             landmarkName = "-loadPlaylist"
+            landmarkType = "5">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "DJFit/AddWorkoutDataViewController.m"
+            timestampString = "440794675.109555"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "474"
+            endingLineNumber = "474"
+            landmarkName = "-saveWorkout"
+            landmarkType = "5">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "DJFit/AddWorkoutDataViewController.m"
+            timestampString = "440794675.109555"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "490"
+            endingLineNumber = "490"
+            landmarkName = "-saveWorkout"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>

@@ -54,7 +54,7 @@
     
     
     self.inclineSlider.popUpViewCornerRadius = 12.0;
-    [self.inclineSlider setMaxFractionDigitsDisplayed:0];
+    [self.inclineSlider setMaxFractionDigitsDisplayed:1];
     self.inclineSlider.popUpViewColor = [UIColor colorWithRed:0.518f green:0.200f blue:0.678f alpha:1.00f];
     self.inclineSlider.font = [UIFont fontWithName:@"AppleSDGothicNeo-Bold" size:20];
     self.inclineSlider.textColor = [UIColor whiteColor];
@@ -230,11 +230,43 @@
 }
 
 - (IBAction)donePressed:(id)sender {
-    
+    BOOL emptyReqFields = NO;
+    NSMutableArray *errorMessages = [[NSMutableArray alloc]init];
+    if([self.speedTextField.text isEqualToString:@""] ){
+        [errorMessages addObject:@"Speed"];
+         emptyReqFields = YES;
+    }
+    if([self.distanceInputLabel.text isEqualToString:@""] || [self.distanceInputLabel.text isEqualToString:@"0.00"]){
+        [errorMessages addObject:@"Distance"];
+        emptyReqFields = YES;
+    }
+    if(emptyReqFields == YES){
+        NSString *errorString = @"Please enter in the following fields: ";
+        for (NSString *str in errorMessages) {
+            errorString = [errorString stringByAppendingString:[NSString stringWithFormat:@"▪️%@ \n", str]];
+            
+        }
+        UIAlertController* alert = [UIAlertController alertControllerWithTitle:@"Error - Missing Fields"
+                                                                       message: errorString
+                                                                       preferredStyle:UIAlertControllerStyleAlert];
+        
+        UIAlertAction * keepAction = [UIAlertAction actionWithTitle:@"Okay" style:UIAlertActionStyleDefault
+                                                            handler:^(UIAlertAction * action) {
+                                                                
+                                                                
+                                                            }];
+        
+        
+        [alert addAction:keepAction];
+        [self presentViewController:alert animated:YES completion:nil];
+        
+    }
+    else {
     [self saveWorkout];
     MusicPickerViewController *musicVC = [[MusicPickerViewController alloc]init];
     musicVC.workout = workout;
     [self.navigationController pushViewController:musicVC animated:YES];
+    }
     
     
 }

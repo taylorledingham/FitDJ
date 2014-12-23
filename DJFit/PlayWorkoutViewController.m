@@ -19,12 +19,13 @@
 
 
 @property (strong, nonatomic) AVQueuePlayerPrevious *queuePlayer;
-@property (strong, nonatomic) SimpleBarChart *chart;
+
 @property ( nonatomic) float weight;
 @property (nonatomic) float height;
 @property (nonatomic) double caloriesBurned;
 @property (strong, nonatomic) MPNowPlayingInfoCenter *mediaCenter;
 @property (nonatomic) BOOL voiceCoachingEnabled;
+@property (nonatomic, strong) SimpleBarChart *barChart;
 
 
 @end
@@ -125,7 +126,16 @@
     [self sortTimeIntervalArray];
     timeInMilliSeconds = ([self.workout.workoutDuration doubleValue] * 60 * 1000);
     TimeInterval *firstinterval = timeIntervalsArray[0];
-    currentIntervalInMilliSeconds = ([firstinterval.start doubleValue] * 60 * 1000);
+    if([firstinterval.start doubleValue] < 1){
+        currentIntervalInMilliSeconds = [firstinterval.start doubleValue] * 1000 * 100;
+    }
+    else {
+        double remainder = fmod([firstinterval.start doubleValue], 1)  ;
+        currentIntervalInMilliSeconds = 0;
+        currentIntervalInMilliSeconds += remainder * 1000 * 100;
+        currentIntervalInMilliSeconds += ([firstinterval.start doubleValue] - remainder)*60;
+    }
+   // currentIntervalInMilliSeconds = ([firstinterval.start doubleValue] * 60 * 1000);
     formatter = [[NSNumberFormatter alloc] init];
     self.caloriesBurned = 0;
     self.speedLabel.text = [NSString stringWithFormat:@"%.1f MPH",[firstinterval.speed floatValue]];
@@ -156,21 +166,39 @@
 
 -(void)setUpGraph {
     
-    self.chart = [[SimpleBarChart alloc]initWithFrame:CGRectMake(5, 0, self.barChartView.frame.size.width, self.barChartView.bounds.size.height/3)];
-    [self.barChartView addSubview:self.chart];
-    
-    self.chart.delegate = self;
-    self.chart.dataSource = self;
-    self.chart.backgroundColor = [UIColor colorWithRed:0.847f green:0.847f blue:0.847f alpha:1.00f];
-    
-    self.chart.gridColor = [UIColor colorWithRed:0.847f green:0.847f blue:0.847f alpha:1.00f];
-    self.chart.barWidth	= 18.0;
+    CGRect screenRect = [[UIScreen mainScreen] bounds];
+    CGFloat height;
+    CGFloat yPos;
+    if([UIScreen mainScreen].bounds.size.width >= 375){
+       height = screenRect.size.height/3 + 20;
+        yPos = self.chart.frame.origin.y+20;
+        self.currentTimeIntervalLabel.frame = CGRectMake(self.currentTimeIntervalLabel.frame.origin.x, self.currentTimeIntervalLabel.frame.origin.y, self.currentTimeIntervalLabel.frame.size.width, self.currentTimeIntervalLabel.frame.size.height);
+        
+    }
+    else if (screenRect.size.height == 568){
+        
+        height = screenRect.size.height/3 ;
+        yPos = self.chart.frame.origin.y+10;
+        
+    }
+    else {
+        height = screenRect.size.height/4;
+       yPos =  self.chart.frame.origin.y;
+    }
+    self.barChart = [[SimpleBarChart alloc]initWithFrame:CGRectMake(self.chart.frame.origin.x-8 , yPos, screenRect.size.width -15, height)];
+   [self.chart addSubview:self.barChart];
+    self.barChart.delegate = self;
+    self.barChart.dataSource = self;
+   // self.chart.backgroundColor = [UIColor colorWithRed:0.847f green:0.847f blue:0.847f alpha:1.00f];
+    //self.barChart.backgroundColor = [UIColor redColor];
+    self.barChart.gridColor = [UIColor colorWithRed:0.847f green:0.847f blue:0.847f alpha:1.00f];
+    self.barChart.barWidth	= 18.0;
     if([self.workout.workoutType  isEqual: @"timed"] || [self.workout.workoutType  isEqual: @"distance"]){
-        self.chart.barWidth	= 50;
+        self.barChart.barWidth	= 50;
 
     }
-    self.chart.incrementValue = 1;
-    [self.chart reloadData];
+    self.barChart.incrementValue = 1;
+    [self.barChart reloadData];
 }
 
 -(void)loadPlaylist {
@@ -294,7 +322,17 @@
         else {
             currentTimeIntervalIndex +=1;
             TimeInterval *interval = timeIntervalsArray[currentTimeIntervalIndex];
-            currentIntervalInMilliSeconds = ([interval.start doubleValue] * 60 * 1000);
+            if([interval.start doubleValue] < 1){
+                currentIntervalInMilliSeconds = [interval.start doubleValue] * 1000 * 100;
+            }
+            else {
+                double remainder = fmod([interval.start doubleValue], 1)  ;
+                currentIntervalInMilliSeconds = 0;
+                currentIntervalInMilliSeconds += remainder * 1000 * 100;
+                currentIntervalInMilliSeconds += (([interval.start doubleValue]*60*1000) - remainder)*60;
+            }
+            //currentIntervalInMilliSeconds = ([interval.start doubleValue] * 60 * 1000);
+           // currentIntervalInMilliSeconds = ([interval.start doubleValue] * 1000);
             self.chart.animationDuration = 0;
             [self.chart reloadData];
             [self setNewBPMForSpeed];
@@ -400,7 +438,6 @@
 }
 
 -(BOOL)isPlayerPlaying{
-    NSLog(@"self.queuePlayer.rate:%f", self.queuePlayer.rate);
     if (self.queuePlayer.rate == 0.0f) {
         return NO;
     }else{

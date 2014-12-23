@@ -34,7 +34,12 @@
 		9041606F1A1BB5660037B130 /* CoreMedia.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9041606E1A1BB5660037B130 /* CoreMedia.framework */; };
 		904160711A1BB5780037B130 /* libbass.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 904160701A1BB5780037B130 /* libbass.a */; };
 		904160751A1BB58C0037B130 /* libbass_fx.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 904160721A1BB58C0037B130 /* libbass_fx.a */; };
+		90579B871A3B495700BF035E /* CustomWorkoutViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 90579B861A3B495700BF035E /* CustomWorkoutViewController.m */; };
+		90579B8A1A3B498700BF035E /* CustomWorkoutNameTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 90579B891A3B498700BF035E /* CustomWorkoutNameTableViewController.m */; };
+		90579B8D1A3B49A800BF035E /* CustomWorkoutIntervalTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 90579B8C1A3B49A800BF035E /* CustomWorkoutIntervalTableViewController.m */; };
 		90671DBA1A218B2100CBBE26 /* AddTimeWorkoutTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 90671DB91A218B2100CBBE26 /* AddTimeWorkoutTableViewController.m */; };
+		906B77E21A4603370011622A /* CustomTimeIntervalCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 906B77E11A4603370011622A /* CustomTimeIntervalCell.m */; };
+		906B77E91A4606AF0011622A /* AddNewTimeIntervalCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 906B77E81A4606AF0011622A /* AddNewTimeIntervalCell.m */; };
 		906D2BDE1A265BDB0031A397 /* BPMViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 906D2BDD1A265BDB0031A397 /* BPMViewController.m */; };
 		907904C71A250E5300EE30DE /* AddDistanceWorkoutTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 907904C61A250E5300EE30DE /* AddDistanceWorkoutTableViewController.m */; };
 		908796561A1CF9CB00786C11 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 908796551A1CF9CB00786C11 /* QuartzCore.framework */; };
@@ -45,7 +50,6 @@
 		9087D5D91A1AED7100C3C5BD /* AddWorkoutDataViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9087D5D81A1AED7100C3C5BD /* AddWorkoutDataViewController.m */; };
 		908D36B01A1E703B0003F18E /* PlaylistsTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 908D36AF1A1E703B0003F18E /* PlaylistsTableViewController.m */; };
 		90CBF4AD1A1AC0860029EFE2 /* WorkoutTypeCollectionViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 90CBF4AC1A1AC0860029EFE2 /* WorkoutTypeCollectionViewCell.m */; };
-		90CBF4AF1A1AC6760029EFE2 /* Podfile in Resources */ = {isa = PBXBuildFile; fileRef = 90CBF4AE1A1AC6760029EFE2 /* Podfile */; };
 		90D399211A1E7B5200960359 /* AddWorkoutCollectionViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 90D399201A1E7B5200960359 /* AddWorkoutCollectionViewCell.m */; };
 		90E0CC1E1A1BD34800F73FA8 /* PlayWorkoutViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 90E0CC1D1A1BD34800F73FA8 /* PlayWorkoutViewController.m */; };
 		90E0CC211A1BDC8700F73FA8 /* Workout.m in Sources */ = {isa = PBXBuildFile; fileRef = 90E0CC201A1BDC8700F73FA8 /* Workout.m */; };
@@ -123,8 +127,18 @@
 		904160721A1BB58C0037B130 /* libbass_fx.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libbass_fx.a; sourceTree = "<group>"; };
 		904160731A1BB58C0037B130 /* bass.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = bass.h; sourceTree = "<group>"; };
 		904160741A1BB58C0037B130 /* bassfx.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = bassfx.h; sourceTree = "<group>"; };
+		90579B851A3B495700BF035E /* CustomWorkoutViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CustomWorkoutViewController.h; path = DJFit/CustomWorkoutViewController.h; sourceTree = "<group>"; };
+		90579B861A3B495700BF035E /* CustomWorkoutViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CustomWorkoutViewController.m; path = DJFit/CustomWorkoutViewController.m; sourceTree = "<group>"; };
+		90579B881A3B498700BF035E /* CustomWorkoutNameTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CustomWorkoutNameTableViewController.h; path = DJFit/CustomWorkoutNameTableViewController.h; sourceTree = "<group>"; };
+		90579B891A3B498700BF035E /* CustomWorkoutNameTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CustomWorkoutNameTableViewController.m; path = DJFit/CustomWorkoutNameTableViewController.m; sourceTree = "<group>"; };
+		90579B8B1A3B49A800BF035E /* CustomWorkoutIntervalTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CustomWorkoutIntervalTableViewController.h; path = DJFit/CustomWorkoutIntervalTableViewController.h; sourceTree = "<group>"; };
+		90579B8C1A3B49A800BF035E /* CustomWorkoutIntervalTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CustomWorkoutIntervalTableViewController.m; path = DJFit/CustomWorkoutIntervalTableViewController.m; sourceTree = "<group>"; };
 		90671DB81A218B2100CBBE26 /* AddTimeWorkoutTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = AddTimeWorkoutTableViewController.h; path = DJFit/AddTimeWorkoutTableViewController.h; sourceTree = "<group>"; };
 		90671DB91A218B2100CBBE26 /* AddTimeWorkoutTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = AddTimeWorkoutTableViewController.m; path = DJFit/AddTimeWorkoutTableViewController.m; sourceTree = "<group>"; };
+		906B77E11A4603370011622A /* CustomTimeIntervalCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CustomTimeIntervalCell.m; sourceTree = "<group>"; };
+		906B77E31A46033A0011622A /* CustomTimeIntervalCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CustomTimeIntervalCell.h; sourceTree = "<group>"; };
+		906B77E71A4606AF0011622A /* AddNewTimeIntervalCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AddNewTimeIntervalCell.h; sourceTree = "<group>"; };
+		906B77E81A4606AF0011622A /* AddNewTimeIntervalCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AddNewTimeIntervalCell.m; sourceTree = "<group>"; };
 		906D2BDC1A265BDB0031A397 /* BPMViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BPMViewController.h; sourceTree = "<group>"; };
 		906D2BDD1A265BDB0031A397 /* BPMViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BPMViewController.m; sourceTree = "<group>"; };
 		907904C51A250E5300EE30DE /* AddDistanceWorkoutTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = AddDistanceWorkoutTableViewController.h; path = DJFit/AddDistanceWorkoutTableViewController.h; sourceTree = "<group>"; };
@@ -143,7 +157,6 @@
 		908D36AF1A1E703B0003F18E /* PlaylistsTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PlaylistsTableViewController.m; sourceTree = "<group>"; };
 		90CBF4AB1A1AC0860029EFE2 /* WorkoutTypeCollectionViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WorkoutTypeCollectionViewCell.h; sourceTree = "<group>"; };
 		90CBF4AC1A1AC0860029EFE2 /* WorkoutTypeCollectionViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WorkoutTypeCollectionViewCell.m; sourceTree = "<group>"; };
-		90CBF4AE1A1AC6760029EFE2 /* Podfile */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = Podfile; path = DJFit/Podfile; sourceTree = "<group>"; };
 		90D3991F1A1E7B5200960359 /* AddWorkoutCollectionViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AddWorkoutCollectionViewCell.h; sourceTree = "<group>"; };
 		90D399201A1E7B5200960359 /* AddWorkoutCollectionViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AddWorkoutCollectionViewCell.m; sourceTree = "<group>"; };
 		90E0CC1C1A1BD34800F73FA8 /* PlayWorkoutViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PlayWorkoutViewController.h; sourceTree = "<group>"; };
@@ -230,7 +243,6 @@
 		900D223E1A1A91CB00A9E5EB = {
 			isa = PBXGroup;
 			children = (
-				90CBF4AE1A1AC6760029EFE2 /* Podfile */,
 				900D22491A1A91CB00A9E5EB /* DJFit */,
 				900D22661A1A91CC00A9E5EB /* DJFitTests */,
 				900D22481A1A91CB00A9E5EB /* Products */,
@@ -255,9 +267,9 @@
 				90CB5B5E1A252D7900B2BB0F /* Add VC's */,
 				904160761A1BB5E50037B130 /* Bass */,
 				904160611A1B0D540037B130 /* Model */,
+				9087D5DA1A1AED8100C3C5BD /* ProfileView */,
 				9041604F1A1B0A420037B130 /* TLCoreDataStack.h */,
 				904160501A1B0A420037B130 /* TLCoreDataStack.m */,
-				9087D5DA1A1AED8100C3C5BD /* ProfileView */,
 				900D22751A1A922E00A9E5EB /* DJFit.entitlements */,
 				900D224E1A1A91CB00A9E5EB /* AppDelegate.h */,
 				900D224F1A1A91CB00A9E5EB /* AppDelegate.m */,
@@ -346,6 +358,10 @@
 				90D399201A1E7B5200960359 /* AddWorkoutCollectionViewCell.m */,
 				90287A691A259A5F00C73FE9 /* SongTableViewCell.h */,
 				90287A6A1A259A5F00C73FE9 /* SongTableViewCell.m */,
+				906B77E31A46033A0011622A /* CustomTimeIntervalCell.h */,
+				906B77E11A4603370011622A /* CustomTimeIntervalCell.m */,
+				906B77E71A4606AF0011622A /* AddNewTimeIntervalCell.h */,
+				906B77E81A4606AF0011622A /* AddNewTimeIntervalCell.m */,
 			);
 			name = "Custom Cells";
 			sourceTree = "<group>";
@@ -373,6 +389,12 @@
 				907904C61A250E5300EE30DE /* AddDistanceWorkoutTableViewController.m */,
 				90671DB81A218B2100CBBE26 /* AddTimeWorkoutTableViewController.h */,
 				90671DB91A218B2100CBBE26 /* AddTimeWorkoutTableViewController.m */,
+				90579B851A3B495700BF035E /* CustomWorkoutViewController.h */,
+				90579B861A3B495700BF035E /* CustomWorkoutViewController.m */,
+				90579B881A3B498700BF035E /* CustomWorkoutNameTableViewController.h */,
+				90579B891A3B498700BF035E /* CustomWorkoutNameTableViewController.m */,
+				90579B8B1A3B49A800BF035E /* CustomWorkoutIntervalTableViewController.h */,
+				90579B8C1A3B49A800BF035E /* CustomWorkoutIntervalTableViewController.m */,
 			);
 			name = "Add VC's";
 			path = ..;
@@ -470,7 +492,6 @@
 				900D22591A1A91CC00A9E5EB /* Main.storyboard in Resources */,
 				900D225E1A1A91CC00A9E5EB /* LaunchScreen.xib in Resources */,
 				9087965B1A1D928100786C11 /* TreadmillBPMTable.plist in Resources */,
-				90CBF4AF1A1AC6760029EFE2 /* Podfile in Resources */,
 				900D225B1A1A91CC00A9E5EB /* Images.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -512,7 +533,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-DJFit/Pods-DJFit-resources.sh\"\n";
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods/Pods-resources.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 /* End PBXShellScriptBuildPhase section */
@@ -526,12 +547,16 @@
 				9041605D1A1B0D4C0037B130 /* Song.m in Sources */,
 				906D2BDE1A265BDB0031A397 /* BPMViewController.m in Sources */,
 				90671DBA1A218B2100CBBE26 /* AddTimeWorkoutTableViewController.m in Sources */,
+				906B77E91A4606AF0011622A /* AddNewTimeIntervalCell.m in Sources */,
 				90E0CC241A1BE59800F73FA8 /* MusicPickerViewController.m in Sources */,
+				90579B871A3B495700BF035E /* CustomWorkoutViewController.m in Sources */,
 				900D22501A1A91CB00A9E5EB /* AppDelegate.m in Sources */,
+				906B77E21A4603370011622A /* CustomTimeIntervalCell.m in Sources */,
 				900D22531A1A91CC00A9E5EB /* DJFit.xcdatamodeld in Sources */,
 				90E0CC1E1A1BD34800F73FA8 /* PlayWorkoutViewController.m in Sources */,
 				904160601A1B0D4D0037B130 /* TimeInterval.m in Sources */,
 				90287A6B1A259A5F00C73FE9 /* SongTableViewCell.m in Sources */,
+				90579B8D1A3B49A800BF035E /* CustomWorkoutIntervalTableViewController.m in Sources */,
 				900D227B1A1A9D9500A9E5EB /* ProfileDetailTableTableViewController.m in Sources */,
 				900D227E1A1AAC0800A9E5EB /* HKHealthStore+AAPLExtensions.m in Sources */,
 				9087D5D91A1AED7100C3C5BD /* AddWorkoutDataViewController.m in Sources */,
@@ -546,6 +571,7 @@
 				90E89ACB1A22E0300096FCDB /* SimpleBarChart.m in Sources */,
 				9087D5D01A1AD02A00C3C5BD /* WorkoutsCollectionViewController.m in Sources */,
 				904160511A1B0A420037B130 /* TLCoreDataStack.m in Sources */,
+				90579B8A1A3B498700BF035E /* CustomWorkoutNameTableViewController.m in Sources */,
 				90E0CC211A1BDC8700F73FA8 /* Workout.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -666,7 +692,7 @@
 		};
 		900D226E1A1A91CC00A9E5EB /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = B75CEC059837364CAE33A9FE /* Pods-DJFit.debug.xcconfig */;
+			baseConfigurationReference = AF9FBD5A3FCECAC31671FD14 /* Pods.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_ENTITLEMENTS = DJFit/DJFit.entitlements;
@@ -695,7 +721,7 @@
 		};
 		900D226F1A1A91CC00A9E5EB /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 1F1F1E79ECA183B28986D7CB /* Pods-DJFit.release.xcconfig */;
+			baseConfigurationReference = 4FB270338BCAC1E98812CF39 /* Pods.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_ENTITLEMENTS = DJFit/DJFit.entitlements;

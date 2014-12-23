@@ -190,14 +190,13 @@ static NSString * const reuseIdentifier = @"Cell";
     UIAlertAction * keepAction = [UIAlertAction actionWithTitle:@"NO" style:UIAlertActionStyleDefault
                                                         handler:^(UIAlertAction * action) {
                                                             
-                                                            [self dismissViewControllerAnimated:alert completion:nil];
+                        
                                                         }];
     
     UIAlertAction* deleteAction = [UIAlertAction actionWithTitle:@"YES" style:UIAlertActionStyleDefault
                                                          handler:^(UIAlertAction * action) {
                                                              
                                                              [self deleteWorkoutCell:cell];
-                                                             [self dismissViewControllerAnimated:alert completion:nil];
                                                              
                                                              
                                                          }];

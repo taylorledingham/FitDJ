@@ -53,7 +53,7 @@ CGPoint cellOrigin;
     
     
     self.inclineSlider.popUpViewCornerRadius = 12.0;
-    [self.inclineSlider setMaxFractionDigitsDisplayed:0];
+    [self.inclineSlider setMaxFractionDigitsDisplayed:1];
     self.inclineSlider.popUpViewColor = [UIColor colorWithRed:0.518f green:0.200f blue:0.678f alpha:1.00f];
     self.inclineSlider.font = [UIFont fontWithName:@"AppleSDGothicNeo-Bold" size:20];
     self.inclineSlider.textColor = [UIColor whiteColor];
@@ -65,6 +65,8 @@ CGPoint cellOrigin;
 
 
 -(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
+    
+    self.tableView.separatorStyle = UITableViewCellSeparatorStyleSingleLine;
     
     if(indexPath.row == 0 && indexPath.section == 1){
         UITableViewCell *cell = [tableView cellForRowAtIndexPath:indexPath];
@@ -107,7 +109,7 @@ CGPoint cellOrigin;
     
     isCellExpanded = NO;
     timeViewCreated = NO;
-    NSString *time = [timeSliderLabel.text substringWithRange:NSMakeRange(5, 4)];
+    NSString *time = [timeSliderLabel.text substringWithRange:NSMakeRange(5, 5)];
     self.workoutTimeLabel.text = [@"Duration: " stringByAppendingString: time];
     [gesture.view removeGestureRecognizer:gesture];
     [gesture.view removeGestureRecognizer:timePanViewGesture];
@@ -156,7 +158,7 @@ CGPoint cellOrigin;
    // NSLog(@"%f", fmodf(rounded, 1.0));
    float remainder = fmodf(rounded, 1.0);
     rounded = rounded - remainder;
-    timeSliderLabel.text = [NSString stringWithFormat:@"▼    %.2f    ▲", rounded];
+    timeSliderLabel.text = [NSString stringWithFormat:@"▼    %.0f:00    ▲", rounded];
     //timeSliderLabel.center = (CGPoint){timeSliderLabel.superview.center.x, timeSliderLabel.center.y};
     
     
@@ -233,11 +235,46 @@ CGPoint cellOrigin;
 
 - (IBAction)donePressed:(id)sender {
     
+    BOOL emptyReqFields = NO;
+    NSString *timeString = [[self.workoutTimeLabel.text componentsSeparatedByString:@" "] objectAtIndex:1];
+    NSMutableArray *errorMessages = [[NSMutableArray alloc]init];
+    if([self.speedTextField.text isEqualToString:@""]){
+        [errorMessages addObject:@"Speed"];
+        emptyReqFields = YES;
+    }
+    if([timeString isEqualToString:@""] || [timeString isEqualToString:@"00:0"]){
+        [errorMessages addObject:@"Duration"];
+        emptyReqFields = YES;
+    }
+    if(emptyReqFields == YES){
+        NSString *errorString = @"Please enter in the following fields: ";
+        for (NSString *str in errorMessages) {
+            errorString = [errorString stringByAppendingString:[NSString stringWithFormat:@"▪️%@ \n", str]];
+            
+        }
+        UIAlertController* alert = [UIAlertController alertControllerWithTitle:@"Error - Missing Fields"
+                                                                       message: errorString
+                                                                preferredStyle:UIAlertControllerStyleAlert];
+        
+        UIAlertAction * keepAction = [UIAlertAction actionWithTitle:@"Okay" style:UIAlertActionStyleDefault
+                                                            handler:^(UIAlertAction * action) {
+                                                                
+                                                                
+                                                            }];
+        
+        
+        [alert addAction:keepAction];
+        [self presentViewController:alert animated:YES completion:nil];
+        
+    }
+    else {
+
+    
     [self saveWorkout];
     MusicPickerViewController *musicVC = [[MusicPickerViewController alloc]init];
     musicVC.workout = workout;
     [self.navigationController pushViewController:musicVC animated:YES];
-    
+    }
     
 }
 
