@@ -239,7 +239,6 @@ typedef enum : NSInteger {
     
     float timeVal = gesture.view.center.y/20 - 1.5;
     float rounded = timeVal < 0.5f ? 0.5f : floorf(timeVal * 2) / 2;
-    NSLog(@"%f", fmodf(rounded, 1.0));
     if(fmodf(rounded, 1.0) > 0){
         rounded = rounded - 0.20;
     }
@@ -448,10 +447,10 @@ typedef enum : NSInteger {
     
     workout = [NSEntityDescription insertNewObjectForEntityForName:@"Workout" inManagedObjectContext:coreDataStack.managedObjectContext];
     workout.workoutName = self.workoutNameTextField.text;
-    workout.workoutType = @"interval";
+    workout.workoutType = kIntervalWorkout;
     workout.numberOfRounds = [NSNumber numberWithFloat: self.numberOfRoundsSlider.value];
     workout.dateCreated = [NSDate date];
-    workout.machineType = @"treadmill";
+    workout.machineType = kTypeTreadmill;
     NSInteger index = 0;
 
     float time = [[self getTimeLabelByTag:0].text floatValue ];

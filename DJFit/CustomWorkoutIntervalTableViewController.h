@@ -14,8 +14,8 @@
 #import "Workout.h"
 #import "TimeInterval.h"
 
-@interface CustomWorkoutIntervalTableViewController : UITableViewController <addNewTimeDelegate>
+@interface CustomWorkoutIntervalTableViewController : UITableViewController <addNewTime, deleteTimeInterval>
 
-
+-(NSArray *)getCustomTimeIntervals;
 
 @end

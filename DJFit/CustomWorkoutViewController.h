@@ -7,7 +7,11 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "CustomWorkoutIntervalTableViewController.h"
+#import "CustomWorkoutNameTableViewController.h"
 
 @interface CustomWorkoutViewController : UIViewController
+
+
 
 @end

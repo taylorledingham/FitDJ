@@ -10,4 +10,9 @@
 
 @implementation CustomWorkoutNameTableViewController
 
+-(NSString *)getWorkoutName {
+    
+    return self.workoutNameTextField.text;
+}
+
 @end

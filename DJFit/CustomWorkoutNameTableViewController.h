@@ -8,6 +8,13 @@
 
 #import <UIKit/UIKit.h>
 
+
+
 @interface CustomWorkoutNameTableViewController : UITableViewController
+
+@property (strong, nonatomic) IBOutlet UITextField *workoutNameTextField;
+
+
+-(NSString *)getWorkoutName ;
 
 @end

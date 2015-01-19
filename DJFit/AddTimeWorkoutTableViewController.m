@@ -131,23 +131,18 @@ CGPoint cellOrigin;
         case UIGestureRecognizerStateBegan:
             break;
         case UIGestureRecognizerStateChanged:
-            NSLog(@"changed: %f", elevation);
             if(elevation <= 25.0){
                 gesture.view.center = CGPointMake(gesture.view.center.x, cellOrigin.y+25.0);
             } else if(elevation <= 375.00){
-                NSLog(@"[gesture locationInView:gesture.view]: %f", [gesture locationInView:gesture.view.superview].y);
                 gesture.view.center = CGPointMake(gesture.view.center.x, [gesture locationInView:gesture.view.superview].y);
             } else if(elevation > 375.0){
                 gesture.view.center = CGPointMake(gesture.view.center.x, 375);
             }
             break;
         case UIGestureRecognizerStateEnded:
-            
-            //[gesture setTranslation:CGPointMake(0, 0) inView:editingTimeCell];
             break;
             
         default:
-            NSAssert(NO, @"handle this later...");
             break;
     }
     
@@ -155,12 +150,9 @@ CGPoint cellOrigin;
     
     timeVal = timeVal * 3.5;
     float rounded = timeVal < 1.0f ? 1.0f : floorf(timeVal * 2) / 2;
-   // NSLog(@"%f", fmodf(rounded, 1.0));
-   float remainder = fmodf(rounded, 1.0);
+    float remainder = fmodf(rounded, 1.0);
     rounded = rounded - remainder;
     timeSliderLabel.text = [NSString stringWithFormat:@"▼    %.0f:00    ▲", rounded];
-    //timeSliderLabel.center = (CGPoint){timeSliderLabel.superview.center.x, timeSliderLabel.center.y};
-    
     
 }
 

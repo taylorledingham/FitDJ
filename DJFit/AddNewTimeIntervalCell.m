@@ -10,4 +10,8 @@
 
 @implementation AddNewTimeIntervalCell
 
+- (IBAction)addNewTimeRow:(id)sender {
+    [self.delegate makeNewRow];
+}
+
 @end

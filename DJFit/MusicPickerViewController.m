@@ -149,7 +149,6 @@
     if(result.count == 0){
         return nil;
     }
-    NSLog(@"line 147: index: %lu", (unsigned long)index);
     return result.firstObject;
 }
 
@@ -256,7 +255,6 @@
     [assetWriterInput requestMediaDataWhenReadyOnQueue:mediaInputQueue
                                             usingBlock: ^
      {
-         // NSLog (@"top of block");
          while (assetWriterInput.readyForMoreMediaData) {
              CMSampleBufferRef nextBuffer = [assetReaderOutput copyNextSampleBuffer];
              if (nextBuffer) {

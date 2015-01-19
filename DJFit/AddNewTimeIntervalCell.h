@@ -10,7 +10,7 @@
 
 @class AddNewTimeIntervalCell;
 
-@protocol addNewTimeDelegate <NSObject>
+@protocol addNewTime <NSObject>
 
 -(void)makeNewRow;
 -(void)saveNewRow:(AddNewTimeIntervalCell *)cell;
@@ -22,6 +22,8 @@
 
 @property (strong, nonatomic) IBOutlet UIButton * addButton;
 
-@property (weak, nonatomic) id <addNewTimeDelegate> delegate;
+@property (weak, nonatomic) id <addNewTime> delegate;
+
+- (IBAction)addNewTimeRow:(id)sender;
 
 @end

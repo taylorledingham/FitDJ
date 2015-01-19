@@ -25,13 +25,13 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+
     
-    // Uncomment the following line to preserve selection between presentations.
-    // self.clearsSelectionOnViewWillAppear = NO;
-    
-    // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
     timeIntervals = [[NSMutableArray alloc]init];
+    TLCoreDataStack *coreDataStack = [TLCoreDataStack defaultStack];
     
+    TimeInterval *newTime = [NSEntityDescription insertNewObjectForEntityForName:@"TimeInterval" inManagedObjectContext:coreDataStack.managedObjectContext];
+    [timeIntervals addObject:newTime];
     
 }
 
@@ -58,34 +58,44 @@
     
     if(indexPath.row == 0){
         
-    
+   // [self.tableView registerClass:[AddNewTimeIntervalCell class] forCellReuseIdentifier:@"AddCell"];
     AddNewTimeIntervalCell *cell = (AddNewTimeIntervalCell *)[tableView dequeueReusableCellWithIdentifier:@"AddCell" forIndexPath:indexPath];
+        cell.delegate = self;
     return cell;
 }
 
 else {
     
-
+   // [self.tableView registerClass:[CustomTimeIntervalCell class] forCellReuseIdentifier:@"CustomCell"];
     CustomTimeIntervalCell *cell = (CustomTimeIntervalCell *)[tableView dequeueReusableCellWithIdentifier:@"CustomCell" forIndexPath:indexPath];
     TimeInterval *timeInterval = [timeIntervals objectAtIndex:indexPath.row-1];
     cell.timeInterval = timeInterval;
     cell.speedTextField.text = [timeInterval.speed stringValue];
-    cell.durationTextField.text = [timeInterval.start stringValue];
+    if(timeInterval.start.floatValue == 0){
+         cell.durationTextField.text = @"00:00";
+    }
+    else {
+        cell.durationTextField.text = [self convertSecondsToTimeString:timeInterval.start.floatValue];
+    }
     cell.inclineTextField.text = [timeInterval.incline stringValue];
+    cell.speedTextField.delegate = cell;
+    cell.durationTextField.delegate = cell;
+    cell.inclineTextField.delegate = cell;
+    
+    cell.delegate = self;
     
     return cell;
 }
     
 }
 
-//- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
-//{
-//    
-//    return 80;
-//}
-
-
-
+-(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
+    
+    if(indexPath.row == 0){
+        [self makeNewRow];
+    }
+    
+}
 
 
 -(void)deleteSong:(CustomTimeIntervalCell *)cell {
@@ -168,27 +178,23 @@ else {
 
 
 
-#pragma mark - Navigation
-
-// In a storyboard-based application, you will often want to do a little preparation before navigation
-- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
-    // Get the new view controller using [segue destinationViewController].
-    // Pass the selected object to the new view controller.
-    
-}
-
-
-
-
-
-
-
 -(void)makeNewRow {
     
     TLCoreDataStack *coreDataStack = [TLCoreDataStack defaultStack];
-    
+    [self saveTimeIntervals];
+
+
+    [self.tableView beginUpdates];
+
     TimeInterval *newTime = [NSEntityDescription insertNewObjectForEntityForName:@"TimeInterval" inManagedObjectContext:coreDataStack.managedObjectContext];
-    
+    [timeIntervals addObject:newTime];
+
+    NSIndexPath *path = [NSIndexPath indexPathForRow:timeIntervals.count inSection:0];
+    [coreDataStack saveContext];
+    NSArray *paths = [[NSArray alloc]initWithObjects:path, nil];
+    [self.tableView insertRowsAtIndexPaths:(NSArray *) paths withRowAnimation:UITableViewRowAnimationFade];
+    [self.tableView endUpdates];
+    [self.tableView reloadData];
 
     
 }
@@ -196,6 +202,96 @@ else {
     
 }
 
+-(void)deleteTimeIntervalCell:(CustomTimeIntervalCell *)cell {
+    [timeIntervals removeObject:cell.timeInterval];
+    
+    TLCoreDataStack *coreDataStack = [TLCoreDataStack defaultStack];
+    [[coreDataStack managedObjectContext] deleteObject:cell.timeInterval];
+    [coreDataStack saveContext];
+    
+     NSIndexPath *indexPath = [self.tableView indexPathForCell:cell];
+    NSArray *paths = [[NSArray alloc]initWithObjects:indexPath, nil];
+    [self.tableView deleteRowsAtIndexPaths:paths withRowAnimation:UITableViewRowAnimationFade];
+    [self.tableView endUpdates];
+    [self.tableView reloadData];
+
+    
+}
+
+-(void)saveTimeIntervals {
+    
+    NSIndexPath *newPath = [NSIndexPath indexPathForRow:1 inSection:0];
+    TLCoreDataStack *coreDataStack = [TLCoreDataStack defaultStack];
+
+    
+    for (TimeInterval *intervals in timeIntervals) {
+        
+        CustomTimeIntervalCell *cell = (CustomTimeIntervalCell *)[self.tableView cellForRowAtIndexPath:newPath];
+        float speed, roundedSpeed, roundedIncline;
+        newPath = [NSIndexPath indexPathForRow:(newPath.row + 1) inSection:0];
+        if(![cell.speedTextField.text  isEqual: @"0"]){
+        speed = [cell.speedTextField.text floatValue];
+        roundedSpeed = speed < 0.5f ? 0.5f : floorf(speed * 2) / 2;
+        }
+        else {
+            roundedSpeed = 0;
+        }
+        if(![cell.inclineTextField.text  isEqual: @"0"]){
+        roundedIncline = [cell.inclineTextField.text floatValue] < 0.5f ? 0.5f : floorf([cell.inclineTextField.text floatValue] * 2) / 2;
+
+        }
+        else {
+            roundedIncline = 0;
+        }
+        intervals.start = [NSNumber numberWithFloat:[self convertTimeStringToSeconds:cell.durationTextField.text]];
+        intervals.speed = [NSNumber numberWithFloat:roundedSpeed];
+        intervals.incline = [NSNumber numberWithFloat:roundedIncline];
+        
+    }
+    [coreDataStack saveContext];
+}
+
+-(NSArray *)getCustomTimeIntervals {
+    
+    NSMutableArray *savedTimeIntervals = [[NSMutableArray alloc]init];
+    TLCoreDataStack *coreDataStack = [TLCoreDataStack defaultStack];
+    NSIndexPath *newPath = [NSIndexPath indexPathForRow:1 inSection:0];
+    
+    for (TimeInterval *intervals in timeIntervals) {
+        
+    CustomTimeIntervalCell *cell = (CustomTimeIntervalCell *)[self.tableView dequeueReusableCellWithIdentifier:@"CustomCell" forIndexPath:newPath];
+        
+        
+        newPath = [NSIndexPath indexPathForRow:(newPath.row+1) inSection:0];
+        
+    }
+    
+    [coreDataStack saveContext];
+    return savedTimeIntervals;
+}
+
+-(NSString *)convertSecondsToTimeString:(float)timeInSeconds {
+    float minutes = timeInSeconds / 60;
+    float seconds = fmodf(timeInSeconds, 60);
+    minutes = minutes - (seconds/60);
+    NSString *lengthString = [NSString stringWithFormat:@"%02.0f:%02.0f", minutes, seconds];
+    return lengthString;
+}
+
+-(float)convertTimeStringToSeconds:(NSString *)timeString {
+    NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
+    formatter.dateFormat = @"mm:ss";
+    NSDate *timeDate = [formatter dateFromString:timeString];
+    
+    formatter.dateFormat = @"mm";
+    int minutes = [[formatter stringFromDate:timeDate] intValue];
+    formatter.dateFormat = @"ss";
+    int seconds = [[formatter stringFromDate:timeDate] intValue];
+    
+    float timeInSeconds = seconds + minutes * 60;
+    
+    return timeInSeconds;
+}
 
 
 @end

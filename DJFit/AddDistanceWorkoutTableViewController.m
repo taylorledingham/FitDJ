@@ -129,32 +129,24 @@
         case UIGestureRecognizerStateBegan:
             break;
         case UIGestureRecognizerStateChanged:
-            NSLog(@"changed: %f", elevation);
             if(elevation <= 25.0){
                 gesture.view.center = CGPointMake(gesture.view.center.x, cellOrigin.y+25.0);
             } else if(elevation <= 375.00){
-                NSLog(@"[gesture locationInView:gesture.view]: %f", [gesture locationInView:gesture.view.superview].y);
                 gesture.view.center = CGPointMake(gesture.view.center.x, [gesture locationInView:gesture.view.superview].y);
             } else if(elevation > 375.0){
                 gesture.view.center = CGPointMake(gesture.view.center.x, 375);
             }
             break;
         case UIGestureRecognizerStateEnded:
-            
-            //[gesture setTranslation:CGPointMake(0, 0) inView:editingTimeCell];
             break;
             
         default:
-            NSAssert(NO, @"handle this later...");
             break;
     }
     
     float timeVal = gesture.view.center.y/20 - 1.5;
     float rounded = timeVal < 0.2f ? 0.2f : floorf(timeVal * 2) / 2;
-    NSLog(@"%f", fmodf(rounded, 1.0));
-//    if(fmodf(rounded, 1.0) > 0){
-//        rounded = rounded - 0.20;
-//    }
+
     distanceSliderLabel.text = [NSString stringWithFormat:@"▼    %.2f    ▲", rounded];
     
     
@@ -279,10 +271,10 @@
     
     workout = [NSEntityDescription insertNewObjectForEntityForName:@"Workout" inManagedObjectContext:coreDataStack.managedObjectContext];
     workout.workoutName = self.workoutNameTextField.text;
-    workout.workoutType = @"distance";
+    workout.workoutType = kDistanceWorkout;
     workout.numberOfRounds = @1;
     workout.dateCreated = [NSDate date];
-    workout.machineType = @"treadmill";
+    workout.machineType = kTypeTreadmill;
     NSInteger index = 0;
     
     TimeInterval *warmUpTimeInterval = [NSEntityDescription insertNewObjectForEntityForName:@"TimeInterval" inManagedObjectContext:coreDataStack.managedObjectContext];

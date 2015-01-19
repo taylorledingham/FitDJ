@@ -10,6 +10,12 @@
 #import "Playlist.h"
 #import "TimeInterval.h"
 
+NSString *const kTimeWorkout = @"timed";
+NSString *const kDistanceWorkout = @"distance";
+NSString *const kIntervalWorkout = @"interval";
+NSString *const kCustomWorkout = @"custom";
+NSString *const kTypeTreadmill = @"treadmill";
+NSString *const kTypeBike = @"bike";
 
 @implementation Workout
 

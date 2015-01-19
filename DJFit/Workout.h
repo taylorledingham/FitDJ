@@ -9,6 +9,14 @@
 #import <Foundation/Foundation.h>
 #import <CoreData/CoreData.h>
 
+extern NSString *const kTimeWorkout;
+extern NSString *const kDistanceWorkout;
+extern NSString *const kIntervalWorkout;
+extern NSString *const kCustomWorkout;
+
+extern NSString *const kTypeTreadmill;
+extern NSString *const kTypeBike;
+
 @class Playlist, TimeInterval;
 
 @interface Workout : NSManagedObject
